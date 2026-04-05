@@ -1,254 +1,389 @@
-@extends('master')
+@props([
+    'headline' => 'Your Health, Your Way',
+    'subtext' => 'Join MedSuite\'s patient portal for seamless healthcare management with AI-powered assistance.',
+    'features' => [
+        ['icon' => 'bi-calendar-check', 'text' => 'Easy Appointment Booking'],
+        ['icon' => 'bi-file-earmark-medical', 'text' => 'Secure Health Records'],
+        ['icon' => 'bi-clock-history', 'text' => 'Appointment History'],
+        ['icon' => 'bi-bell', 'text' => 'Email Reminders'],
+    ],
+    'showBrand' => true,
+    'brandIcon' => 'bi-heart-pulse',
+    'brandName' => 'MedSuite',
+    'leftPanelClass' => 'patient-theme',
+])
 
-@section('title', 'Create Patient Account')
+<x-auth-layout>
+    <form method="POST" action="{{ route('patient.register.store') }}" class="patient-register-form">
+        @csrf
 
-@push('styles')
+        <!-- Full Name -->
+        <div class="form-group">
+            <label for="name" class="form-label">
+                <i class="bi bi-person me-2"></i>Full Name
+            </label>
+            <input id="name" name="name" type="text" required
+                   class="form-control auth-input @error('name') is-invalid @enderror"
+                   placeholder="Enter your full name" value="{{ old('name') }}">
+            @error('name')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email" class="form-label">
+                <i class="bi bi-envelope me-2"></i>Email Address
+            </label>
+            <input id="email" name="email" type="email" required
+                   class="form-control auth-input @error('email') is-invalid @enderror"
+                   placeholder="Enter your email address" value="{{ old('email') }}">
+            @error('email')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group">
+            <label for="phone" class="form-label">
+                <i class="bi bi-telephone me-2"></i>Phone Number
+            </label>
+            <input id="phone" name="phone" type="tel" required
+                   class="form-control auth-input @error('phone') is-invalid @enderror"
+                   placeholder="Enter your phone number" value="{{ old('phone') }}">
+            @error('phone')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group">
+            <label for="date_of_birth" class="form-label">
+                <i class="bi bi-calendar-event me-2"></i>Date of Birth
+            </label>
+            <input id="date_of_birth" name="date_of_birth" type="date" required
+                   class="form-control auth-input @error('date_of_birth') is-invalid @enderror"
+                   max="{{ date('Y-m-d') }}" value="{{ old('date_of_birth') }}">
+            @error('date_of_birth')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group">
+            <label for="gender" class="form-label">
+                <i class="bi bi-gender-neuter me-2"></i>Gender
+            </label>
+            <select id="gender" name="gender" required class="form-control auth-input @error('gender') is-invalid @enderror">
+                <option value="">Select gender</option>
+                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
+            </select>
+            @error('gender')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <label for="password" class="form-label">
+                <i class="bi bi-lock me-2"></i>Password
+            </label>
+            <div class="password-input-wrapper">
+                <input id="password" name="password" type="password" required
+                       class="form-control auth-input @error('password') is-invalid @enderror"
+                       placeholder="Create a secure password">
+                <button type="button" class="password-toggle" onclick="togglePassword('password')" aria-label="Toggle password visibility">
+                    <i class="bi bi-eye" id="password-eye"></i>
+                </button>
+            </div>
+            @error('password')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+            <label for="password_confirmation" class="form-label">
+                <i class="bi bi-shield-check me-2"></i>Confirm Password
+            </label>
+            <div class="password-input-wrapper">
+                <input id="password_confirmation" name="password_confirmation" type="password" required
+                       class="form-control auth-input"
+                       placeholder="Confirm your password">
+                <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation')" aria-label="Toggle password confirmation visibility">
+                    <i class="bi bi-eye" id="password_confirmation-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Terms and Privacy -->
+        <div class="form-group form-check">
+            <input id="terms" name="terms" type="checkbox" required class="form-check-input">
+            <label for="terms" class="form-check-label">
+                I agree to the <a href="#" class="auth-link">Terms of Service</a>
+                and <a href="#" class="auth-link">Privacy Policy</a>
+            </label>
+            @error('terms')
+                <div class="text-danger small">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-register btn-green">
+            <i class="bi bi-person-plus me-2"></i>
+            Create Patient Account
+        </button>
+    </form>
+
+    <div class="auth-footer-links">
+        <hr class="my-4">
+        <p class="text-center text-muted mb-2">Already have an account?</p>
+        <div class="text-center">
+            <a href="{{ route('login') }}" class="auth-link-primary">
+                Sign in to your account <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="auth-help-text text-center mt-4">
+        <small class="text-muted">Need help? <a href="{{ route('contact') }}" class="auth-link">Contact Support</a></small>
+    </div>
+</x-auth-layout>
+
 <style>
-.auth-page {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    position: relative;
-    overflow: hidden;
+/* Patient Theme Overrides for Auth Layout */
+.auth-layout-left.patient-theme {
+    background: linear-gradient(135deg, var(--color-forest-green) 0%, #134e4a 50%, var(--color-forest-green) 100%);
 }
 
-.auth-info-section {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+.auth-layout-left.patient-theme::after {
+    background: radial-gradient(ellipse, rgba(22, 101, 52, 0.2) 0%, transparent 70%);
+}
+
+.auth-layout-left.patient-theme .auth-layout-brand-icon {
+    background: linear-gradient(135deg, var(--color-forest-green-light) 0%, var(--color-forest-green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.auth-layout-left.patient-theme .auth-layout-feature-icon {
+    color: var(--color-forest-green-light);
+}
+
+/* Patient Register Form Styles */
+.patient-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.patient-register-form .form-group {
+    margin-bottom: var(--space-4);
+}
+
+.patient-register-form .form-label {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    position: relative;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
 }
 
-.auth-info-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.05"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
-    opacity: 0.3;
+.patient-register-form .form-label i {
+    color: var(--color-forest-green);
+    font-size: var(--font-size-base);
 }
 
-.auth-info-content {
-    position: relative;
-    z-index: 2;
-    max-width: 500px;
-    text-align: center;
-}
-
-.auth-form-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    min-height: 100vh;
-}
-
-.auth-form-container {
+.patient-register-form .auth-input {
     width: 100%;
-    max-width: 450px;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-size-base);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    transition: all 0.2s ease;
 }
 
-.auth-card {
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(20px);
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+.patient-register-form .auth-input:focus {
+    outline: none;
+    border-color: var(--color-teal-primary);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+.patient-register-form .auth-input.is-invalid {
+    border-color: var(--color-error);
+}
+
+.patient-register-form .auth-input::placeholder {
+    color: var(--text-muted);
+}
+
+.patient-register-form .form-check-input:checked {
+    background-color: var(--color-forest-green);
+    border-color: var(--color-forest-green);
+}
+
+.patient-register-form .form-check-input:focus {
+    border-color: var(--color-teal-primary);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* Password Input Wrapper */
+.password-input-wrapper {
     position: relative;
-    z-index: 2;
+    display: flex;
+    align-items: center;
 }
 
-/* Responsive adjustments for auth layout */
-@media (max-width: 991px) {
-    .auth-form-section {
-        padding: 1rem;
-    }
-
-    .auth-card {
-        padding: 1.5rem;
-    }
-
-    .auth-info-content .display-5 {
-        font-size: 2rem;
-    }
+.password-input-wrapper .auth-input {
+    padding-right: var(--space-12);
 }
 
-@media (max-width: 576px) {
-    .auth-card {
-        padding: 1rem;
-        margin: 0.5rem;
+.password-toggle {
+    position: absolute;
+    right: var(--space-3);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: var(--space-2);
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: var(--text-primary);
+}
+
+/* Register Button */
+.btn-register {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.btn-green {
+    background: var(--color-forest-green);
+    color: var(--text-inverse);
+    border: none;
+}
+
+.btn-green:hover {
+    background: var(--color-forest-green-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-green:active {
+    transform: translateY(0);
+}
+
+/* Auth Links */
+.auth-link {
+    color: var(--color-teal-primary);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+    color: var(--color-teal-primary-dark);
+    text-decoration: underline;
+}
+
+.auth-link-primary {
+    color: var(--color-forest-green);
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.auth-link-primary:hover {
+    color: var(--color-forest-green-dark);
+    text-decoration: underline;
+}
+
+.auth-link-primary i {
+    transition: transform 0.2s ease;
+}
+
+.auth-link-primary:hover i {
+    transform: translateX(4px);
+}
+
+/* Invalid Feedback */
+.invalid-feedback {
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+    margin-top: var(--space-1);
+}
+
+/* Form Check */
+.form-check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+}
+
+.form-check-input {
+    margin-top: var(--space-1);
+    width: var(--space-4);
+    height: var(--space-4);
+    cursor: pointer;
+}
+
+.form-check-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+/* Auth Footer Links */
+.auth-footer-links {
+    margin-top: var(--space-4);
+}
+
+.auth-footer-links hr {
+    border: none;
+    border-top: 1px solid var(--border-light);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 639px) {
+    .patient-register-form .form-group {
+        margin-bottom: var(--space-3);
     }
 
-    .auth-form-container {
-        max-width: 100%;
+    .btn-register {
+        padding: var(--space-3);
     }
 }
 </style>
-@endpush
 
-@section('content')
-<div class="auth-page">
-    <div class="container-fluid">
-        <div class="row min-vh-100">
-            <!-- Left side - Information -->
-            <div class="col-lg-6 auth-info-section d-none d-lg-flex">
-                <div class="auth-info-content">
-                    <i class="bi bi-heart-pulse display-1 text-primary mb-4"></i>
-                    <h1 class="display-5 fw-bold text-white mb-3">Join Our Patient Portal</h1>
-                    <p class="lead text-white-50 mb-4">Take control of your healthcare journey with easy appointment booking and secure health record management.</p>
-                    <div class="auth-features">
-                        <div class="feature-item mb-3">
-                            <i class="bi bi-check-circle text-success me-3"></i>
-                            <span class="text-white">Easy Appointment Booking</span>
-                        </div>
-                        <div class="feature-item mb-3">
-                            <i class="bi bi-check-circle text-success me-3"></i>
-                            <span class="text-white">Secure Health Records</span>
-                        </div>
-                        <div class="feature-item mb-3">
-                            <i class="bi bi-check-circle text-success me-3"></i>
-                            <span class="text-white">Appointment History</span>
-                        </div>
-                        <div class="feature-item mb-3">
-                            <i class="bi bi-check-circle text-success me-3"></i>
-                            <span class="text-white">Email Reminders</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<script>
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const eye = document.getElementById(inputId + '-eye');
 
-            <!-- Right side - Form -->
-            <div class="col-lg-6 col-12 auth-form-section">
-                <div class="auth-form-container">
-                    <!-- Compact header for mobile -->
-                    <div class="text-center mb-4 d-lg-none">
-                        <i class="bi bi-heart-pulse text-primary mb-3" style="font-size: 2.5rem;"></i>
-                        <h2 class="h5 text-muted">Join Our Patient Portal</h2>
-                    </div>
-
-                    <!-- Main form card -->
-                    <div class="auth-card">
-                    <form method="POST" action="{{ route('patient.register.store') }}">
-                        @csrf
-
-                        <!-- Full Name -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Full Name</label>
-                            <input id="name" name="name" type="text" required
-                                   class="form-control @error('name') is-invalid @enderror"
-                                   placeholder="Enter your full name" value="{{ old('name') }}">
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input id="email" name="email" type="email" required
-                                   class="form-control @error('email') is-invalid @enderror"
-                                   placeholder="Enter your email address" value="{{ old('email') }}">
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Phone -->
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input id="phone" name="phone" type="tel" required
-                                   class="form-control @error('phone') is-invalid @enderror"
-                                   placeholder="Enter your phone number" value="{{ old('phone') }}">
-                            @error('phone')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Date of Birth -->
-                        <div class="mb-3">
-                            <label for="date_of_birth" class="form-label">Date of Birth</label>
-                            <input id="date_of_birth" name="date_of_birth" type="date" required
-                                   class="form-control @error('date_of_birth') is-invalid @enderror"
-                                   max="{{ date('Y-m-d') }}" value="{{ old('date_of_birth') }}">
-                            @error('date_of_birth')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Gender -->
-                        <div class="mb-3">
-                            <label for="gender" class="form-label">Gender</label>
-                            <select id="gender" name="gender" required class="form-select @error('gender') is-invalid @enderror">
-                                <option value="">Select gender</option>
-                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                                <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                            @error('gender')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Password -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input id="password" name="password" type="password" required
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   placeholder="Create a secure password">
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input id="password_confirmation" name="password_confirmation" type="password" required
-                                   class="form-control" placeholder="Confirm your password">
-                        </div>
-
-                        <!-- Terms and Privacy -->
-                        <div class="mb-3 form-check">
-                            <input id="terms" name="terms" type="checkbox" required class="form-check-input">
-                            <label for="terms" class="form-check-label">
-                                I agree to the <a href="#" class="text-primary">Terms of Service</a>
-                                and <a href="#" class="text-primary">Privacy Policy</a>
-                            </label>
-                            @error('terms')
-                                <div class="text-danger small">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-user-plus me-2"></i>
-                                Create Account
-                            </button>
-                        </div>
-                        </form>
-
-                        <div class="mt-4 text-center">
-                            <hr class="my-3">
-                            <p class="text-muted mb-2">Already have an account?</p>
-                            <a href="{{ route('login') }}" class="btn btn-outline-primary">
-                                Sign in to your account
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Footer links -->
-                    <div class="text-center mt-4">
-                        <small class="text-muted">Need help? <a href="{{ route('contact') }}" class="text-decoration-none">Contact Support</a></small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+    if (input.type === 'password') {
+        input.type = 'text';
+        eye.className = 'bi bi-eye-slash';
+    } else {
+        input.type = 'password';
+        eye.className = 'bi bi-eye';
+    }
+}
+</script>
