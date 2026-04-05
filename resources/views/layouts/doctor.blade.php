@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{{ asset('demos/medical/medical.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/logo-fix.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom-buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/ui-consistency.css') }}">
     <link rel="stylesheet" href="{{ asset('favicon.ico') }}">
 
     <style>
@@ -32,6 +34,22 @@
             font-family: "Font Awesome 6 Free" !important;
             font-weight: 900 !important;
         }
+        /* Skip Navigation Link for Accessibility */
+        .skip-nav-link {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0d6efd;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0 0 8px 8px;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 500;
+            transition: top 0.3s;
+        }
+        .skip-nav-link:focus { top: 0; outline: 3px solid #ffc107; }
         .doctor-wrapper { display: flex; min-height: 100vh; }
         .doctor-sidebar {
             width: 280px;
@@ -153,34 +171,25 @@
             .doctor-sidebar { transform: translateX(-100%); }
             .doctor-sidebar.show { transform: translateX(0); }
             .doctor-content { margin-left: 0; }
-            .sidebar-hamburger {
-                position: absolute;
-                top: 12px;
-                right: 12px;
-                background: rgba(255,255,255,0.1);
-                border: none;
-                color: white;
-                width: 40px;
-                height: 40px;
-                border-radius: 8px;
-                cursor: pointer;
-                z-index: 1001;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+            .mobile-toggle { display: block !important; }
         }
 
-        /* Sidebar overlay */
-        .sidebar-overlay {
+        .mobile-toggle {
             display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
         }
-        .sidebar-overlay.show {
-            display: block;
+
+        .doctor-header {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .doctor-header {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                background: #f1f5f9;
+                border-bottom: 1px solid #e2e8f0;
+            }
         }
 
         /* Active state for AI pages */
@@ -202,8 +211,8 @@
     <title>@yield('title', 'Doctor Dashboard | MedCura AI')</title>
 </head>
 <body>
-    <!-- Sidebar overlay for mobile -->
-    <div id="sidebar-overlay" class="sidebar-overlay" onclick="document.querySelector('.doctor-sidebar').classList.remove('show')"></div>
+    <!-- Skip Navigation Link for Accessibility -->
+    <a href="#main-content" class="skip-nav-link">Skip to main content</a>
 
     <div class="doctor-wrapper">
         <nav class="doctor-sidebar" id="doctor-sidebar">
@@ -341,163 +350,34 @@
                 </form>
             </div>
         </nav>
-        <main class="doctor-content">
+        <main class="doctor-content" id="main-content">
+            <div class="doctor-header">
+                <button class="btn btn-outline-secondary mobile-toggle me-3" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
             @yield('content')
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- PWA Install Banner -->
-    <div id="pwa-install-banner" class="pwa-install-banner" style="display:none;">
-        <div class="pwa-banner-content">
-            <div class="pwa-banner-icon">
-                <img src="{{ asset('icons/doctor-icon-192.png') }}" alt="Doctor App" width="32" height="32">
-            </div>
-            <div class="pwa-banner-text">
-                <strong>Install Doctor App</strong>
-                <span>For a faster, app-like experience</span>
-            </div>
-            <div class="pwa-banner-buttons">
-                <button id="pwa-install-btn" class="btn btn-primary btn-sm">Install</button>
-                <button id="pwa-dismiss-btn" class="btn btn-secondary btn-sm">Not now</button>
-            </div>
-        </div>
-    </div>
-
-    <style>
-    .pwa-install-banner {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #0c1929;
-        color: white;
-        padding: 12px 16px;
-        z-index: 9999;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
-    }
-    .pwa-banner-content {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-    .pwa-banner-text {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    .pwa-banner-text span {
-        font-size: 12px;
-        opacity: 0.8;
-    }
-    .pwa-banner-buttons {
-        display: flex;
-        gap: 8px;
-    }
-    .pwa-banner-buttons .btn {
-        padding: 6px 16px;
-        border-radius: 6px;
-        font-size: 13px;
-        cursor: pointer;
-        border: none;
-    }
-    .pwa-banner-buttons .btn-primary {
-        background: #0EA5E9;
-        color: white;
-    }
-    .pwa-banner-buttons .btn-secondary {
-        background: rgba(255,255,255,0.15);
-        color: white;
-    }
-    @media (max-width: 480px) {
-        .pwa-banner-content {
-            flex-wrap: wrap;
-        }
-        .pwa-banner-text {
-            flex: 1 1 calc(100% - 44px);
-        }
-        .pwa-banner-buttons {
-            flex: 1;
-            justify-content: flex-end;
-        }
-    }
-    </style>
-
     <script>
-    (function() {
-        let deferredPrompt;
-        const banner = document.getElementById('pwa-install-banner');
-        const installBtn = document.getElementById('pwa-install-btn');
-        const dismissBtn = document.getElementById('pwa-dismiss-btn');
-
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-        let isDismissed = false;
-        try {
-            isDismissed = localStorage.getItem('doctorPwaDismissed') === 'true';
-        } catch (e) {
-            // localStorage unavailable (private browsing)
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.doctor-sidebar');
+            sidebar.classList.toggle('show');
         }
 
-        if (!isStandalone && !isDismissed && 'serviceWorker' in navigator) {
-            navigator.serviceWorker.register('{{ asset("doctor-sw.js") }}')
-                .then(() => console.log('Doctor SW registered'))
-                .catch((err) => console.error('Doctor SW registration failed:', err));
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.doctor-sidebar');
+            const toggle = document.querySelector('.mobile-toggle');
 
-            setTimeout(function() {
-                try {
-                    if (!isStandalone && !localStorage.getItem('doctorPwaDismissed')) {
-                        banner.style.display = 'block';
-                    }
-                } catch (e) {
-                    // localStorage unavailable
-                }
-            }, 30000);
-        }
-
-        if (isStandalone) {
-            console.log('Doctor PWA running in standalone mode');
-        }
-
-        window.addEventListener('beforeinstallprompt', function(e) {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (!banner.style.display || banner.style.display === 'none') {
-                banner.style.display = 'block';
+            if (window.innerWidth <= 768 &&
+                !sidebar.contains(event.target) &&
+                !toggle.contains(event.target) &&
+                sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
             }
         });
-
-        installBtn.addEventListener('click', async function() {
-            if (!deferredPrompt) return;
-            try {
-                deferredPrompt.prompt();
-                const result = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                banner.style.display = 'none';
-                if (result.outcome === 'accepted') {
-                    try {
-                        localStorage.setItem('doctorPwaDismissed', 'true');
-                    } catch (e) {
-                        // localStorage unavailable
-                    }
-                }
-            } catch (err) {
-                console.error('PWA install prompt failed:', err);
-                deferredPrompt = null;
-                banner.style.display = 'none';
-            }
-        });
-
-        dismissBtn.addEventListener('click', function() {
-            banner.style.display = 'none';
-            try {
-                localStorage.setItem('doctorPwaDismissed', 'true');
-            } catch (e) {
-                // localStorage unavailable
-            }
-        });
-    })();
     </script>
 </body>
 </html>

@@ -43,49 +43,6 @@ use Illuminate\Support\Str;
 // Broadcasting authentication route - simplified
 Broadcast::routes(['middleware' => ['web']]);
 
-// Debug authentication routes (temporary) - restricted to localhost only
-if (config('app.debug')) {
-    Route::middleware(['web', 'localhost'])->group(function () {
-        Route::get('/debug-broadcasting-auth', function (\Illuminate\Http\Request $request) {
-            $user = Auth::user();
-
-            return response()->json([
-                'authenticated' => Auth::check(),
-                'user_id' => $user ? $user->id : null,
-                'user_name' => $user ? $user->name : null,
-                'user_role' => $user ? $user->role : null,
-                'session_id' => session()->getId(),
-                'csrf_token' => csrf_token(),
-                'pusher_auth_key' => env('VITE_PUSHER_APP_KEY'),
-                'expected_channel' => 'private-App.User.' . ($user ? $user->id : 'null'),
-            ]);
-        });
-
-        // Debug the actual broadcasting auth requests
-        Route::post('/debug-broadcasting-auth-post', function (\Illuminate\Http\Request $request) {
-            \Illuminate\Support\Facades\Log::info('Broadcasting Auth Debug', [
-                'authenticated' => Auth::check(),
-                'user_id' => Auth::id(),
-                'channel_name' => $request->input('channel_name'),
-                'socket_id' => $request->input('socket_id'),
-                'headers' => $request->headers->all(),
-                'request_data' => $request->all(),
-                'session_id' => session()->getId(),
-            ]);
-
-            $user = Auth::user();
-
-            return response()->json([
-                'debug' => true,
-                'authenticated' => Auth::check(),
-                'user_id' => $user ? $user->id : null,
-                'channel_name' => $request->input('channel_name'),
-                'socket_id' => $request->input('socket_id'),
-            ]);
-        });
-    });
-}
-
 Route::get('/', function () {
     // Redirect authenticated users to dashboard
     if (Auth::check()) {
@@ -333,8 +290,6 @@ Route::middleware(['auth', 'sub.user.permissions'])->group(function () {
     Route::post('/appointments/{appointment}/reschedule', [AppointmentController::class, 'reschedule'])->name('appointments.reschedule');
     Route::get('/appointments/calendar/events', [AppointmentController::class, 'getCalendarEvents'])->name('appointments.calendar.events');
 
-    // Diagnosis creation from appointment page (for doctors) - DUPLICATE REMOVED - kept in doctor group only
-    // Route::post('/appointments/{appointment}/create-diagnosis', [DiagnosisController::class, 'createFromAppointment'])->name('appointments.create-diagnosis');
 
     // Review routes for patients
     Route::resource('reviews', ReviewController::class);

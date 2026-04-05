@@ -8,6 +8,7 @@ use App\Services\SmsProviders\PlivoProvider;
 use App\Services\SmsProviders\MessageBirdProvider;
 use App\Services\SmsProviders\UnifonicProvider;
 use App\Services\SmsProviders\SmsGatewayHubProvider;
+use App\Services\SmsProviders\LogSmsProvider;
 use App\Models\SystemSetting;
 use App\Models\SmsProviderCountry;
 use App\Models\Doctor;
@@ -430,73 +431,7 @@ class SmsService
                 case 'connectsaudi':
                     return new \App\Services\SmsProviders\ConnectSaudiProvider($customConfig);
                 case 'log':
-                return new class implements SmsProviderInterface {
-                    public function send(string $to, string $message): array
-                    {
-                        Log::info('SMS would be sent', [
-                            'to' => $to,
-                            'message' => $message,
-                            'provider' => 'log'
-                        ]);
-                        return [
-                            'success' => true,
-                            'message' => 'SMS logged successfully',
-                            'data' => ['logged_at' => now()->toISOString()]
-                        ];
-                    }
-
-                    public function getName(): string
-                    {
-                        return 'Log Only';
-                    }
-
-                    public function isConfigured(): bool
-                    {
-                        return true;
-                    }
-
-                    public function getConfigRequirements(): array
-                    {
-                        return [];
-                    }
-
-                    public function getKey(): string
-                    {
-                        return 'log';
-                    }
-
-                    public function getMessageStatus(string $messageId): array
-                    {
-                        return [
-                            'success' => true,
-                            'message' => 'Message logged',
-                            'data' => ['message_id' => $messageId, 'status' => 'logged']
-                        ];
-                    }
-
-                    public function sendBulkSms(array $recipients, string $message): array
-                    {
-                        Log::info('Bulk SMS would be sent', [
-                            'recipients' => $recipients,
-                            'message' => $message,
-                            'provider' => 'log'
-                        ]);
-                        return [
-                            'success' => true,
-                            'message' => 'Bulk SMS logged successfully',
-                            'data' => ['logged_at' => now()->toISOString(), 'recipient_count' => count($recipients)]
-                        ];
-                    }
-
-                    public function getDeliveryReport(string $messageId): array
-                    {
-                        return [
-                            'success' => true,
-                            'message' => 'Delivery report logged',
-                            'data' => ['message_id' => $messageId, 'status' => 'delivered']
-                        ];
-                    }
-                };
+                    return new LogSmsProvider();
                 default:
                     return null;
             }
