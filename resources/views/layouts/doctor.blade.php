@@ -201,6 +201,13 @@
     </style>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="{{ asset('doctor-manifest.webmanifest') }}">
+    <meta name="theme-color" content="#0EA5E9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Doctor App">
+    <link rel="apple-touch-icon" href="{{ asset('icons/doctor-icon-192.png') }}">
     <title>@yield('title', 'Doctor Dashboard | MedCura AI')</title>
 </head>
 <body>
@@ -208,7 +215,11 @@
     <a href="#main-content" class="skip-nav-link">Skip to main content</a>
 
     <div class="doctor-wrapper">
-        <nav class="doctor-sidebar">
+        <nav class="doctor-sidebar" id="doctor-sidebar">
+            <!-- Mobile hamburger toggle -->
+            <button id="sidebar-hamburger-btn" class="sidebar-hamburger d-lg-none" onclick="document.getElementById('doctor-sidebar').classList.toggle('show');document.getElementById('sidebar-overlay').classList.toggle('show')">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="sidebar-brand">
                 <a href="{{ route('dashboard') }}">
                     <img src="{{ asset('demos/medical/images/logo-medical.png') }}" alt="MedCura AI">
@@ -248,12 +259,6 @@
                         @if($todayAppointments > 0)
                             <span class="nav-badge">{{ $todayAppointments }}</span>
                         @endif
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="{{ route('ai.ambient-listening.index') }}" class="nav-link {{ request()->routeIs('ai.ambient-listening.index') ? 'active' : '' }}">
-                        <i class="fas fa-microphone-alt"></i>
-                        <span>Start Consultation</span>
                     </a>
                 </div>
 

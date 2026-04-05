@@ -39,7 +39,7 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
         await handleReanalyze();
       }
     } catch (err) {
-      console.error('Error fetching recommendations:', err);
+      // console.error('Error fetching recommendations:', err);
       setError('Failed to load treatment recommendations. Please try re-analyzing.');
     } finally {
       setLoading(false);
@@ -79,7 +79,7 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
       });
       setRecommendation(response.data);
     } catch (err) {
-      console.error('Error generating recommendations:', err);
+      // console.error('Error generating recommendations:', err);
       setError('Failed to generate AI recommendations.');
     } finally {
       setLoading(false);

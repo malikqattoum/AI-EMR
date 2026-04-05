@@ -272,61 +272,22 @@ class EnhancedNotificationSystem {
                 this.userChannel.listen('App\\Events\\NotificationSent', (data) => {
                     // [DIRECT] NotificationSent event:
                     this.handleNewNotification(data, 'direct');
-                    this.showSystemNotification('Direct notification received', 'info');
-                    return false; // Explicitly return false to avoid async response issues
+                    return false;
                 });
 
                 // SECONDARY: BroadcastNotificationCreated events
                 this.userChannel.listen('Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', (data) => {
                     // [SECONDARY] BroadcastNotificationCreated:
                     this.handleNewNotification(data, 'broadcast_event');
-                    return false; // Explicitly return false to avoid async response issues
+                    return false;
                 });
 
                 // TERTIARY: Generic notification events
                 this.userChannel.listen('.notification', (data) => {
                     // [TERTIARY] Generic notification event:
                     this.handleNewNotification(data, 'generic');
-                    return false; // Explicitly return false to avoid async response issues
+                    return false;
                 });
-
-                // Add a direct listener for the notification event
-                this.userChannel.listen('App\\Events\\NotificationSent', (data) => {
-                    // [DIRECT] NotificationSent event:
-                    // NotificationSent listener called, returning false
-                    this.handleNewNotification(data, 'direct');
-                    return false; // Explicitly return false to avoid async response issues
-                });
-
-                // QUATERNARY: Listen for all events on the channel for debugging
-                // Note: This approach may not work with all Echo versions, we'll use a more specific approach
-                // Checking if listenAny is available on userChannel:
-                // userChannel methods:
-
-                // Check if listenAny method exists (for newer Echo versions)
-                if (typeof this.userChannel.listenAny === 'function') {
-                    // Using listenAny on channel
-                    this.userChannel.listenAny((eventName, data) => {
-                        // [QUATERNARY] Raw event received:
-                        if (eventName.includes('notification') || data?.type === 'notification') {
-                            this.handleNewNotification(data, 'raw');
-                        }
-                        return false; // Explicitly return false to avoid async response issues
-                    });
-                } else {
-                    // listenAny not available on channel, using alternative approach
-                    // Alternative: Use Pusher's bind_global if available
-                    if (window.Echo && window.Echo.connector && window.Echo.connector.pusher) {
-                        const pusher = window.Echo.connector.pusher;
-                        pusher.bind_global((eventName, data) => {
-                            // [GLOBAL-ALT] Pusher event received:
-                            if (eventName.includes('notification') || eventName.includes('App.User.' + this.userId) || (data?.type === 'notification')) {
-                                this.handleNewNotification(data, 'global_alt');
-                            }
-                            return false;
-                        });
-                    }
-                }
 
                 // Add a global Pusher listener to catch all events
                 if (window.Echo && window.Echo.connector && window.Echo.connector.pusher) {
@@ -335,170 +296,62 @@ class EnhancedNotificationSystem {
                     // Listen to all events on the Pusher instance
                     pusher.bind_global((eventName, data) => {
                         // [GLOBAL] Pusher event received:
-                        // Second global bind listener called, returning false
-
-                        // Check if this is a notification event
                         if (eventName.includes('notification') ||
                             eventName.includes('App.User.') ||
                             (data && (data.type === 'notification' || data.title || data.message))) {
-                            // [GLOBAL] Processing notification event
                             this.handleNewNotification(data, 'global');
-                            this.showSystemNotification('Global notification received', 'info');
                         }
-                        return false; // Explicitly return false to avoid async response issues
+                        return false;
                     });
 
                     // Listen for connection events
                     pusher.connection.bind('connected', () => {
-                        // Pusher connected
-                        // Pusher connected event fired
                         this.showSystemNotification('Pusher connected', 'success');
                     });
 
                     pusher.connection.bind('disconnected', () => {
-                        // Pusher disconnected
-                        // Pusher disconnected event fired
                         this.showSystemNotification('Pusher disconnected', 'error');
                     });
 
                     pusher.connection.bind('error', (error) => {
-                        // Pusher connection error:
-                        // Pusher error event fired:
                         this.showSystemNotification(`Pusher error: ${error.message || 'Unknown error'}`, 'error');
                     });
                 }
 
-                // QUINTERNARY: Listen for all events using global listener
-                if (window.Echo.connector && window.Echo.connector.socket) {
-                    window.Echo.connector.socket.on('event', (data) => {
-                        // [QUINTERNARY] Socket event received:
-                        if (data.channel === userChannelName && data.event && data.event.includes('notification')) {
-                            this.handleNewNotification(data.event, 'socket');
-                        }
-                        return false; // Explicitly return false to avoid async response issues
-                    });
-                }
-
-                // 监听频道错误
+                // Listen for subscription errors
                 this.userChannel.error((error) => {
-                    // Error on user channel:
+                    console.error('User channel subscription error:', error);
                 });
             } else {
-                // Failed to create user channel:
+                console.error('Failed to create user channel');
             }
 
             // If user is a doctor, also listen to doctor-specific channel
             if (window.userRole === 'doctor') {
                 const doctorChannelName = `doctor.${this.userId}`;
-                // Doctor-specific channel created:
 
-                // 简化医生频道订阅
                 const doctorChannel = window.Echo.private(doctorChannelName);
 
                 if (doctorChannel) {
-                    // Connected to doctor channel:
-
                     // Listen for notifications on the doctor channel
                     doctorChannel.notification((notification) => {
-                        // [DOCTOR] Doctor notification received:
                         this.handleNewNotification(notification, 'doctor_notification');
                     });
 
                     // Listen for appointment booked notifications
                     doctorChannel.listen('appointment-booked', (data) => {
-                        // [DOCTOR] Appointment booked notification:
                         this.handleNewNotification(data, 'doctor_appointment');
                     });
 
                     // Listen for Laravel broadcast notification events
                     doctorChannel.listen('Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', (data) => {
-                        // [DOCTOR] Laravel broadcast notification:
                         this.handleNewNotification(data, 'doctor_laravel_notification');
                     });
 
-                    // 监听频道错误
                     doctorChannel.error((error) => {
-                        // Error on doctor channel:
+                        console.error('Doctor channel error:', error);
                     });
-                } else {
-                    // Failed to create doctor channel:
                 }
-
-                // 监听所有频道上的通知
-                window.Echo.channel('doctor.' + this.userId)
-                    .listen('.notification', (data) => {
-                        // [DOCTOR] Wildcard notification:
-                        this.handleNewNotification(data, 'doctor_wildcard');
-                    })
-                    .error((error) => {
-                        // Error on doctor wildcard channel:
-                    });
-            }
-
-            // 监听所有用户频道上的通知
-            try {
-                const userWildcardChannel = window.Echo.channel('App.User.' + this.userId);
-
-                if (userWildcardChannel) {
-                    userWildcardChannel
-                        .listen('.notification', (notification) => {
-                            // [USER] User notification received:
-                            this.handleNewNotification(notification, 'user_notification');
-                        })
-                        .listen('appointment-booked', (data) => {
-                            // [USER] Appointment booked notification:
-                            this.handleNewNotification(data, 'user_appointment');
-                        })
-                        .error((error) => {
-                            // Error on user wildcard channel:
-                        });
-                } else {
-                    // Failed to create user wildcard channel
-                }
-            } catch (error) {
-                // Error creating user wildcard channel:
-            }
-
-            // DEBUG: Monitor all raw Pusher events for our channel
-            if (window.Echo.connector && window.Echo.connector.pusher) {
-                const pusher = window.Echo.connector.pusher;
-                // Pusher connection state:
-
-                pusher.bind_global((eventName, data) => {
-                    // Use the actual user channel name instead of undefined channelName
-                    const userChannelName = `App.User.${this.userId}`;
-                    if (eventName.includes(`private-${userChannelName}`) || eventName.includes(userChannelName)) {
-                        // [RAW] Pusher event for our channel:
-                        // Global bind listener called, returning false
-
-                        // Try to handle raw events too
-                        if (eventName.includes('notification') || eventName.includes('Notification')) {
-                            this.handleNewNotification(data, 'raw');
-                        }
-                        return false; // Explicitly return false to avoid async response issues
-                    }
-                });
-
-                // Monitor connection state changes
-                pusher.connection.bind('state_change', (states) => {
-                    // Pusher connection state changed:
-                    // State change event - potential async response window
-                });
-
-                pusher.connection.bind('connected', () => {
-                    // Pusher connected successfully
-                    // Second connected event fired
-                });
-
-                pusher.connection.bind('disconnected', () => {
-                    // Pusher disconnected
-                    // Second disconnected event fired
-                });
-
-                pusher.connection.bind('error', (error) => {
-                    // Pusher connection error:
-                    // Second error event fired:
-                });
             }
 
             // Channel status handlers
@@ -567,7 +420,7 @@ class EnhancedNotificationSystem {
 
         // Check if we're offline and store notification locally
         if (!navigator.onLine && window.offlineNotificationManager) {
-            console.log('📴 Offline detected, storing notification locally');
+            // console.log('📴 Offline detected, storing notification locally');
             window.offlineNotificationManager.storeNotificationLocally(normalizedNotification);
         }
 
@@ -663,10 +516,10 @@ class EnhancedNotificationSystem {
                 const data = await response.json();
                 this.unreadCount = data.unread_count || 0;
                 this.updateUnreadCountDisplay();
-                console.log('📊 Loaded unread count:', this.unreadCount);
+                // console.log('📊 Loaded unread count:', this.unreadCount);
             }
         } catch (error) {
-            console.error('❌ Failed to load unread count:', error);
+            // console.error('❌ Failed to load unread count:', error);
         }
     }
 
@@ -696,13 +549,13 @@ class EnhancedNotificationSystem {
     updateNotificationDropdown(notification) {
         // Update Alpine.js dropdown instance directly
         if (window.notificationDropdownInstance) {
-            console.log('📋 Updating Alpine.js notification dropdown');
+            // console.log('📋 Updating Alpine.js notification dropdown');
             try {
                 // Use Alpine.js $nextTick to ensure proper reactivity
                 window.notificationDropdownInstance.handleNewNotification(notification);
-                console.log('✅ Alpine.js dropdown updated successfully');
+                // console.log('✅ Alpine.js dropdown updated successfully');
             } catch (error) {
-                console.error('❌ Failed to update Alpine.js dropdown:', error);
+                // console.error('❌ Failed to update Alpine.js dropdown:', error);
                 // Fallback: manually update
                 window.notificationDropdownInstance.notifications.unshift({
                     id: notification.id,
@@ -716,7 +569,7 @@ class EnhancedNotificationSystem {
                 window.notificationDropdownInstance.unreadCount = this.unreadCount;
             }
         } else {
-            console.warn('⚠️ Alpine.js notification dropdown instance not found');
+            // console.warn('⚠️ Alpine.js notification dropdown instance not found');
         }
 
         // Also update any other notification lists in the DOM
@@ -762,7 +615,7 @@ class EnhancedNotificationSystem {
     }
 
     playNotificationSound() {
-        console.log('🔊 Playing notification sound');
+        // console.log('🔊 Playing notification sound');
 
         try {
             // First try to use the preloaded sound if available
@@ -776,7 +629,7 @@ class EnhancedNotificationSystem {
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
                     }).catch(error => {
-                        console.warn('⚠️ Preloaded sound play failed:', error);
+                        // console.warn('⚠️ Preloaded sound play failed:', error);
                         this.playFallbackSound();
                     });
                 } else {
@@ -786,13 +639,13 @@ class EnhancedNotificationSystem {
                 this.playFallbackSound();
             }
         } catch (error) {
-            console.error('❌ Sound error:', error);
+            // console.error('❌ Sound error:', error);
             this.playFallbackSound();
         }
     }
 
     playFallbackSound() {
-        console.log('🔊 Trying to play fallback notification sound');
+        // console.log('🔊 Trying to play fallback notification sound');
 
         try {
             // Try multiple sound files
@@ -807,27 +660,27 @@ class EnhancedNotificationSystem {
 
             const tryNextSound = () => {
                 if (soundIndex >= soundFiles.length) {
-                    console.error('❌ All sound files failed to play');
+                    // console.error('❌ All sound files failed to play');
                     return;
                 }
 
                 const soundFile = soundFiles[soundIndex];
-                console.log(`🔊 Trying sound file: ${soundFile}`);
+                // console.log(`🔊 Trying sound file: ${soundFile}`);
 
                 try {
                     const audio = new Audio(soundFile);
                     audio.volume = 0.3;
 
                     audio.oncanplaythrough = () => {
-                        console.log(`✅ Sound file loaded: ${soundFile}`);
+                        // console.log(`✅ Sound file loaded: ${soundFile}`);
 
                         const playPromise = audio.play();
 
                         if (playPromise !== undefined) {
                             playPromise.then(() => {
-                                console.log('✅ Fallback sound played successfully');
+                                // console.log('✅ Fallback sound played successfully');
                             }).catch(error => {
-                                console.error('❌ Fallback sound play failed:', error);
+                                // console.error('❌ Fallback sound play failed:', error);
                                 soundIndex++;
                                 tryNextSound();
                             });
@@ -835,14 +688,14 @@ class EnhancedNotificationSystem {
                     };
 
                     audio.onerror = () => {
-                        console.error(`❌ Error loading sound file: ${soundFile}`);
+                        // console.error(`❌ Error loading sound file: ${soundFile}`);
                         soundIndex++;
                         tryNextSound();
                     };
 
                     audio.load();
                 } catch (error) {
-                    console.error('❌ Error creating audio:', error);
+                    // console.error('❌ Error creating audio:', error);
                     soundIndex++;
                     tryNextSound();
                 }
@@ -850,12 +703,12 @@ class EnhancedNotificationSystem {
 
             tryNextSound();
         } catch (error) {
-            console.error('❌ Fallback sound error:', error);
+            // console.error('❌ Fallback sound error:', error);
         }
     }
 
     showToastNotification(notification) {
-        console.log('📋 Creating toast notification for:', notification);
+        // console.log('📋 Creating toast notification for:', notification);
 
         // Detect screen size for responsive positioning
         const isMobile = window.innerWidth <= 768;
@@ -975,29 +828,29 @@ class EnhancedNotificationSystem {
         // Store timeout reference for potential cleanup
         toast._removeTimeout = removeTimeout;
 
-        console.log('📋 Toast notification displayed');
+        // console.log('📋 Toast notification displayed');
     }
 
     preloadNotificationSound() {
-        console.log('🔊 Preloading notification sound');
+        // console.log('🔊 Preloading notification sound');
 
         try {
             // Only try the available sound file to avoid 404 errors
             const soundFile = '/sounds/notification.mp3';
-            console.log(`🔊 Trying to preload sound: ${soundFile}`);
+            // console.log(`🔊 Trying to preload sound: ${soundFile}`);
 
             window.notificationSound = new Audio(soundFile);
             window.notificationSound.volume = 0.3;
 
             // Set up success handler
             window.notificationSound.addEventListener('canplaythrough', () => {
-                console.log(`✅ Successfully preloaded sound: ${soundFile}`);
+                // console.log(`✅ Successfully preloaded sound: ${soundFile}`);
             });
 
             // Set up error handler
             window.notificationSound.addEventListener('error', (e) => {
-                console.warn(`⚠️ Failed to preload sound: ${soundFile}`, e);
-                console.log('💡 Notification will work without sound');
+                // console.warn(`⚠️ Failed to preload sound: ${soundFile}`, e);
+                // console.log('💡 Notification will work without sound');
                 // Don't set to null, let fallback handle it
                 delete window.notificationSound;
             });
@@ -1005,8 +858,8 @@ class EnhancedNotificationSystem {
             // Try to load the sound
             window.notificationSound.load();
         } catch (error) {
-            console.error('❌ Failed to preload notification sound:', error);
-            console.log('💡 Notification will work without sound');
+            // console.error('❌ Failed to preload notification sound:', error);
+            // console.log('💡 Notification will work without sound');
             window.notificationSound = null;
         }
     }
@@ -1072,10 +925,10 @@ class EnhancedNotificationSystem {
 
     // Handle offline notification sync
     async syncOfflineNotifications() {
-        console.log('🔄 Syncing offline notifications');
+        // console.log('🔄 Syncing offline notifications');
 
         if (!window.offlineNotificationManager) {
-            console.warn('⚠️ Offline notification manager not available');
+            // console.warn('⚠️ Offline notification manager not available');
             return;
         }
 
@@ -1083,7 +936,7 @@ class EnhancedNotificationSystem {
             const storedNotifications = await window.offlineNotificationManager.getStoredNotifications();
             const unsyncedNotifications = storedNotifications.filter(n => !n.synced);
 
-            console.log(`📋 Found ${unsyncedNotifications.length} unsynced notifications`);
+            // console.log(`📋 Found ${unsyncedNotifications.length} unsynced notifications`);
 
             for (const notification of unsyncedNotifications) {
                 // Process each stored notification
@@ -1100,7 +953,7 @@ class EnhancedNotificationSystem {
             }
 
         } catch (error) {
-            console.error('❌ Failed to sync offline notifications:', error);
+            // console.error('❌ Failed to sync offline notifications:', error);
         }
     }
 
@@ -1120,7 +973,7 @@ class EnhancedNotificationSystem {
                 return true;
             }
         } catch (error) {
-            console.error('❌ Failed to mark notification as read:', error);
+            // console.error('❌ Failed to mark notification as read:', error);
         }
         return false;
     }
@@ -1141,7 +994,7 @@ class EnhancedNotificationSystem {
                 return true;
             }
         } catch (error) {
-            console.error('❌ Failed to mark all notifications as read:', error);
+            // console.error('❌ Failed to mark all notifications as read:', error);
         }
         return false;
     }
@@ -1151,13 +1004,13 @@ class EnhancedNotificationSystem {
 // Initialize only once when DOM is ready
 if (!window.enhancedNotificationSystem) {
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Initializing enhanced notification system on DOMContentLoaded');
+        // console.log('🚀 Initializing enhanced notification system on DOMContentLoaded');
         window.enhancedNotificationSystem = new EnhancedNotificationSystem();
     });
 
     // Also initialize if DOM is already loaded
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        console.log('🚀 Initializing enhanced notification system (DOM already ready)');
+        // console.log('🚀 Initializing enhanced notification system (DOM already ready)');
         window.enhancedNotificationSystem = new EnhancedNotificationSystem();
     }
 }

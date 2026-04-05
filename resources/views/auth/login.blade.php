@@ -68,6 +68,26 @@
 @endpush
 
 @section('content')
+<!-- PWA Meta Tags - Dynamic based on portal -->
+<script>
+(function() {
+    var path = window.location.pathname;
+    var manifestHref = path.includes('/doctor') ? '/doctor-manifest.webmanifest' : '/patient-manifest.webmanifest';
+    var themeColor = path.includes('/doctor') ? '#0EA5E9' : '#10B981';
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestHref;
+    document.head.appendChild(link);
+    var meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = themeColor;
+    document.head.appendChild(meta);
+    // Detect standalone mode
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        document.documentElement.classList.add('is-installed-pwa');
+    }
+})();
+</script>
 <div class="auth-page">
     <div class="container-fluid">
         <div class="row min-vh-100">
@@ -153,7 +173,7 @@
                                     required
                                     placeholder="Enter your password"
                                 >
-                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                <button type="button" class="password-toggle" onclick="togglePassword('password')" aria-label="Toggle password visibility">
                                     <i class="bi bi-eye" id="password-eye"></i>
                                 </button>
                             </div>
@@ -320,7 +340,7 @@
 
 .auth-input {
     border: 2px solid #e9ecef;
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 0.75rem 1rem;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -328,8 +348,8 @@
 }
 
 .auth-input:focus {
-    border-color: #DE6262;
-    box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.25);
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     background: white;
 }
 
