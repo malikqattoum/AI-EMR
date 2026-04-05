@@ -1120,6 +1120,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 });
 
+// Offline fallback route for PWA
+Route::middleware(['web'])->get('/offline', function () {
+    return view('offline');
+})->name('offline');
+
 // Admin routes
 Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
