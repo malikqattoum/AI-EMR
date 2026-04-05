@@ -96,7 +96,7 @@ class VoiceTranscriptionCompletedNotification extends Notification implements Sh
      */
     public function toWhatsApp(object $notifiable): string
     {
-        return "🎙️ Voice transcription completed. Session ID: {$this->transcription->session_id}. View details: " . route('ai.voice-assistant.show', $this->transcription->id);
+        return "🎙️ Voice transcription completed. Session ID: {$this->transcription->session_id}. View details: " . route('ai.ambient-listening.show', $this->transcription->id);
     }
 
     /**

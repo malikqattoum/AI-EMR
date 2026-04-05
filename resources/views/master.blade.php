@@ -2597,7 +2597,7 @@ function showAjaxError(message) {
                 {
                     title: 'Voice Assistant',
                     icon: 'fas fa-microphone',
-                    url: '{{ route("ai.voice-assistant.index") }}',
+                    url: '{{ route("ai.ambient-listening.index") }}',
                     submenu: null
                 },
                 {

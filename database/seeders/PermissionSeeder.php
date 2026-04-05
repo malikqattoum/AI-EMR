@@ -172,7 +172,7 @@ class PermissionSeeder extends Seeder
                 'name' => 'voice_assistant',
                 'display_name' => 'Voice Assistant',
                 'description' => 'Access to voice-powered assistant',
-                'route_pattern' => 'ai.voice-assistant.*',
+                'route_pattern' => 'ai.ambient-listening.*',
                 'category' => 'restricted',
                 'is_restricted' => true,
                 'sort_order' => 102,
