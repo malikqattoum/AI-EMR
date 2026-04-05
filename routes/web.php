@@ -13,6 +13,8 @@ use App\Http\Controllers\UserSettingsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
 use App\Http\Controllers\Doctor\AvailabilityController;
+use App\Http\Controllers\Doctor\MessagesController as DoctorMessagesController;
+use App\Http\Controllers\Patient\MessagesController as PatientMessagesController;
 use App\Http\Controllers\Auth\PatientRegistrationController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\SubscriptionController;
@@ -41,9 +43,9 @@ use Illuminate\Support\Str;
 // Broadcasting authentication route - simplified
 Broadcast::routes(['middleware' => ['web']]);
 
-// Debug authentication routes (temporary)
+// Debug authentication routes (temporary) - restricted to localhost only
 if (config('app.debug')) {
-    Route::middleware(['web'])->group(function () {
+    Route::middleware(['web', 'localhost'])->group(function () {
         Route::get('/debug-broadcasting-auth', function (\Illuminate\Http\Request $request) {
             $user = Auth::user();
 
@@ -369,6 +371,15 @@ Route::middleware(['auth', 'sub.user.permissions'])->group(function () {
     // Prescription routes
     Route::get('/prescriptions/{prescription}', [PrescriptionController::class, 'show'])->name('prescriptions.show');
     Route::delete('/prescriptions/{prescription}', [PrescriptionController::class, 'destroy'])->name('prescriptions.destroy');
+
+    // Patient Messages routes
+    Route::middleware('role:patient')->prefix('patient')->name('patient.')->group(function () {
+        Route::get('/messages', [PatientMessagesController::class, 'index'])->name('messages.index');
+        Route::get('/messages/{thread}', [PatientMessagesController::class, 'show'])->name('messages.show');
+        Route::post('/messages', [PatientMessagesController::class, 'store'])->name('messages.store');
+        Route::post('/messages/{thread}/reply', [PatientMessagesController::class, 'reply'])->name('messages.reply');
+        Route::get('/messages/attachment/{attachment}', [PatientMessagesController::class, 'attachment'])->name('messages.attachment');
+    });
 
     // Notification routes
     Route::prefix('notifications')->name('notifications.')->group(function () {
@@ -922,6 +933,17 @@ Route::middleware(['auth', 'admin.impersonation', 'doctor', 'sub.user.permission
         Route::post('/deactivate', [App\Http\Controllers\Doctor\KioskController::class, 'deactivate'])->name('deactivate');
         Route::post('/regenerate-token', [App\Http\Controllers\Doctor\KioskController::class, 'regenerateToken'])->name('regenerate-token');
     });
+
+    // Doctor Messages routes
+    Route::prefix('messages')->name('messages.')->group(function () {
+        Route::get('/', [DoctorMessagesController::class, 'index'])->name('index');
+        Route::get('/{thread}', [DoctorMessagesController::class, 'show'])->name('show');
+        Route::post('/{thread}/reply', [DoctorMessagesController::class, 'reply'])->name('reply');
+        Route::post('/{thread}/suggestion/generate', [DoctorMessagesController::class, 'generateSuggestion'])->name('generate-suggestion');
+        Route::post('/{thread}/suggestion/{suggestion}/approve', [DoctorMessagesController::class, 'approveSuggestion'])->name('approve-suggestion');
+        Route::post('/{thread}/suggestion/{suggestion}/reject', [DoctorMessagesController::class, 'rejectSuggestion'])->name('reject-suggestion');
+        Route::get('/attachment/{attachment}', [DoctorMessagesController::class, 'attachment'])->name('attachment');
+    });
 });
 
 // Hospital Admin routes
@@ -1098,6 +1120,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 });
 
+// Offline fallback route for PWA
+Route::middleware(['web'])->get('/offline', function () {
+    return view('offline');
+})->name('offline');
+
 // Admin routes
 Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -1141,6 +1168,15 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::post('/sms-settings/assign-countries', [AdminController::class, 'assignCountriesToProvider'])->name('sms-settings.assign-countries');
     Route::post('/sms-settings/remove-assignments', [AdminController::class, 'removeProviderCountryAssignments'])->name('sms-settings.remove-assignments');
     Route::post('/sms-settings/test', [AdminController::class, 'sendTestSms'])->name('sms-settings.test');
+
+    // WhatsApp Configuration routes
+    Route::get('/whatsapp-settings', [AdminController::class, 'whatsappSettings'])->name('whatsapp-settings');
+    Route::post('/whatsapp-settings/update', [AdminController::class, 'updateWhatsAppSettings'])->name('whatsapp-settings.update');
+    Route::post('/whatsapp-settings/test', [AdminController::class, 'sendTestWhatsApp'])->name('whatsapp-settings.test');
+
+    // WhatsApp Webhook routes (no CSRF, no auth)
+    Route::get('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'verify'])->name('webhooks.whatsapp.verify');
+    Route::post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'webhook'])->name('webhooks.whatsapp');
 
     // Invoice management for admin
     Route::get('/invoices', [AdminInvoiceController::class, 'index'])->name('invoices.index');
@@ -1316,6 +1352,15 @@ Route::middleware('auth')->group(function () {
 
     // Return to admin from user impersonation - requires web auth (impersonated user)
     Route::post('/return-to-admin', [AdminController::class, 'returnToAdmin'])->name('return-to-admin');
+
+    // SMS Configuration routes for doctors and hospital admins
+    Route::prefix('sms-config')->name('sms.config.')->group(function () {
+        Route::get('/', [App\Http\Controllers\UserSmsConfigurationController::class, 'index'])->name('index');
+        Route::post('/store', [App\Http\Controllers\UserSmsConfigurationController::class, 'store'])->name('store');
+        Route::post('/hospital/store', [App\Http\Controllers\UserSmsConfigurationController::class, 'storeHospital'])->name('store.hospital');
+        Route::post('/test', [App\Http\Controllers\UserSmsConfigurationController::class, 'testSms'])->name('test');
+        Route::delete('/{id}', [App\Http\Controllers\UserSmsConfigurationController::class, 'destroy'])->name('destroy');
+    });
 });
 
 // Debug route to test if routes are working - COMMENTED OUT FOR PRODUCTION
@@ -1355,6 +1400,7 @@ Route::get('/test-dropdown-fix', function () {
 })->name('test.dropdown.fix');
 
 require __DIR__.'/auth.php';
+require __DIR__.'/whatsapp-test.php';
 
 // Broadcasting test route
 Route::get('/test-broadcasting', function () {
@@ -1510,6 +1556,20 @@ Route::middleware(['auth', 'role:patient'])->prefix('patient/waitlist')->name('p
     Route::get('/offer/{entry}', [App\Http\Controllers\Patient\WaitlistController::class, 'viewOffer'])->name('offer');
     Route::get('/preferences', [App\Http\Controllers\Patient\WaitlistController::class, 'preferences'])->name('preferences');
     Route::put('/preferences', [App\Http\Controllers\Patient\WaitlistController::class, 'updatePreferences'])->name('preferences.update');
+});
+
+// Patient Health Tracking Routes
+Route::middleware(['auth', 'role:patient'])->prefix('patient/health')->name('patient.health.')->group(function () {
+    Route::get('/', [App\Http\Controllers\Patient\HealthTrackingController::class, 'dashboard'])->name('dashboard');
+    Route::get('/journal', [App\Http\Controllers\Patient\HealthTrackingController::class, 'journalEntry'])->name('journal');
+    Route::post('/journal', [App\Http\Controllers\Patient\HealthTrackingController::class, 'storeJournal'])->name('journal.store');
+    Route::get('/medications', [App\Http\Controllers\Patient\HealthTrackingController::class, 'medications'])->name('medications');
+    Route::post('/medications', [App\Http\Controllers\Patient\HealthTrackingController::class, 'addMedication'])->name('medications.add');
+    Route::post('/medications/{log}/take', [App\Http\Controllers\Patient\HealthTrackingController::class, 'takeMedication'])->name('medications.take');
+    Route::post('/medications/{log}/skip', [App\Http\Controllers\Patient\HealthTrackingController::class, 'skipMedication'])->name('medications.skip');
+    Route::get('/history', [App\Http\Controllers\Patient\HealthTrackingController::class, 'history'])->name('history');
+    Route::get('/insights', [App\Http\Controllers\Patient\HealthInsightsController::class, 'index'])->name('insights');
+    Route::post('/insights/generate', [App\Http\Controllers\Patient\HealthInsightsController::class, 'generate'])->name('insights.generate');
 });
 
 Route::middleware(['auth', 'role:doctor'])->prefix('doctor/waitlist')->name('doctor.waitlist.')->group(function () {
