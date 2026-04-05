@@ -1,242 +1,331 @@
 @extends('master')
 
-@section('title', 'Set New Password - MedCura Clinical Platform')
+@section('title', 'Set New Password - MedSuite')
 
-@section('content')
-<div class="auth-wrapper hero-section d-flex align-items-center" style="background: linear-gradient(135deg, #fbfdff00 0%, #34495e 100%); min-height: 100vh; padding: 2rem 0; margin-top: 80px;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-6 col-lg-5">
-                <div class="auth-card">
-                    <!-- Header -->
-                    <div class="auth-header text-center mb-4">
-                        <div class="auth-logo mb-3">
-                            <i class="bi bi-key" style="font-size: 3rem; color: #DE6262;"></i>
-                        </div>
-                        <h2 class="auth-title">Set New Password</h2>
-                        <p class="auth-subtitle">Create a new secure password for your account</p>
-                    </div>
-
-                    <!-- Reset Password Form -->
-                    <form method="POST" action="{{ route('password.store') }}" class="auth-form">
-                        @csrf
-
-                        <!-- Password Reset Token -->
-                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
-
-                        <!-- Email Field -->
-                        <div class="form-group mb-3">
-                            <label for="email" class="form-label">
-                                <i class="bi bi-envelope me-2"></i>Email Address
-                            </label>
-                            <input 
-                                id="email" 
-                                type="email" 
-                                name="email" 
-                                class="form-control auth-input @error('email') is-invalid @enderror" 
-                                value="{{ old('email', $request->email) }}" 
-                                required 
-                                autofocus
-                                readonly
-                            >
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Password Field -->
-                        <div class="form-group mb-3">
-                            <label for="password" class="form-label">
-                                <i class="bi bi-lock me-2"></i>New Password
-                            </label>
-                            <div class="password-input-wrapper">
-                                <input 
-                                    id="password" 
-                                    type="password" 
-                                    name="password" 
-                                    class="form-control auth-input @error('password') is-invalid @enderror" 
-                                    required
-                                    placeholder="Enter your new password"
-                                >
-                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
-                                    <i class="bi bi-eye" id="password-eye"></i>
-                                </button>
-                            </div>
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Confirm Password Field -->
-                        <div class="form-group mb-4">
-                            <label for="password_confirmation" class="form-label">
-                                <i class="bi bi-lock-fill me-2"></i>Confirm Password
-                            </label>
-                            <div class="password-input-wrapper">
-                                <input 
-                                    id="password_confirmation" 
-                                    type="password" 
-                                    name="password_confirmation" 
-                                    class="form-control auth-input"
-                                    required
-                                    placeholder="Confirm your new password"
-                                >
-                                <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation')">
-                                    <i class="bi bi-eye" id="password_confirmation-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn auth-btn w-100 mb-3">
-                            <i class="bi bi-check-circle me-2"></i>
-                            Reset Password
-                        </button>
-
-                        <!-- Back to Login -->
-                        <div class="text-center mt-4">
-                            <a href="{{ route('login') }}" class="auth-link">
-                                <i class="bi bi-arrow-left me-1"></i> Back to Login
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
 <style>
-.auth-wrapper {
-    position: relative;
-    overflow: hidden;
-}
-
-.auth-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
-    opacity: 0.3;
-}
-
-.auth-card {
-    background: rgba(255, 255, 255, 0.95);
+/* Reset Password Page Specific Styles */
+.reset-password-card {
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 3rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    position: relative;
-    z-index: 1;
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-xl);
+    padding: var(--space-10);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    width: 100%;
+    max-width: 440px;
+    animation: fadeInUp 0.5s ease-out 100ms forwards;
+    opacity: 0;
 }
 
-.auth-title {
-    color: #2c3e50;
-    font-weight: 700;
+.reset-password-logo {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--color-teal-primary) 0%, var(--color-teal-primary-light) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-4);
+    box-shadow: var(--shadow-teal);
+}
+
+.reset-password-logo i {
     font-size: 2rem;
-    margin-bottom: 0.5rem;
+    color: white;
 }
 
-.auth-subtitle {
-    color: #6c757d;
-    font-size: 1rem;
-    margin-bottom: 0;
+.reset-password-title {
+    color: var(--color-gray-800);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-2);
 }
 
+.reset-password-subtitle {
+    color: var(--color-gray-500);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-6);
+}
+
+/* Form Elements with Teal Focus */
 .form-label {
-    color: #2c3e50;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    color: var(--color-gray-700);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-2);
+    display: block;
 }
 
-.auth-input {
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+.reset-password-input {
+    border: 2px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
     background: rgba(255, 255, 255, 0.8);
+    width: 100%;
 }
 
-.auth-input:focus {
-    border-color: #DE6262;
-    box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.25);
+.reset-password-input:focus {
+    border-color: var(--color-teal-primary);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
     background: white;
+    outline: none;
 }
 
-.password-input-wrapper {
+.reset-password-input::placeholder {
+    color: var(--color-gray-400);
+}
+
+.reset-password-input:read-only {
+    background-color: var(--color-gray-100);
+    cursor: not-allowed;
+}
+
+/* Password Input Wrapper */
+.password-wrapper {
     position: relative;
 }
 
 .password-toggle {
     position: absolute;
-    right: 12px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #6c757d;
+    color: var(--color-gray-400);
     cursor: pointer;
-    padding: 0;
-    font-size: 1.1rem;
+    padding: 4px;
+    font-size: 1.2rem;
+    transition: color var(--transition-fast);
 }
 
 .password-toggle:hover {
-    color: #DE6262;
+    color: var(--color-teal-primary);
 }
 
-.auth-btn {
-    background: linear-gradient(135deg, #DE6262 0%, #FFB88C 100%);
+/* Primary Button - MedSuite Teal */
+.btn-reset-password {
+    background: linear-gradient(135deg, var(--color-teal-primary) 0%, var(--color-teal-primary-light) 100%);
     border: none;
-    border-radius: 12px;
-    padding: 0.875rem 1.5rem;
-    font-weight: 600;
-    font-size: 1rem;
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-6);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-base);
     color: white;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(222, 98, 98, 0.3);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-teal);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
 }
 
-.auth-btn:hover {
+.btn-reset-password:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(222, 98, 98, 0.4);
-    background: linear-gradient(135deg, #c44d4d 0%, #e6a373 100%);
+    box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.4);
+    background: linear-gradient(135deg, var(--color-teal-primary-dark) 0%, var(--color-teal-primary) 100%);
+    color: white;
 }
 
-.auth-link {
-    color: #DE6262;
+.btn-reset-password:active {
+    transform: translateY(0);
+}
+
+/* Links */
+.reset-password-link {
+    color: var(--color-teal-primary);
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-fast);
 }
 
-.auth-link:hover {
-    color: #c44d4d;
+.reset-password-link:hover {
+    color: var(--color-teal-primary-dark);
     text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-    .auth-card {
-        padding: 2rem;
-        margin: 1rem;
+/* Error States */
+.is-invalid {
+    border-color: var(--color-error) !important;
+}
+
+.invalid-feedback {
+    color: var(--color-error);
+    font-size: var(--font-size-sm);
+    margin-top: var(--space-2);
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+    .reset-password-card {
+        padding: var(--space-8);
+        max-width: 100%;
     }
-    
-    .auth-title {
-        font-size: 1.75rem;
+}
+
+@media (max-width: 639px) {
+    .reset-password-card {
+        padding: var(--space-6);
+        border-radius: var(--radius-lg);
+    }
+
+    .reset-password-logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .reset-password-logo i {
+        font-size: 1.5rem;
+    }
+
+    .reset-password-title {
+        font-size: var(--font-size-xl);
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 </style>
+@endpush
+
+@section('content')
+<!-- PWA Meta Tags -->
+<script>
+(function() {
+    var path = window.location.pathname;
+    var manifestHref = path.includes('/doctor') ? '/doctor-manifest.webmanifest' : '/patient-manifest.webmanifest';
+    var themeColor = path.includes('/doctor') ? '#0d9488' : '#166534';
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestHref;
+    document.head.appendChild(link);
+    var meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = themeColor;
+    document.head.appendChild(meta);
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        document.documentElement.classList.add('is-installed-pwa');
+    }
+})();
+</script>
+
+<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh; padding: var(--space-6);">
+    <div class="reset-password-card">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <div class="reset-password-logo">
+                <i class="bi bi-shield-lock"></i>
+            </div>
+            <h2 class="reset-password-title">Set New Password</h2>
+            <p class="reset-password-subtitle">Create a new secure password for your account</p>
+        </div>
+
+        <!-- Reset Password Form -->
+        <form method="POST" action="{{ route('password.store') }}" class="reset-password-form">
+            @csrf
+
+            <!-- Password Reset Token -->
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+            <!-- Email Field -->
+            <div class="mb-4">
+                <label for="email" class="form-label">
+                    <i class="bi bi-envelope me-2"></i>Email Address
+                </label>
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    class="reset-password-input @error('email') is-invalid @enderror"
+                    value="{{ old('email', $request->email) }}"
+                    required
+                    autofocus
+                    readonly
+                >
+                @error('email')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-4">
+                <label for="password" class="form-label">
+                    <i class="bi bi-lock me-2"></i>New Password
+                </label>
+                <div class="password-wrapper">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        class="reset-password-input @error('password') is-invalid @enderror"
+                        required
+                        placeholder="Enter your new password"
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')" aria-label="Toggle password visibility">
+                        <i class="bi bi-eye" id="password-eye"></i>
+                    </button>
+                </div>
+                @error('password')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="mb-4">
+                <label for="password_confirmation" class="form-label">
+                    <i class="bi bi-lock-fill me-2"></i>Confirm Password
+                </label>
+                <div class="password-wrapper">
+                    <input
+                        id="password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        class="reset-password-input"
+                        required
+                        placeholder="Confirm your new password"
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation')" aria-label="Toggle password visibility">
+                        <i class="bi bi-eye" id="password_confirmation-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-reset-password mb-4">
+                <i class="bi bi-check-circle"></i>
+                Reset Password
+            </button>
+
+            <!-- Back to Login -->
+            <div class="text-center">
+                <a href="{{ route('login') }}" class="reset-password-link">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Login
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);
     const eye = document.getElementById(inputId + '-eye');
-    
+
     if (input.type === 'password') {
         input.type = 'text';
         eye.className = 'bi bi-eye-slash';
