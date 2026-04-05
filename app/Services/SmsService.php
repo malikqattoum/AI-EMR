@@ -348,12 +348,13 @@ class SmsService
      * Send test SMS
      *
      * @param string $to
+     * @param User|null $user Optional user to use their specific SMS configuration
      * @return array
      */
-    public function sendTestSms(string $to): array
+    public function sendTestSms(string $to, ?User $user = null): array
     {
         $message = "Test SMS from MedcuraAI. Provider: {$this->getProviderName()}. Time: " . now()->format('Y-m-d H:i:s');
-        return $this->send($to, $message);
+        return $this->send($to, $message, $user);
     }
 
     /**
@@ -394,65 +395,76 @@ class SmsService
      */
     protected function isValidProvider(string $provider): bool
     {
-        return in_array($provider, ['twilio', 'plivo', 'messagebird', 'unifonic', 'smsgatewayhub', 'log']);
+        $availableProviders = array_keys(config('sms.available_providers', []));
+        return in_array($provider, $availableProviders);
     }
 
     /**
      * Create provider instance
      *
      * @param string $provider
+     * @param array|null $customConfig Custom configuration to override default provider settings
      * @return SmsProviderInterface|null
      */
-    protected function createProviderInstance(string $provider): ?SmsProviderInterface
+    protected function createProviderInstance(string $provider, ?array $customConfig = null): ?SmsProviderInterface
     {
         try {
+            // Create provider based on type but with potential custom config
             switch ($provider) {
                 case 'twilio':
-                    return new TwilioProvider();
+                    return new TwilioProvider($customConfig);
                 case 'plivo':
-                    return new PlivoProvider();
+                    return new PlivoProvider($customConfig);
                 case 'messagebird':
-                    return new MessageBirdProvider();
+                    return new MessageBirdProvider($customConfig);
                 case 'unifonic':
-                    return new UnifonicProvider();
+                    return new UnifonicProvider($customConfig);
                 case 'smsgatewayhub':
-                    return new SmsGatewayHubProvider();
+                    return new SmsGatewayHubProvider($customConfig);
+                case 'msegat':
+                    return new \App\Services\SmsProviders\MsegatProvider($customConfig);
+                case 'taqnyat':
+                    return new \App\Services\SmsProviders\TaqnyatProvider($customConfig);
+                case 'smsala':
+                    return new \App\Services\SmsProviders\SMSALAProvider($customConfig);
+                case 'connectsaudi':
+                    return new \App\Services\SmsProviders\ConnectSaudiProvider($customConfig);
                 case 'log':
-                return new class implements SmsProviderInterface {
-                    public function send(string $to, string $message): array
-                    {
-                        Log::info('SMS would be sent', [
-                            'to' => $to,
-                            'message' => $message,
-                            'provider' => 'log'
-                        ]);
-                        return [
-                            'success' => true,
-                            'message' => 'SMS logged successfully',
-                            'data' => ['logged_at' => now()->toISOString()]
-                        ];
-                    }
+                    return new class implements SmsProviderInterface {
+                        public function send(string $to, string $message): array
+                        {
+                            Log::info('SMS would be sent', [
+                                'to' => $to,
+                                'message' => $message,
+                                'provider' => 'log'
+                            ]);
+                            return [
+                                'success' => true,
+                                'message' => 'SMS logged successfully',
+                                'data' => ['logged_at' => now()->toISOString()]
+                            ];
+                        }
 
-                    public function getName(): string
-                    {
-                        return 'Log Only';
-                    }
+                        public function getName(): string
+                        {
+                            return 'Log Only';
+                        }
 
-                    public function isConfigured(): bool
-                    {
-                        return true;
-                    }
+                        public function isConfigured(): bool
+                        {
+                            return true;
+                        }
 
-                    public function getConfigRequirements(): array
-                    {
-                        return [];
-                    }
+                        public function getConfigRequirements(): array
+                        {
+                            return [];
+                        }
 
-                    public function getKey(): string
-                    {
-                        return 'log';
-                    }
-                };
+                        public function getKey(): string
+                        {
+                            return 'log';
+                        }
+                    };
                 default:
                     return null;
             }
@@ -501,7 +513,7 @@ class SmsService
                 $providers[$key] = [
                     'name' => $name,
                     'configured' => $instance ? $instance->isConfigured() : false,
-                    'requirements' => $instance && method_exists($instance, 'getRequiredConfig') ? $instance->getRequiredConfig() : [],
+                    'requirements' => $instance && method_exists($instance, 'getConfigRequirements') ? $instance->getConfigRequirements() : [],
                     'active' => $key === $this->provider
                 ];
             } catch (\Exception $e) {
@@ -517,6 +529,30 @@ class SmsService
         }
 
         return $providers;
+    }
+
+    /**
+     * Get configuration requirements for all providers
+     *
+     * @return array
+     */
+    public function getProviderRequirements(): array
+    {
+        $requirements = [];
+        $availableProviders = config('sms.available_providers', []);
+
+        foreach ($availableProviders as $key => $name) {
+            try {
+                $instance = $this->createProviderInstance($key);
+                $requirements[$key] = $instance && method_exists($instance, 'getConfigRequirements')
+                    ? $instance->getConfigRequirements()
+                    : [];
+            } catch (\Exception $e) {
+                $requirements[$key] = [];
+            }
+        }
+
+        return $requirements;
     }
 
     /**
