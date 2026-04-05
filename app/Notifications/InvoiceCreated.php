@@ -92,9 +92,21 @@ class InvoiceCreated extends Notification implements ShouldQueue
         $type = $this->invoice->isMonthlyInvoice() ? 'Monthly' : 'New';
         $amount = $this->invoice->getFormattedAmountDue();
         $dueDate = $this->invoice->due_date->format('M d');
-        
+
         return TwilioSmsMessage::create()
             ->content("{$type} invoice created: {$amount} due {$dueDate}. View & pay: " . route('invoices.show', $this->invoice));
+    }
+
+    /**
+     * Get the WhatsApp representation of the notification.
+     */
+    public function toWhatsApp(object $notifiable): string
+    {
+        $type = $this->invoice->isMonthlyInvoice() ? 'Monthly' : 'New';
+        $amount = $this->invoice->getFormattedAmountDue();
+        $dueDate = $this->invoice->due_date->format('M d');
+
+        return "💰 {$type} invoice created: {$amount} due {$dueDate}. Pay now: " . route('invoices.show', $this->invoice);
     }
 
     /**
