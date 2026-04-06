@@ -23,11 +23,11 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #0a1628 0%, #00d4aa 100%);
     }
     
     .settings-card:hover {
-        box-shadow: 0 12px 30px rgba(222, 98, 98, 0.15);
+        box-shadow: 0 12px 30px rgba(0, 212, 170, 0.15);
         transform: translateY(-2px);
     }
 
@@ -91,11 +91,11 @@
     }
 
     input:checked + .slider {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #0a1628 0%, #00d4aa 100%);
     }
 
     input:focus + .slider {
-        box-shadow: 0 0 1px #DE6262;
+        box-shadow: 0 0 1px #00d4aa;
     }
 
     input:checked + .slider:before {
@@ -103,7 +103,7 @@
     }
 
     .btn-custom-primary {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #0a1628 0%, #00d4aa 100%);
         border: none;
         color: white;
         font-weight: 600;
@@ -113,12 +113,12 @@
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        box-shadow: 0 4px 15px rgba(222, 98, 98, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
     }
-    
+
     .btn-custom-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(222, 98, 98, 0.4);
+        box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
         color: white;
         text-decoration: none;
     }
@@ -155,7 +155,7 @@
                 
                 <div class="setting-item">
                     <div class="setting-label">
-                        <i class="fas fa-credit-card me-2" style="color: #DE6262;"></i>
+                        <i class="fas fa-credit-card me-2" style="color: #00d4aa;"></i>
                         Pricing Section Visibility
                     </div>
                     <div class="setting-description">
@@ -177,7 +177,7 @@
 
                 <div class="setting-item">
                     <div class="setting-label">
-                        <i class="fas fa-calculator me-2" style="color: #DE6262;"></i>
+                        <i class="fas fa-calculator me-2" style="color: #00d4aa;"></i>
                         Default Monthly Pricing
                         <span class="badge bg-warning ms-2">Deprecated</span>
                     </div>
@@ -204,7 +204,7 @@
 
                 <div class="setting-item">
                     <div class="setting-label">
-                        <i class="fas fa-calendar-alt me-2" style="color: #DE6262;"></i>
+                        <i class="fas fa-calendar-alt me-2" style="color: #00d4aa;"></i>
                         Default Grace Period
                     </div>
                     <div class="setting-description">
@@ -229,7 +229,7 @@
                 <!-- Trial Days Setting -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <i class="fas fa-calendar-check me-2" style="color: #DE6262;"></i>
+                        <i class="fas fa-calendar-check me-2" style="color: #00d4aa;"></i>
                         Trial Period (set 0 to disable)
                     </div>
                     <div class="setting-description">
@@ -254,7 +254,7 @@
                 <!-- SaaS Pricing Settings -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <i class="fas fa-tags me-2" style="color: #DE6262;"></i>
+                        <i class="fas fa-tags me-2" style="color: #00d4aa;"></i>
                         SaaS Professional Plan Pricing
                     </div>
                     <div class="setting-description">

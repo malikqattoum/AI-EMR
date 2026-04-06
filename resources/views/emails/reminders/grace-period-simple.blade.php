@@ -13,7 +13,7 @@
             padding: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #DE6262 0%, #c55252 100%);
+            background: linear-gradient(135deg, #00d4aa 0%, #c55252 100%);
             color: white;
             padding: 20px;
             text-align: center;
@@ -29,11 +29,11 @@
             padding: 15px;
             background: white;
             border-radius: 5px;
-            border-left: 4px solid #DE6262;
+            border-left: 4px solid #00d4aa;
         }
         .field-label {
             font-weight: bold;
-            color: #DE6262;
+            color: #00d4aa;
             margin-bottom: 5px;
         }
         .field-value {
@@ -50,7 +50,7 @@
         }
         .button {
             display: inline-block;
-            background: #DE6262;
+            background: #00d4aa;
             color: white;
             padding: 12px 30px;
             text-decoration: none;

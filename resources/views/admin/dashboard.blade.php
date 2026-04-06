@@ -11,11 +11,11 @@
     }
 
     .action-card {
-        background: white;
+        background: rgba(10,22,40,0.9);
+        border: 1px solid rgba(0,212,170,0.12);
         border-radius: 15px;
         padding: 1.5rem;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        border: none;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s ease;
     }
 
@@ -40,12 +40,12 @@
     .user-avatar {
         width: 40px;
         height: 40px;
-        background: #DE6262;
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: #060d1f;
         font-weight: 600;
     }
 </style>

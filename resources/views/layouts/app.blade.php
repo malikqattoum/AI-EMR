@@ -116,13 +116,13 @@
         .nav-link:hover {
             color: white;
             background: rgba(255,255,255,0.1);
-            border-left-color: #DE6262;
+            border-left-color: #00d4aa;
         }
 
         .nav-link.active {
             color: white;
-            background: rgba(222,98,98,0.2);
-            border-left-color: #DE6262;
+            background: rgba(0,212,170,0.15);
+            border-left-color: #00d4aa;
         }
 
         .nav-link i {
@@ -188,8 +188,8 @@
 
         /* Hospital Admin specific styles */
         .hospital-badge {
-            background: rgba(222,98,98,0.2);
-            color: #DE6262;
+            background: rgba(0,212,170,0.15);
+            color: #00d4aa;
             padding: 0.25rem 0.5rem;
             border-radius: 0.375rem;
             font-size: 0.75rem;
@@ -272,7 +272,7 @@
             align-items: center;
             gap: 8px;
             font-size: 14px;
-            color: #DE6262;
+            color: #00d4aa;
             font-weight: 500;
         }
 
@@ -283,8 +283,8 @@
         .ajax-loading-overlay .loading-spinner {
             width: 16px;
             height: 16px;
-            border: 2px solid rgba(222,98,98, 0.3);
-            border-top: 2px solid #DE6262;
+            border: 2px solid rgba(0,212,170, 0.3);
+            border-top: 2px solid #00d4aa;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -435,7 +435,7 @@
                                     }
                                 }
                             @endphp
-                            <div class="nav-section" style="{{ $item['header_style'] ?? 'font-weight: 600; color: #ffffff; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 4px solid #DE6262; padding: 12px 16px; margin: 12px 0 4px 0; border-radius: 8px; box-shadow: 0 3px 6px rgba(0,0,0,0.15); text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.75rem;' }}">{{ $item['name'] }}</div>
+                            <div class="nav-section" style="{{ $item['header_style'] ?? 'font-weight: 600; color: #e8edf5; background: rgba(0, 212, 170, 0.08); border: 1px solid rgba(0, 212, 170, 0.1); border-left: 4px solid #00d4aa; padding: 12px 16px; margin: 12px 0 4px 0; border-radius: 8px; box-shadow: 0 3px 6px rgba(0,0,0,0.15); text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.75rem;' }}">{{ $item['name'] }}</div>
                             @foreach($item['items'] as $subItem)
                                 <div class="nav-item">
                                     <a href="{{ route($subItem['route']) }}" class="nav-link {{ request()->routeIs($subItem['route']) ? 'active' : '' }}" data-ajax="true">

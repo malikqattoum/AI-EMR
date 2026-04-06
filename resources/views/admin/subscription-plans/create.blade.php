@@ -28,13 +28,13 @@
     }
 
     .form-control:focus {
-        border-color: #DE6262;
-        box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.25);
+        border-color: #00d4aa;
+        box-shadow: 0 0 0 0.2rem rgba(0, 212, 170, 0.25);
     }
 
     .form-check-input:checked {
-        background-color: #DE6262;
-        border-color: #DE6262;
+        background-color: #00d4aa;
+        border-color: #00d4aa;
     }
 
     .feature-input {

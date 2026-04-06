@@ -28,7 +28,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
     
     .stats-card {
@@ -50,7 +50,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
 
     .plan-badge {
@@ -73,7 +73,7 @@
         color: white; 
     }
     .plan-pro { 
-        background: linear-gradient(135deg, #DE6262 0%, #c44d4d 100%); 
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%); 
         color: white; 
     }
 
@@ -120,19 +120,19 @@
         border-radius: 15px;
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         margin-bottom: 1rem;
-        border: 1px solid rgba(222, 98, 98, 0.1);
+        border: 1px solid rgba(0, 212, 170, 0.1);
         transition: all 0.3s ease;
     }
     
     .stat-item:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(222, 98, 98, 0.15);
+        box-shadow: 0 8px 25px rgba(0, 212, 170, 0.15);
     }
 
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -148,7 +148,7 @@
 
     /* Consistent Button Styles */
     .btn-custom-primary {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         border: none;
         color: white;
         font-weight: 600;
@@ -163,15 +163,15 @@
     
     .btn-custom-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(222, 98, 98, 0.4);
+        box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
         color: white;
         text-decoration: none;
     }
     
     .btn-custom-secondary {
         background: white;
-        border: 2px solid #DE6262;
-        color: #DE6262;
+        border: 2px solid #00d4aa;
+        color: #00d4aa;
         font-weight: 600;
         padding: 0.75rem 1.5rem;
         border-radius: 25px;
@@ -183,10 +183,10 @@
     }
     
     .btn-custom-secondary:hover {
-        background: #DE6262;
+        background: #00d4aa;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(222, 98, 98, 0.3);
+        box-shadow: 0 6px 20px rgba(0, 212, 170, 0.3);
         text-decoration: none;
     }
     
@@ -255,7 +255,7 @@
 
     /* Small button variants for table actions */
     .btn-sm-custom-primary {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         border: none;
         color: white;
         font-weight: 600;
@@ -271,15 +271,15 @@
     
     .btn-sm-custom-primary:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(222, 98, 98, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
         color: white;
         text-decoration: none;
     }
     
     .btn-sm-custom-secondary {
         background: white;
-        border: 2px solid #DE6262;
-        color: #DE6262;
+        border: 2px solid #00d4aa;
+        color: #00d4aa;
         font-weight: 600;
         padding: 0.375rem 0.75rem;
         border-radius: 15px;
@@ -292,10 +292,10 @@
     }
     
     .btn-sm-custom-secondary:hover {
-        background: #DE6262;
+        background: #00d4aa;
         color: white;
         transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(222, 98, 98, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
         text-decoration: none;
     }
     
@@ -329,7 +329,7 @@
     }
     
     .table-custom thead th {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         color: white;
         font-weight: 600;
         border: none;
@@ -346,7 +346,7 @@
     }
     
     .table-custom tbody tr:hover {
-        background-color: rgba(222, 98, 98, 0.05);
+        background-color: rgba(0, 212, 170, 0.05);
     }
 
     /* Status Badges */
@@ -397,11 +397,11 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
     
     .page-header h1 {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -417,7 +417,7 @@
     }
     
     .modal-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         color: white;
         border-radius: 20px 20px 0 0;
         border: none;
@@ -462,7 +462,7 @@
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0, 212, 170, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -474,7 +474,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
 }
 
 .dashboard-header h2 {
@@ -674,7 +674,7 @@
                                         
                                         <!-- Billing Toggle -->
                                         <div class="d-inline-flex align-items-center p-2 rounded-pill mt-3" style="background: #f8f9fa; border: 1px solid #e9ecef;">
-                                            <span class="px-3 py-2 billing-period-label" id="monthly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; background: #DE6262; color: white;">Monthly</span>
+                                            <span class="px-3 py-2 billing-period-label" id="monthly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; background: #00d4aa; color: white;">Monthly</span>
                                             <span class="px-3 py-2 billing-period-label" id="yearly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; margin-left: 5px;">Yearly <small class="text-success">(Save up to 17%)</small></span>
                                         </div>
                                     </div>
@@ -1005,7 +1005,7 @@
                         @if($setting && $setting->is_active)
                             <!-- Plan Details -->
                             <div class="col-12 mb-3">
-                                <div class="stats-card" style="border-left: 4px solid #DE6262;">
+                                <div class="stats-card" style="border-left: 4px solid #00d4aa;">
                                     <h6 class="text-muted mb-2">
                                         <i class="fas fa-tag me-1"></i>Your Plan Details
                                     </h6>
@@ -1224,12 +1224,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <div class="stats-card" style="padding: 1rem; border-left: 4px solid #DE6262;">
+                                    <div class="stats-card" style="padding: 1rem; border-left: 4px solid #00d4aa;">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-exclamation-circle text-danger me-2"></i>
                                             <div>
                                                 <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem;">Outstanding</div>
-                                                <div style="font-size: 1.25rem; font-weight: 600; color: #DE6262;">${{ number_format($invoices->whereIn('status', ['open', 'draft'])->sum('amount_due'), 2) }}</div>
+                                                <div style="font-size: 1.25rem; font-weight: 600; color: #00d4aa;">${{ number_format($invoices->whereIn('status', ['open', 'draft'])->sum('amount_due'), 2) }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1308,7 +1308,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="cancellationModalLabel" style="background: #DE6262">Cancel Subscription</h5>
+                <h5 class="modal-title" id="cancellationModalLabel" style="background: #00d4aa">Cancel Subscription</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -1509,10 +1509,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Set active label
         if (period === 'monthly') {
-            monthlyLabel.style.background = '#DE6262';
+            monthlyLabel.style.background = '#00d4aa';
             monthlyLabel.style.color = 'white';
         } else {
-            yearlyLabel.style.background = '#DE6262';
+            yearlyLabel.style.background = '#00d4aa';
             yearlyLabel.style.color = 'white';
         }
     }
@@ -1530,7 +1530,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Add subtle border highlight to the selected period
             if (planType === period) {
-                card.style.borderColor = '#DE6262';
+                card.style.borderColor = '#00d4aa';
                 card.style.borderWidth = '3px';
                 card.classList.add('selected-plan');
             } else {

@@ -28,7 +28,7 @@
     }
     
     .pricing-card.featured {
-        border: 2px solid #DE6262;
+        border: 2px solid #00d4aa;
     }
     
     .pricing-card.featured::before {
@@ -38,17 +38,17 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
     
     .price-display {
         font-size: 3rem;
         font-weight: 700;
-        color: #DE6262;
+        color: #00d4aa;
     }
     
     .btn-select-plan {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         border: none;
         border-radius: 50px;
         padding: 12px 30px;
@@ -60,7 +60,7 @@
     
     .btn-select-plan:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(222, 98, 98, 0.3);
+        box-shadow: 0 8px 20px rgba(0, 212, 170, 0.3);
     }
     
     .feature-icon {
@@ -75,7 +75,7 @@
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0, 212, 170, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -87,7 +87,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
 }
 
 .dashboard-header h2 {
@@ -184,7 +184,7 @@
                     
                     <!-- Billing Toggle -->
                     <div class="d-inline-flex align-items-center p-2 rounded-pill mt-3" style="background: #f8f9fa; border: 1px solid #e9ecef;">
-                        <span class="px-3 py-2 billing-period-label" id="monthly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; background: #DE6262; color: white;">Monthly</span>
+                        <span class="px-3 py-2 billing-period-label" id="monthly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; background: #00d4aa; color: white;">Monthly</span>
                         <span class="px-3 py-2 billing-period-label" id="yearly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; margin-left: 5px;">Yearly <small class="text-success">(Save up to 17%)</small></span>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                                 <div class="pricing-card h-100 {{ $planKey === 'yearly' ? 'featured' : '' }} position-relative">
                                     @if($planKey === 'yearly')
                                         <div class="position-absolute top-0 start-50 translate-middle">
-                                            <span class="badge" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%); color: white; padding: 8px 16px; border-radius: 20px;">Best Value</span>
+                                            <span class="badge" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%); color: white; padding: 8px 16px; border-radius: 20px;">Best Value</span>
                                         </div>
                                     @endif
                                     
@@ -275,21 +275,21 @@
                                 <div class="row g-4">
                                     <div class="col-md-4">
                                         <div class="text-center">
-                                            <i class="bi bi-shield-check" style="font-size: 3rem; color: #DE6262;"></i>
+                                            <i class="bi bi-shield-check" style="font-size: 3rem; color: #00d4aa;"></i>
                                             <h6 class="mt-3 fw-bold">HIPAA Compliant</h6>
                                             <p class="text-muted">Your patient data is secure and compliant with healthcare regulations</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="text-center">
-                                            <i class="bi bi-cpu" style="font-size: 3rem; color: #DE6262;"></i>
+                                            <i class="bi bi-cpu" style="font-size: 3rem; color: #00d4aa;"></i>
                                             <h6 class="mt-3 fw-bold">Advanced AI</h6>
                                             <p class="text-muted">Powered by the latest medical AI models for accurate analysis</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="text-center">
-                                            <i class="bi bi-headset" style="font-size: 3rem; color: #DE6262;"></i>
+                                            <i class="bi bi-headset" style="font-size: 3rem; color: #00d4aa;"></i>
                                             <h6 class="mt-3 fw-bold">24/7 Support</h6>
                                             <p class="text-muted">Get help whenever you need it from our medical support team</p>
                                         </div>
@@ -356,10 +356,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Set active label
         if (period === 'monthly') {
-            monthlyLabel.style.background = '#DE6262';
+            monthlyLabel.style.background = '#00d4aa';
             monthlyLabel.style.color = 'white';
         } else {
-            yearlyLabel.style.background = '#DE6262';
+            yearlyLabel.style.background = '#00d4aa';
             yearlyLabel.style.color = 'white';
         }
     }

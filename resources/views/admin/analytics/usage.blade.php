@@ -20,7 +20,7 @@
     }
 
     .metric-card {
-        background: linear-gradient(135deg, #DE6262 0%, #E87A7A 100%);
+        background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
         color: white;
         border-radius: 12px;
         padding: 1.5rem;
@@ -264,8 +264,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     label: 'Requests',
                     data: dailyUsageData.map(item => item.requests),
-                    borderColor: '#DE6262',
-                    backgroundColor: 'rgba(222, 98, 98, 0.1)',
+                    borderColor: '#00d4aa',
+                    backgroundColor: 'rgba(0, 212, 170, 0.1)',
                     tension: 0.4,
                     yAxisID: 'y'
                 },

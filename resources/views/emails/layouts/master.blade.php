@@ -41,12 +41,12 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(44, 62, 80, 0.1);
-            border: 1px solid rgba(222, 98, 98, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.1);
         }
         
         /* Header Styles */
         .email-header {
-            background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
@@ -197,29 +197,29 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
             color: white;
-            box-shadow: 0 6px 20px rgba(222, 98, 98, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.3);
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(222, 98, 98, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4);
             color: white;
         }
         
         .btn-secondary {
             background: white;
-            color: #DE6262;
-            border: 2px solid #DE6262;
-            box-shadow: 0 4px 15px rgba(222, 98, 98, 0.2);
+            color: #00d4aa;
+            border: 2px solid #00d4aa;
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.2);
         }
         
         .btn-secondary:hover {
-            background: #DE6262;
+            background: #00d4aa;
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(222, 98, 98, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.3);
         }
         
         .btn-success {
@@ -258,7 +258,7 @@
             border-radius: 15px;
             padding: 25px;
             margin: 25px 0;
-            border: 1px solid rgba(222, 98, 98, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         
@@ -275,7 +275,7 @@
         .info-card-icon {
             width: 24px;
             height: 24px;
-            background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -316,7 +316,7 @@
         }
         
         .data-table tr:hover {
-            background: rgba(222, 98, 98, 0.02);
+            background: rgba(0, 212, 170, 0.02);
         }
         
         /* Status Badges */
@@ -350,7 +350,7 @@
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 30px;
             text-align: center;
-            border-top: 1px solid rgba(222, 98, 98, 0.1);
+            border-top: 1px solid rgba(0, 212, 170, 0.1);
         }
         
         .footer-content {
@@ -364,7 +364,7 @@
         }
         
         .footer-link {
-            color: #DE6262;
+            color: #00d4aa;
             text-decoration: none;
             margin: 0 10px;
             font-weight: 500;
@@ -426,7 +426,7 @@
         @media (prefers-color-scheme: dark) {
             .email-container {
                 background: #1a1a1a;
-                border-color: rgba(222, 98, 98, 0.2);
+                border-color: rgba(0, 212, 170, 0.2);
             }
             
             .email-content {
@@ -443,7 +443,7 @@
             
             .info-card {
                 background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-                border-color: rgba(222, 98, 98, 0.2);
+                border-color: rgba(0, 212, 170, 0.2);
             }
             
             .data-table {

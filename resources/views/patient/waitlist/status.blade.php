@@ -5,7 +5,7 @@
 @section('styles')
 <style>
 .status-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
     color: white;
     border-radius: 0.5rem;
     padding: 2rem;

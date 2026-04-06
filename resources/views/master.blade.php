@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
-
+<html lang="en" dir="ltr">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <meta name="author" content="SemiColonWeb">
-    <meta name="description"
-        content="Create Medical Clinic & Hospital Websites with Canvas Template. Get Canvas to build powerful websites easily with the Highly Customizable & Best Selling Bootstrap Template, today.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="MedSuite AI">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Force fresh logo loading - prevent JPEG caching -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
- @auth
+
+    @auth
     <meta name="user-id" content="{{ Auth::id() }}">
     <meta name="notification-sound-enabled" content="{{ env('NOTIFICATION_SOUND_ENABLED', 'true') }}">
     <meta name="notification-toast-enabled" content="{{ env('NOTIFICATION_TOAST_ENABLED', 'true') }}">
@@ -22,384 +20,24 @@
         window.userId = {{ Auth::id() ?? 'null' }};
     </script>
     @endauth
-    <style>
-        .top-link {
-            font-size: 16px;
-            font-weight: 500;
-            text-decoration: none;
-            color: #333;
-            /* dark gray */
-            position: relative;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
 
-        .top-link:hover {
-            color: #DE6262;
-            /* accent color on hover */
-            background-color: #f8f9fa;
-            transform: translateY(-2px);
-        }
+    <title>@yield('title', 'MedSuite AI')</title>
 
-        /* Add nice underline on hover */
-        .top-link::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-            background: #DE6262;
-            transition: width 0.3s;
-            position: absolute;
-            bottom: 0;
-            left: 12px;
-            right: 12px;
-        }
-
-.top-link:hover::after {
-    width: calc(100% - 24px);
-}
-/* Header Dropdown Styling - Match EXACTLY the .sub-menu-container style */
-.dropdown-menu {
-    /* Visuals copied from .primary-menu .sub-menu-container */
-    background: #ffffff !important;
-    border: 1px solid #dee2e6 !important;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    border-radius: 0.375rem !important;
-
-    /* Spacing copied from .sub-menu-container */
-    padding: 0.5rem 0 !important;
-    margin: 0.25rem 0 0 0 !important;
-
-    /* Dimensions copied from .sub-menu-container */
-    min-width: 200px !important;
-    width: auto !important;
-    max-width: 280px !important;
-
-    /* Keep high z-index so it shows above content */
-    z-index: 9999999 !important;
-    position: absolute !important;
-}
-
-/* Ensure any Bootstrap-added shadow class doesn't override the look */
-.dropdown-menu.shadow {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-}
-
-.dropdown-item {
-    /* Match .primary-menu .sub-menu-container .menu-link */
-    display: flex !important;
-    width: 185px !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    padding: 0.5rem 1rem !important;
-    margin: 0.125rem 0.5rem !important;
-    font-size: 0.875rem !important;
-    font-weight: 400 !important;
-    line-height: 1.5 !important;
-    color: #212529 !important;
-    text-decoration: none !important;
-    background-color: transparent !important;
-    border: 1px solid transparent !important;
-    border-radius: 0.375rem !important;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out !important;
-}
-
-/* Hover: match .primary-menu .sub-menu-container .menu-link:hover */
-.dropdown-item:hover {
-    color: #DE6262 !important;
-    background-color: #f8f9fa !important;
-    border-color: #dee2e6 !important;
-}
-
-/* Icon sizing inside dropdown items to match sub-menu links */
-.dropdown-item i {
-    font-size: 0.875rem !important;
-    width: 1rem !important;
-    text-align: center !important;
-}
-
-/* Focus/active: mirror .primary-menu .sub-menu-container .menu-item.current .menu-link */
-.dropdown-item:focus, .dropdown-item:active,
-.dropdown-item:focus-visible,
-.dropdown-item:focus-within {
-    outline: none !important;
-    color: #ffffff !important;
-    background-color: #DE6262 !important;
-    border-color: #DE6262 !important;
-}
-
-        /* Hover Effect - Same as sub-menu menu-link hover */
-        .dropdown-item:hover {
-            background: linear-gradient(135deg, rgba(222, 98, 98, 0.1), rgba(222, 98, 98, 0.05)) !important;
-            color: #DE6262 !important;
-            font-weight: 600 !important;
-            transform: translateX(4px) !important;
-            box-shadow: 0 4px 12px rgba(222, 98, 98, 0.15) !important;
-        }
-
-        /* Focus states - Same as sub-menu styling */
-        .dropdown-item:focus,
-        .dropdown-item:active,
-        .dropdown-item:focus-visible,
-        .dropdown-item:focus-within {
-            outline: none !important;
-            background: linear-gradient(135deg, rgba(222, 98, 98, 0.1), rgba(222, 98, 98, 0.05)) !important;
-            color: #DE6262 !important;
-            font-weight: 600 !important;
-            transform: translateX(4px) !important;
-            box-shadow: 0 4px 12px rgba(222, 98, 98, 0.15) !important;
-        }
-
-        /* Danger/Logout button styling */
-        .dropdown-item.text-danger {
-            color: #dc3545 !important;
-        }
-
-        .dropdown-item.text-danger:hover {
-            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05)) !important;
-            color: #dc3545 !important;
-            font-weight: 600 !important;
-        }
-
-        /* Dropdown divider - Same as menu divider */
-        .dropdown-divider {
-            height: 1px !important;
-            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.08) 20%, rgba(0, 0, 0, 0.08) 80%, transparent) !important;
-            margin: 8px 16px !important;
-            border: none !important;
-            padding: 0 !important;
-        }
-/* Ensure hamburger button is visible and clickable on mobile */
-@media (max-width: 991px) {
-    .primary-menu-trigger {
-        display: block !important;
-    }
-
-    .cnvs-hamburger {
-        display: block !important;
-        background: none !important;
-        border: none !important;
-        cursor: pointer !important;
-        padding: 10px !important;
-        z-index: 10005 !important;
-        position: relative !important;
-        /* Add visual debugging */
-        min-width: 44px !important;
-        min-height: 44px !important;
-    }
-
-    .cnvs-hamburger:hover {
-        background: rgba(222, 98, 98, 0.2) !important;
-        border-color: rgba(222, 98, 98, 0.5) !important;
-        transform: scale(1.05) !important;
-    }
-
-    /* Make sure hamburger lines are visible */
-    .cnvs-hamburger .cnvs-hamburger-inner,
-    .cnvs-hamburger .cnvs-hamburger-inner::before,
-    .cnvs-hamburger .cnvs-hamburger-inner::after {
-        background-color: white !important;
-    }
-
-    /* Fix logo positioning on mobile - keep it on the left */
-    .d-flex.align-items-center.flex-grow-1 {
-        display: flex !important;
-        align-items: center !important;
-        flex-grow: 1 !important;
-        justify-content: flex-start !important; /* Keep logo on the left */
-    }
-
-    /* Ensure logo container doesn't center itself */
-    .header .container,
-    .header .container-fluid {
-        justify-content: space-between !important;
-    }
-
-    /* Logo specific positioning */
-    #logo {
-        margin-right: auto !important;
-        margin-left: 0 !important;
-    }
-}
-
-/* Bootstrap Dropdown Toggle Button */
-.dropdown-toggle {
-    position: relative !important;
-    z-index: 10004 !important;
-}
-
-        /* Bootstrap Dropdown Container Fix */
-        .dropdown {
-            position: relative !important;
-            z-index: 10003 !important;
-        }
-
-/* Dropdown: let Bootstrap/Popper position it; only ensure visibility */
-body .dropdown.show .dropdown-menu,
-body .dropdown .dropdown-menu.show,
-.dropdown-menu.show {
-    z-index: 9999999 !important;
-    display: block !important;
-    /* Do not override position/transform so Popper can place it correctly */
-}
-
-/* Ensure dropdown containers allow dropdowns to escape */
-.table-responsive {
-    overflow-x: auto !important;
-    overflow-y: visible !important;
-}
-
-.admin-card,
-.admin-table-container,
-.main-content,
-.content,
-.container,
-.container-fluid,
-.container-xxl,
-.row,
-.card,
-.card-body {
-    overflow: visible !important;
-}
-
-        /* Header Area Dropdown Fix */
-        #header .dropdown {
-            position: relative !important;
-            z-index: 10005 !important;
-        }
-
-        #header .dropdown-menu {
-            z-index: 9999999 !important;
-            position: absolute !important;
-        }
-    </style>
-
-    <!-- Dropdown Styles - Simplified for Bootstrap Compatibility -->
-    <style>
-        /* Ensure dropdown toggles are clickable */
-        .dropdown-toggle,
-        .notification-bell,
-        .btn[data-bs-toggle="dropdown"],
-        a[data-bs-toggle="dropdown"],
-        button[data-bs-toggle="dropdown"] {
-            pointer-events: auto !important;
-            cursor: pointer !important;
-        }
-
-        /* Dropdown container positioning */
-        .dropdown,
-        .notifications-dropdown,
-        .user-dropdown {
-            position: relative !important;
-            display: inline-block !important; /* prevent reflow shifting */
-            vertical-align: middle !important;
-        }
-
-        /* Custom dropdown styling */
-        .dropdown-menu {
-            /* Glass morphism design */
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.08) !important;
-            padding: 12px 0 !important;
-            min-width: 240px !important;
-            z-index: 9999999 !important;
-        }
-
-        /* Dropdown items styling */
-        .dropdown-item {
-            display: flex !important;
-            align-items: center !important;
-            padding: 12px 20px !important;
-            margin: 0 8px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            color: #374151 !important;
-            text-decoration: none !important;
-            border-radius: 10px !important;
-            background: transparent !important;
-            border: none !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .dropdown-item:hover {
-            background: linear-gradient(135deg, rgba(222, 98, 98, 0.1), rgba(222, 98, 98, 0.05)) !important;
-            color: #DE6262 !important;
-            font-weight: 600 !important;
-            transform: translateX(4px) !important;
-            box-shadow: 0 4px 12px rgba(222, 98, 98, 0.15) !important;
-        }
-
-        /* Dropdown divider */
-        .dropdown-divider {
-            height: 1px !important;
-            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.08) 20%, rgba(0, 0, 0, 0.08) 80%, transparent) !important;
-            margin: 8px 16px !important;
-            border: none !important;
-            padding: 0 !important;
-        }
-
-        /* Specific dropdown fixes */
-        .notifications-dropdown .dropdown-menu {
-            width: 350px !important;
-            max-height: 400px !important;
-            overflow-y: auto !important;
-            z-index: 9999999 !important;
-            position: absolute !important;
-            top: 100% !important;
-            left: auto !important;
-            right: 0 !important;
-            transform: none !important;
-        }
-
-        .notifications-dropdown {
-            position: relative !important;
-            z-index: 10004 !important;
-        }
-
-        .user-dropdown .dropdown-menu {
-            min-width: 200px !important;
-            position: absolute !important;
-            top: 100% !important;
-            left: auto !important;
-            right: 0 !important;
-            transform: none !important;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .dropdown-menu {
-                position: fixed !important;
-                top: auto !important;
-                bottom: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                width: 100% !important;
-                max-height: 50vh !important;
-                border-radius: 10px 10px 0 0 !important;
-            }
-        }
-    </style>
-
-    <!-- Clean Font Imports -->
+    <!-- ─── Fonts ─── -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <!-- Stylesheets -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+    <!-- ─── External Libraries ─── -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- ─── Project Stylesheets ─── -->
     <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <!-- FontAwesome CDN - Priority over local -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-    <!-- Temporarily disabled local font-icons -->
-    <!-- <link rel="stylesheet" href="{{ asset('css/font-icons.css') }}"> -->
     <link rel="stylesheet" href="{{ asset('demos/medical/css/medical-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/swiper.css') }}">
     <link rel="stylesheet" href="{{ asset('demos/medical/medical.css') }}">
@@ -408,2767 +46,796 @@ body .dropdown .dropdown-menu.show,
     <link rel="stylesheet" href="{{ asset('css/responsive-modals.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom-buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+
     @stack('styles')
 
-    <!-- Global Font Styling -->
+    <!-- ─── Design System Tokens ─── -->
     <style>
-        /* Clean Medical System Font */
-        body,
-        * {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
-            font-weight: 400;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-        }
-
-        /* Fix: Do not override Font Awesome icon fonts */
-        .fa, .fas, .far, .fal, .fat, .fad,
-        .fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone, .fa-brands,
-        i.fa, i.fas, i.far, i.fal, i.fat, i.fad,
-        i.fa-solid, i.fa-regular, i.fa-light, i.fa-thin, i.fa-duotone, i.fa-brands {
-            font-family: inherit; /* reset first */
-        }
-        /* Re-assert correct FA font families with !important to beat global * rule */
-        .fa, .fas, .fa-solid, i.fa, i.fas, i.fa-solid {
-            font-family: "Font Awesome 6 Free" !important;
-            font-weight: 900 !important; /* solid */
-        }
-        .far, .fa-regular, i.far, i.fa-regular {
-            font-family: "Font Awesome 6 Free" !important;
-            font-weight: 400 !important; /* regular */
-        }
-        .fab, .fa-brands, i.fab, i.fa-brands {
-            font-family: "Font Awesome 6 Brands" !important;
-            font-weight: 400 !important; /* brands */
-        }
-
-        /* Navigation specific fonts - Clean and readable */
-        .primary-menu .menu-link {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
-            font-weight: 400;
-            letter-spacing: 0.01em;
-        }
-
-        /* Headers - Bold but not thick */
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .heading {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-        }
-
-        /* Medical/clinical text */
-        .medical-text,
-        .diagnosis-text,
-        .case-text {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
-        /* FontAwesome Debug - Force display if not loading */
-        .fa,
-        .fas,
-        .far,
-        .fab {
-            font-family: "Font Awesome 6 Free" !important;
-            font-weight: 900 !important;
-            -webkit-font-smoothing: antialiased;
-            display: inline-block;
-            font-style: normal;
-            font-variant: normal;
-            text-rendering: auto;
-            line-height: 1;
-        }
-
-        /* Test icon visibility */
-        .icon-test {
-            font-size: 24px;
-            color: red;
-            margin: 10px;
-        }
-
-        /* Navigation Improvements */
-        .primary-menu .menu-container {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            max-width: 100%;
-            overflow: visible;
-            margin: 0 !important; /* prevent shifting during load */
-            padding: 0 !important; /* prevent shifting during load */
-        }
-
-        .primary-menu .menu-item {
-            white-space: nowrap;
-            margin-right: 1rem;
-            position: relative;
-        }
-
-        .primary-menu .menu-link {
-            padding: 0.5rem 1rem;
-            font-size: 15px;
-            font-weight: 400;
-            color: #333333;
-            transition: all 0.3s ease;
-        }
-
-        .primary-menu .menu-item.current .menu-link,
-        .primary-menu .menu-link:hover {
-            color: #DE6262;
-            font-weight: 500;
-        }
-
-        /* Dropdown arrow styling */
-        .primary-menu .fa-chevron-down {
-            font-size: 10px;
-            margin-left: 5px;
-            color: #333333;
-            opacity: 0.8;
-        }
-
-        .primary-menu .menu-item:hover .fa-chevron-down,
-        .primary-menu .menu-item.current .fa-chevron-down {
-            color: #DE6262;
-            opacity: 1;
-        }
-
-        /* Bootstrap Button Style Dropdown Design */
-        .primary-menu .sub-menu-container {
-            /* Positioning & Layout */
-            position: absolute !important;
-            top: 100% !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            z-index: 9999999 !important;
-
-            /* Bootstrap Button Dimensions */
-            min-width: 200px !important;
-            width: auto !important;
-            max-width: 280px !important;
-
-            /* Bootstrap Button Design */
-            background: #ffffff !important;
-            border: 1px solid #dee2e6 !important;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-
-            /* Bootstrap Button Rounded Design */
-            border-radius: 0.375rem !important;
-
-            /* Bootstrap Button Spacing */
-            padding: 0.5rem 0 !important;
-            margin: 0.25rem 0 0 0 !important;
-
-            /* Simple Animation */
-            /* keep element measurable to avoid reflow jumps */
-            opacity: 0.001 !important;
-            visibility: hidden !important;
-            transition: all 0.15s ease-in-out !important;
-
-            /* List Reset */
-            list-style: none !important;
-        }
-
-        /* Add hover bridge to prevent dropdown from closing */
-        .primary-menu .sub-menu-container::before {
-            content: '' !important;
-            position: absolute !important;
-            top: -10px !important;
-            left: 0 !important;
-            right: 0 !important;
-            height: 10px !important;
-            background: transparent !important;
-        }
-
-        /* Last item: do not force centering here. Allow general/invert rules to apply */
-        /* (Intentionally no overrides for .primary-menu .menu-item:last-child .sub-menu-container) */
-
-        /* Show dropdown on hover - keep it open when hovering dropdown itself */
-        .primary-menu .menu-item:hover .sub-menu-container,
-        .primary-menu .sub-menu-container:hover {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-
-        /* Bootstrap Button Style Dropdown Items */
-        .primary-menu .sub-menu-container .menu-item {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* Bootstrap Button Style Dropdown Links */
-        .primary-menu .sub-menu-container .menu-link {
-            display: flex !important;
-            align-items: center !important;
-            gap: 0.5rem !important;
-            padding: 0.375rem 0.75rem !important;
-            margin: 0.125rem 0.5rem !important;
-            font-size: 0.875rem !important;
-            font-weight: 400 !important;
-            line-height: 1.5 !important;
-            color: #212529 !important;
-            text-decoration: none !important;
-            background-color: transparent !important;
-            border: 1px solid transparent !important;
-            border-radius: 0.375rem !important;
-            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out !important;
-        }
-
-        /* Bootstrap Button Style Icon */
-        .primary-menu .sub-menu-container .menu-link i {
-            font-size: 0.875rem !important;
-            width: 1rem !important;
-            text-align: center !important;
-        }
-
-        /* Bootstrap Button Style Hover Effect */
-        .primary-menu .sub-menu-container .menu-link:hover {
-            color: #DE6262 !important;
-            background-color: #f8f9fa !important;
-            border-color: #dee2e6 !important;
-        }
-
-        /* Bootstrap Button Style Active State */
-        .primary-menu .sub-menu-container .menu-item.current .menu-link {
-            color: #ffffff !important;
-            background-color: #DE6262 !important;
-            border-color: #DE6262 !important;
-        }
-
-        /* Bootstrap Button Style Active Hover State */
-        .primary-menu .sub-menu-container .menu-item.current .menu-link:hover {
-            color: #ffffff !important;
-            background-color: #c55555 !important;
-            border-color: #c55555 !important;
-        }
-
-        /* Remove debug styling - production ready */
-
-        /* Modern Dropdown Arrow Animation */
-        .primary-menu .fa-chevron-down {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            font-size: 10px !important;
-            margin-left: 6px !important;
-            opacity: 0.7 !important;
-        }
-
-        .primary-menu .menu-item:hover .fa-chevron-down {
-            transform: rotate(180deg) !important;
-            opacity: 1 !important;
-            color: #DE6262 !important;
-        }
-
-        /* Responsive Navigation Improvements */
-        @media (max-width: 1200px) {
-            /* Large tablets and small desktops */
-            .header-row {
-                padding: 0.5rem 0 !important;
-            }
-
-            #logo img {
-                width: 130px !important;
-            }
-
-            .primary-menu .menu-container {
-                flex-wrap: nowrap !important;
-                justify-content: flex-start !important;
-            }
-
-            .primary-menu .menu-item {
-                margin-right: 0.5rem !important;
-            }
-
-            .primary-menu .menu-link {
-                padding: 0.4rem 0.7rem !important;
-                font-size: 14px !important;
-            }
-
-            .primary-menu .sub-menu-container {
-                min-width: 240px !important;
-                max-width: 280px !important;
-            }
-        }
-
-        @media (max-width: 992px) {
-            /* Tablets - still show desktop navigation but smaller */
-            .header-row {
-                padding: 0.4rem 0 !important;
-            }
-
-            #logo img {
-                width: 125px !important;
-            }
-
-            .primary-menu .menu-link {
-                padding: 0.3rem 0.6rem !important;
-                font-size: 13px !important;
-            }
-
-            .primary-menu .menu-item {
-                margin-right: 0.3rem !important;
-            }
-
-            .primary-menu .sub-menu-container {
-                position: fixed !important;
-                top: 80px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-                width: 90vw !important;
-                max-width: 300px !important;
-                backdrop-filter: blur(10px) !important;
-            }
-        }
-
-        /* Enhanced Menu Item Spacing */
-        .primary-menu .menu-item+.menu-item {
-            margin-left: 0.5rem !important;
-        }
-
-        /* Modern Badge for Notifications */
-        .menu-badge {
-            position: absolute !important;
-            top: -2px !important;
-            right: -2px !important;
-            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            color: white !important;
-            font-size: 10px !important;
-            font-weight: 600 !important;
-            padding: 2px 6px !important;
-            border-radius: 10px !important;
-            min-width: 16px !important;
-            text-align: center !important;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
-        }
-
-        /* Prevent Horizontal Scroll but allow dropdowns */
-        html, body {
-            /* Avoid 100vw to prevent scrollbar-induced overflow */
-            max-width: 100% !important;
-            /* Prevent horizontal scroll without affecting dropdown positioning */
-            overflow-x: clip !important;
-        }
-
-        .container-fluid {
-            max-width: 100% !important;
-        }
-
-        .container {
-            max-width: 1200px !important;
-        }
-
-        /* Ensure all elements stay within viewport */
-        * {
-            box-sizing: border-box !important;
-        }
-
-        /* Ensure top-bar appears above sidebar */
-        #top-bar {
-            z-index: 1050 !important;
-        }
-
-        /* Ensure alerts appear above sidebar */
-        .alert {
-            z-index: 1060 !important;
-            position: relative;
-        }
-
-        /* Ensure alert close buttons also have high z-index */
-        .alert .btn-close {
-            z-index: 1065 !important;
-        }
-
-        /* Ensure top-level alert containers have proper positioning */
-        .container-fluid > .row > .col-12 > .alert {
-            position: relative !important;
-            z-index: 1060 !important;
-        }
-
-        /* Professional Skeleton Loading Animation */
-        .skeleton-loader {
-            animation: skeleton-loading 1.5s ease-in-out infinite;
-            background: linear-gradient(90deg,
-                rgba(222, 98, 98, 0.1) 25%,
-                rgba(222, 98, 98, 0.05) 50%,
-                rgba(222, 98, 98, 0.1) 75%);
-            background-size: 200% 100%;
-            border: 1px solid rgba(222, 98, 98, 0.1);
-        }
-
-        /* Loading indicator overlay */
-        .ajax-loading-overlay {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 9998;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(222, 98, 98, 0.2);
-            border-radius: 50px;
-            padding: 8px 16px;
-            box-shadow: 0 4px 12px rgba(222, 98, 98, 0.15);
-            display: none;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #DE6262;
-            font-weight: 500;
-        }
-
-        .ajax-loading-overlay.show {
-            display: flex;
-        }
-
-        .ajax-loading-overlay .loading-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(222, 98, 98, 0.3);
-            border-top: 2px solid #DE6262;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes skeleton-loading {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
-        }
-
-        .skeleton-header {
-            height: 60px;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .skeleton-stats {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .skeleton-stat-card {
-            flex: 1;
-            height: 120px;
-            border-radius: 20px;
-        }
-
-        .skeleton-tabs {
-            height: 50px;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-        }
-
-        .skeleton-table {
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .skeleton-table-header {
-            height: 50px;
-            margin-bottom: 1rem;
-        }
-
-        .skeleton-table-row {
-            height: 60px;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-        }
-
-        /* Responsive skeleton adjustments */
-        @media (max-width: 768px) {
-            .skeleton-stats {
-                flex-direction: column;
-            }
-
-            .skeleton-stat-card {
-                height: 100px;
-                margin-bottom: 1rem;
-            }
-        }
-
-
-        /* Header Layout - Fix Z-Index Issues */
-        #header {
-            overflow: visible !important;
-            position: relative !important;
-            width: 100% !important;
-        }
-
-        .header-row {
-            overflow: visible !important;
-            position: relative !important;
-            width: 100% !important;
-            min-height: 70px !important;
-            align-items: center !important;
-        }
-
-        /* Header container responsive fixes */
-        #header-wrap {
-            width: 100% !important;
-        }
-
-        #header .container {
-            width: 100% !important;
-            max-width: 1400px !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-            margin: 0 auto !important;
-        }
-
-        /* Logo responsive styling */
-        #logo {
-            flex-shrink: 0 !important;
-        }
-
-        #logo img {
-            max-width: 100% !important;
-            height: auto !important;
-            display: block !important;
-        }
-
-        /* Mobile menu trigger styling - hidden by default, shown on mobile */
-        .primary-menu-trigger {
-            display: none !important;
-            flex-shrink: 0 !important;
-        }
-
-        .primary-menu {
-            position: relative !important;
-            z-index: 10001 !important;
-        }
-
-        /* Ensure dropdown appears above all content */
-        .primary-menu .menu-item {
-            position: relative !important;
-            z-index: 10002 !important;
-        }
-
-        /* Force dropdown above everything */
-        .primary-menu .sub-menu-container {
-            position: absolute !important;
-            z-index: 9999999 !important;
-        }
-
-        /* Fix dropdown positioning and sizing */
-        .primary-menu .sub-menu-container {
-            max-width: min(320px, 90vw) !important;
-            width: max-content !important;
-        }
-
-        /* Top-level dropdowns: center under parent */
-        .primary-menu > .menu-container > .menu-item > .sub-menu-container {
-            left: 50% !important;
-            transform: translateX(-50%) translateY(-8px) !important;
-        }
-
-        /* Inverted sub-menus: generic fallback */
-        .primary-menu .sub-menu-container.menu-pos-invert {
-            left: auto !important;
-            right: 0 !important;
-            transform: translateX(0) translateY(-8px) !important;
-        }
-
-        /* Inverted top-level: align right of parent (more specific) */
-        .primary-menu > .menu-container > .menu-item > .sub-menu-container.menu-pos-invert {
-            left: auto !important;
-            right: 0 !important;
-            transform: translateX(0) translateY(-8px) !important;
-        }
-
-        /* First item edge-case: align left */
-        .primary-menu > .menu-container > .menu-item:first-child > .sub-menu-container {
-            left: 0 !important;
-            transform: translateX(0) translateY(-8px) !important;
-        }
-
-        /* Last item non-invert: keep centered */
-        .primary-menu > .menu-container > .menu-item:last-child > .sub-menu-container:not(.menu-pos-invert) {
-            left: 50% !important;
-            right: auto !important;
-            transform: translateX(-50%) translateY(-8px) !important;
-        }
-
-        /* Nested dropdowns: open to the right of their parent menu */
-        .primary-menu .sub-menu-container .sub-menu-container {
-            top: 0 !important;
-            left: 100% !important;
-            right: auto !important;
-            transform: translateX(0) translateY(0) !important;
-        }
-
-        /* Nested inverted: open to the left */
-        .primary-menu .sub-menu-container .sub-menu-container.menu-pos-invert {
-            left: auto !important;
-            right: 100% !important;
-            transform: translateX(0) translateY(0) !important;
-        }
-
-        /* Mobile Header Responsive Fixes */
-        @media (max-width: 991px) {
-            /* Header container adjustments */
-            #header {
-                display: block !important;
-                position: relative !important;
-                width: 100% !important;
-                background: #fff !important;
-                border-bottom: 1px solid #eee !important;
-                min-height: 60px !important;
-            }
-
-            #header-wrap {
-                display: block !important;
-                width: 100% !important;
-            }
-
-            #header .container {
-                width: 100% !important;
-                max-width: 100% !important;
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-                margin: 0 !important;
-            }
-
-            .header-row {
-                display: flex !important;
-                padding: 0.5rem 0 !important;
-                flex-wrap: wrap !important; /* Allow wrapping on mobile */
-                justify-content: space-between !important;
-                align-items: center !important;
-                width: 100% !important;
-                min-height: 60px !important;
-            }
-
-            /* Left side: Logo only */
-            .col-md-auto.d-flex.align-items-center.gap-3:first-child {
-                order: 1 !important;
-                flex: 0 0 auto !important;
-                justify-content: flex-start !important;
-                width: auto !important;
-            }
-
-            /* Right side: Login/Register buttons and hamburger */
-            .col-md-auto.d-flex.align-items-center.gap-3:last-child {
-                order: 2 !important;
-                flex: 0 0 auto !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-                margin-top: 0 !important;
-                margin-left: auto !important;
-                width: auto !important;
-            }
-
-            /* Logo adjustments for mobile */
-            #logo {
-                margin-right: 0 !important;
-                flex-shrink: 0 !important;
-            }
-
-            #logo img {
-                width: 120px !important;
-                max-width: 120px !important;
-                height: auto !important;
-                display: block !important;
-            }
-
-            /* Mobile navigation dropdown - positioned below top bar */
-            .show-mobile-nav {
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                gap: 0.5rem !important;
-                position: absolute !important;
-                top: 100% !important; /* Below the top bar */
-                left: 0 !important;
-                right: 0 !important;
-                background: white !important;
-                border: 1px solid #dee2e6 !important;
-                border-top: none !important;
-                padding: 1rem !important;
-                z-index: 10000 !important;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-                max-height: 60vh !important;
-                overflow-y: auto !important;
-                width: 100% !important;
-            }
-
-            .show-mobile-nav .top-link {
-                color: #333 !important;
-                background: #f8f9fa !important;
-                border: 1px solid #dee2e6 !important;
-                font-size: 14px !important;
-                padding: 12px 16px !important;
-                width: 100% !important;
-                text-align: center !important;
-                border-radius: 6px !important;
-                margin: 4px 0 !important;
-                text-decoration: none !important;
-                display: block !important;
-                transition: all 0.2s ease !important;
-            }
-
-            .show-mobile-nav .top-link:hover {
-                background: #DE6262 !important;
-                color: white !important;
-                border-color: #DE6262 !important;
-            }
-
-            /* Hide desktop navigation */
-            .primary-menu {
-                display: none !important;
-            }
-
-            /* Show mobile menu trigger - override Bootstrap classes */
-            .primary-menu-trigger,
-            .primary-menu-trigger.d-block.d-lg-none {
-                display: block !important;
-                padding: 0.5rem !important;
-                order: 2 !important;
-            }
-
-            /* Mobile hamburger styling */
-            .cnvs-hamburger {
-                background: none !important;
-                border: none !important;
-                padding: 0.5rem !important;
-                cursor: pointer !important;
-                display: block !important;
-                outline: none !important;
-            }
-
-            .cnvs-hamburger-box {
-                width: 24px !important;
-                height: 24px !important;
-                position: relative !important;
-                display: inline-block !important;
-            }
-
-            .cnvs-hamburger-inner {
-                display: block !important;
-                top: 50% !important;
-                margin-top: -2px !important;
-                width: 24px !important;
-                height: 3px !important;
-                background-color: #333 !important;
-                border-radius: 4px !important;
-                position: absolute !important;
-                transition: all 0.3s ease !important;
-            }
-
-            .cnvs-hamburger-inner::before,
-            .cnvs-hamburger-inner::after {
-                content: '' !important;
-                display: block !important;
-                width: 24px !important;
-                height: 3px !important;
-                background-color: #333 !important;
-                border-radius: 4px !important;
-                position: absolute !important;
-                transition: all 0.3s ease !important;
-            }
-
-            .cnvs-hamburger-inner::before {
-                top: -8px !important;
-            }
-
-            .cnvs-hamburger-inner::after {
-                bottom: -8px !important;
-            }
-
-            /* Hamburger animation when active */
-            .cnvs-hamburger.active .cnvs-hamburger-inner {
-                transform: rotate(45deg) !important;
-            }
-
-            .cnvs-hamburger.active .cnvs-hamburger-inner::before {
-                top: 0 !important;
-                transform: rotate(90deg) !important;
-            }
-
-            .cnvs-hamburger.active .cnvs-hamburger-inner::after {
-                bottom: 0 !important;
-                transform: rotate(90deg) !important;
-            }
-        }
-
-        /* Modern Parent Hover State */
-        .primary-menu .menu-item:hover>.menu-link {
-            background: linear-gradient(135deg, rgba(222, 98, 98, 0.08), rgba(222, 98, 98, 0.04)) !important;
-            border-radius: 8px !important;
-            color: #DE6262 !important;
-            font-weight: 500 !important;
-            box-shadow: 0 2px 8px rgba(222, 98, 98, 0.1) !important;
-            transform: translateY(-1px) !important;
-        }
-
-        /* Dropdown positioning */
-        .primary-menu .menu-item {
-            position: relative;
-        }
-
-        /* Modern Dropdown Overrides */
-        .primary-menu .sub-menu-container,
-        .primary-menu .sub-menu-container * {
-            box-sizing: border-box !important;
-        }
-
-        /* Prevent any theme interference */
-        .primary-menu .menu-item .sub-menu-container {
-            list-style: none !important;
-        }
-
-        /* Better hover persistence */
-        .primary-menu .menu-item {
-            position: relative !important;
-        }
-
-        /* Make dropdown parent more forgiving to hover */
-        .primary-menu .menu-item .menu-link {
-            position: relative !important;
-            z-index: 2 !important;
-        }
-
-        /* Keep dropdown open when hovering over parent or dropdown */
-        .primary-menu .menu-item:hover .sub-menu-container,
-        .primary-menu .menu-item .sub-menu-container:hover {
-            opacity: 1 !important;
-            visibility: visible !important;
-            transform: translateX(-50%) translateY(0) !important;
-            transition-delay: 0s !important;
-        }
-
-        /* Add slight delay when leaving to prevent accidental closing */
-        .primary-menu .sub-menu-container {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        /* Immediate show, delayed hide */
-        .primary-menu .menu-item:hover .sub-menu-container {
-            transition-delay: 0s !important;
-        }
-
-        .primary-menu .menu-item:not(:hover) .sub-menu-container {
-            transition-delay: 0.2s !important;
-        }
-
-        /* Modern Responsive Design */
-        @media (max-width: 1200px) {
-            .primary-menu .menu-link {
-                padding: 0.5rem 0.75rem;
-                font-size: 14px;
-            }
-
-            .primary-menu .sub-menu-container {
-                min-width: 220px !important;
-                max-width: 260px !important;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .primary-menu .menu-link {
-                padding: 0.5rem 0.5rem;
-                font-size: 13px;
-            }
-
-            .primary-menu .sub-menu-container {
-                min-width: 200px !important;
-                max-width: 240px !important;
-                backdrop-filter: blur(15px) !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            /* Extra small screens - phones */
-            .header-row {
-                padding: 0.25rem 0 !important;
-            }
-
-            #logo {
-                margin-right: 0.5rem !important;
-            }
-
-            #logo img {
-                width: 100px !important;
-                max-width: 100px !important;
-            }
-
-            .cnvs-hamburger {
-                padding: 0.25rem !important;
-            }
-
-            .cnvs-hamburger-box {
-                width: 20px !important;
-                height: 20px !important;
-            }
-
-            .cnvs-hamburger-inner {
-                width: 20px !important;
-                height: 2px !important;
-            }
-
-            .cnvs-hamburger-inner::before,
-            .cnvs-hamburger-inner::after {
-                width: 20px !important;
-                height: 2px !important;
-            }
-
-            .cnvs-hamburger-inner::before {
-                top: -6px !important;
-            }
-
-            .cnvs-hamburger-inner::after {
-                bottom: -6px !important;
-            }
-
-            /* Hamburger animation when active - smaller screens */
-            .cnvs-hamburger.active .cnvs-hamburger-inner {
-                transform: rotate(45deg) !important;
-            }
-
-            .cnvs-hamburger.active .cnvs-hamburger-inner::before {
-                top: 0 !important;
-                transform: rotate(90deg) !important;
-            }
-
-            .cnvs-hamburger.active .cnvs-hamburger-inner::after {
-                bottom: 0 !important;
-                transform: rotate(90deg) !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            /* Very small screens */
-            .container {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
-
-            .header-row {
-                padding: 0.25rem !important;
-            }
-
-            #logo img {
-                width: 90px !important;
-                max-width: 90px !important;
-            }
-        }
-
-            .primary-menu .sub-menu-container .menu-link {
-                margin: 0 4px !important;
-                padding: 10px 16px !important;
-                border-left: 3px solid transparent !important;
-                border-radius: 8px !important;
-            }
-
-            .primary-menu .sub-menu-container .menu-item.current .menu-link {
-                border-left-color: #DE6262 !important;
-            }
-        
+    /* ════════════════════════════════════════════
+       DESIGN TOKENS
+    ════════════════════════════════════════════ */
+    :root {
+        --navy:          #060d1f;
+        --navy-mid:      #0c1633;
+        --navy-card:     #0f1c3a;
+        --teal:          #00d4aa;
+        --teal-dim:      rgba(0,212,170,0.10);
+        --teal-glow:     rgba(0,212,170,0.25);
+        --teal-border:   rgba(0,212,170,0.25);
+        --amber:         #f59e0b;
+        --red:           #f87171;
+        --green:         #22c55e;
+        --white:         #ffffff;
+        --offwhite:      #e8edf5;
+        --muted:         rgba(232,237,245,0.48);
+        --border:        rgba(255,255,255,0.07);
+        --border-hover:  rgba(255,255,255,0.14);
+        --glass:         rgba(255,255,255,0.035);
+        --shadow-nav:    0 1px 0 rgba(255,255,255,0.05), 0 4px 24px rgba(0,0,0,0.35);
+        --font-display:  'Cormorant Garamond', Georgia, serif;
+        --font-body:     'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --radius-sm:     8px;
+        --radius-md:     12px;
+        --radius-lg:     16px;
+        --radius-xl:     20px;
+        --radius-pill:   50px;
+        --transition:    0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ════════════════════════════════════════════
+       GLOBAL RESET & BASE
+    ════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+        margin: 0; padding: 0;
+        background: var(--navy);
+        color: var(--offwhite);
+        font-family: var(--font-body);
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* FA icon font correction */
+    .fa,.fas,.fa-solid,i.fa,i.fas,i.fa-solid{font-family:"Font Awesome 6 Free"!important;font-weight:900!important;}
+    .far,.fa-regular,i.far,i.fa-regular{font-family:"Font Awesome 6 Free"!important;font-weight:400!important;}
+    .fab,.fa-brands,i.fab,i.fa-brands{font-family:"Font Awesome 6 Brands"!important;font-weight:400!important;}
+
+    /* ════════════════════════════════════════════
+       SKIP LINK
+    ════════════════════════════════════════════ */
+    .ms-skip-link {
+        position: fixed; top: -100px; left: 1rem; z-index: 99999;
+        padding: 0.6rem 1.2rem;
+        background: var(--teal); color: var(--navy);
+        border-radius: var(--radius-pill); font-weight: 600;
+        transition: top 0.2s;
+    }
+    .ms-skip-link:focus { top: 1rem; }
+
+    /* ════════════════════════════════════════════
+       TOP-BAR / NAV
+    ════════════════════════════════════════════ */
+    #ms-topbar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 1050;
+        height: 66px;
+        background: rgba(6,13,31,0.85);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-nav);
+        transition: background var(--transition), box-shadow var(--transition);
+    }
+    #ms-topbar.scrolled {
+        background: rgba(6,13,31,0.96);
+        box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .ms-topbar-inner {
+        max-width: 1400px; margin: 0 auto;
+        height: 100%; display: flex; align-items: center;
+        padding: 0 1.5rem; gap: 1rem;
+    }
+
+    /* Brand */
+    .ms-brand {
+        display: flex; align-items: center; gap: 0.55rem;
+        font-family: var(--font-display); font-size: 1.3rem; font-weight: 600;
+        color: var(--white); flex-shrink: 0; transition: opacity var(--transition);
+    }
+    .ms-brand:hover { opacity: 0.85; }
+    .ms-brand-icon {
+        width: 32px; height: 32px; border-radius: 8px;
+        background: var(--teal);
+        display: flex; align-items: center; justify-content: center;
+        color: var(--navy); font-size: 0.875rem;
+        box-shadow: 0 0 16px rgba(0,212,170,0.35);
+    }
+    .ms-brand-text em { color: var(--teal); font-style: normal; }
+
+    /* Guest nav links */
+    .ms-nav-links {
+        display: flex; align-items: center; gap: 0.25rem;
+        margin-left: 1.5rem;
+    }
+    .ms-nav-link {
+        padding: 0.45rem 0.875rem; border-radius: var(--radius-sm);
+        font-size: 0.875rem; font-weight: 400; color: var(--muted);
+        transition: all var(--transition); position: relative;
+    }
+    .ms-nav-link:hover { color: var(--white); background: var(--glass); }
+    .ms-nav-link.active { color: var(--teal); }
+    .ms-nav-link::after {
+        content: ''; position: absolute; bottom: 4px; left: 50%; right: 50%;
+        height: 1.5px; background: var(--teal); border-radius: 1px;
+        transition: left var(--transition), right var(--transition);
+    }
+    .ms-nav-link:hover::after { left: 0.875rem; right: 0.875rem; }
+
+    /* Spacer */
+    .ms-topbar-spacer { flex: 1; }
+
+    /* System online pill */
+    .ms-status-pill {
+        display: flex; align-items: center; gap: 0.4rem;
+        padding: 0.3rem 0.8rem;
+        background: rgba(34,197,94,0.08);
+        border: 1px solid rgba(34,197,94,0.2);
+        border-radius: var(--radius-pill);
+        font-size: 0.72rem; font-weight: 500; color: var(--green);
+    }
+    .ms-status-dot {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 6px var(--green);
+        animation: msPulse 2s ease-in-out infinite;
+    }
+    @keyframes msPulse { 0%,100%{opacity:1;}50%{opacity:0.4;} }
+
+    /* Icon buttons */
+    .ms-icon-btn {
+        width: 40px; height: 40px;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--glass); border: 1px solid var(--border);
+        border-radius: 50%; color: var(--muted); font-size: 1rem;
+        cursor: pointer; transition: all var(--transition);
+        position: relative; flex-shrink: 0;
+    }
+    .ms-icon-btn:hover { border-color: var(--border-hover); color: var(--white); background: rgba(255,255,255,0.06); }
+
+    /* Notification badge */
+    .ms-notif-badge {
+        position: absolute; top: -3px; right: -3px;
+        min-width: 16px; height: 16px;
+        background: #ef4444; color: #fff;
+        font-size: 0.6rem; font-weight: 700;
+        border-radius: 50px; padding: 0 4px;
+        align-items: center; justify-content: center;
+        border: 2px solid var(--navy);
+        display: none;
+    }
+
+    /* User chip */
+    .ms-user-chip {
+        display: flex; align-items: center; gap: 0.5rem;
+        padding: 0.35rem 0.875rem 0.35rem 0.5rem;
+        background: var(--glass); border: 1px solid var(--border);
+        border-radius: var(--radius-pill); cursor: pointer;
+        transition: all var(--transition); color: var(--offwhite);
+        font-family: var(--font-body);
+    }
+    .ms-user-chip:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.06); }
+    .ms-user-avatar {
+        width: 28px; height: 28px;
+        background: var(--teal-dim); border: 1px solid var(--teal-border);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--teal); font-size: 0.875rem;
+    }
+    .ms-user-name { font-size: 0.8125rem; font-weight: 500; }
+
+    /* Guest auth buttons */
+    .ms-btn-ghost-sm {
+        padding: 0.4rem 1rem;
+        background: transparent; border: 1px solid var(--border);
+        border-radius: var(--radius-pill); color: var(--offwhite);
+        font-size: 0.84375rem; font-weight: 400;
+        transition: all var(--transition); display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .ms-btn-ghost-sm:hover { border-color: var(--border-hover); color: var(--white); background: var(--glass); }
+    .ms-btn-teal-sm {
+        padding: 0.4rem 1rem;
+        background: var(--teal); border: 1px solid var(--teal);
+        border-radius: var(--radius-pill); color: var(--navy);
+        font-size: 0.84375rem; font-weight: 600;
+        transition: all var(--transition); display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .ms-btn-teal-sm:hover { box-shadow: 0 0 20px var(--teal-glow); transform: translateY(-1px); }
+
+    /* Mobile hamburger */
+    .ms-hamburger {
+        width: 40px; height: 40px;
+        display: none; align-items: center; justify-content: center;
+        background: var(--glass); border: 1px solid var(--border);
+        border-radius: 50%; cursor: pointer; transition: all var(--transition);
+        flex-direction: column; gap: 5px; flex-shrink: 0;
+    }
+    .ms-hamburger:hover { border-color: var(--border-hover); }
+    .ms-ham-line {
+        width: 16px; height: 1.5px; background: var(--offwhite);
+        border-radius: 2px; transition: all var(--transition);
+    }
+    .ms-hamburger.open .ms-ham-line:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .ms-hamburger.open .ms-ham-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .ms-hamburger.open .ms-ham-line:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── Dropdown menus ── */
+    .ms-dropdown { position: relative; }
+    .ms-dropdown-menu {
+        position: absolute; top: calc(100% + 8px); right: 0;
+        min-width: 220px;
+        background: rgba(12,22,51,0.97);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,170,0.05);
+        padding: 0.5rem;
+        opacity: 0; visibility: hidden; transform: translateY(-8px);
+        transition: all var(--transition);
+        z-index: 9999;
+    }
+    .ms-dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .ms-dropdown-item {
+        display: flex; align-items: center; gap: 0.6rem;
+        padding: 0.6rem 0.875rem; border-radius: var(--radius-sm);
+        font-size: 0.84375rem; color: var(--offwhite);
+        transition: all var(--transition); cursor: pointer;
+        border: 1px solid transparent;
+    }
+    .ms-dropdown-item:hover { background: var(--teal-dim); color: var(--teal); border-color: rgba(0,212,170,0.15); transform: translateX(2px); }
+    .ms-dropdown-item i { width: 1rem; text-align: center; font-size: 0.875rem; color: var(--teal); flex-shrink: 0; }
+    .ms-dropdown-item.danger { color: var(--red); }
+    .ms-dropdown-item.danger i { color: var(--red); }
+    .ms-dropdown-item.danger:hover { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.15); }
+    .ms-dropdown-divider { height: 1px; background: var(--border); margin: 0.375rem 0; }
+    .ms-dropdown-header { padding: 0.5rem 0.875rem; font-size: 0.68rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* Notifications dropdown */
+    .ms-notif-menu { min-width: 340px; max-height: 380px; overflow-y: auto; }
+    .ms-notif-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0.875rem 1rem; border-bottom: 1px solid var(--border); margin-bottom: 0.25rem;
+    }
+    .ms-notif-title { font-size: 0.875rem; font-weight: 500; color: var(--white); }
+    .ms-notif-actions { display: flex; gap: 0.25rem; }
+    .ms-notif-action-btn {
+        width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+        border-radius: var(--radius-sm); background: transparent; border: 1px solid transparent;
+        color: var(--muted); font-size: 0.875rem; cursor: pointer; transition: all var(--transition);
+    }
+    .ms-notif-action-btn:hover { background: var(--glass); border-color: var(--border); color: var(--teal); }
+    .ms-notif-empty {
+        display: flex; flex-direction: column; align-items: center;
+        padding: 2rem; color: var(--muted); text-align: center; gap: 0.5rem;
+    }
+    .ms-notif-empty i { font-size: 1.5rem; opacity: 0.4; }
+    .ms-notif-empty span { font-size: 0.8125rem; }
+
+    /* ── Mobile Nav Drawer ── */
+    .ms-mobile-overlay {
+        position: fixed; inset: 0; z-index: 1060;
+        background: rgba(6,13,31,0.6); backdrop-filter: blur(4px);
+        opacity: 0; visibility: hidden; transition: all var(--transition);
+    }
+    .ms-mobile-overlay.show { opacity: 1; visibility: visible; }
+    .ms-mobile-drawer {
+        position: fixed; top: 0; right: -320px; bottom: 0; width: 300px; z-index: 1061;
+        background: var(--navy-mid); border-left: 1px solid var(--border);
+        box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+        transition: right var(--transition);
+        display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .ms-mobile-drawer.show { right: 0; }
+    .ms-drawer-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .ms-drawer-close {
+        width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; background: var(--glass); border: 1px solid var(--border);
+        color: var(--muted); cursor: pointer; transition: all var(--transition);
+    }
+    .ms-drawer-close:hover { color: var(--white); border-color: var(--border-hover); }
+    .ms-drawer-nav { padding: 1rem; flex: 1; }
+    .ms-drawer-link {
+        display: flex; align-items: center; gap: 0.75rem;
+        padding: 0.75rem 1rem; border-radius: var(--radius-md);
+        font-size: 0.9rem; color: var(--muted); margin-bottom: 0.25rem;
+        transition: all var(--transition); border: 1px solid transparent;
+    }
+    .ms-drawer-link i { color: var(--teal); font-size: 0.875rem; flex-shrink: 0; }
+    .ms-drawer-link:hover { background: var(--teal-dim); color: var(--white); border-color: rgba(0,212,170,0.15); }
+    .ms-drawer-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); flex-shrink: 0; }
+    .ms-drawer-btn {
+        display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        width: 100%; padding: 0.75rem; border-radius: var(--radius-md);
+        font-size: 0.875rem; font-weight: 600;
+        background: var(--teal); color: var(--navy); border: none; cursor: pointer;
+        transition: all var(--transition); margin-bottom: 0.5rem; font-family: var(--font-body);
+    }
+    .ms-drawer-btn:hover { box-shadow: 0 0 20px var(--teal-glow); }
+    .ms-drawer-btn-ghost {
+        background: var(--glass); color: var(--offwhite); border: 1px solid var(--border);
+    }
+    .ms-drawer-btn-ghost:hover { border-color: var(--border-hover); box-shadow: none; }
+
+    /* ── Impersonation Banners ── */
+    .ms-banner {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0.5rem 1.5rem; font-size: 0.8125rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .ms-banner-chain   { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+    .ms-banner-hospital{ background: rgba(245,158,11,0.12); color: var(--amber); }
+    .ms-banner-admin   { background: rgba(248,113,113,0.12); color: var(--red); }
+    .ms-banner-left    { display: flex; align-items: center; gap: 0.6rem; }
+    .ms-banner-actions { display: flex; gap: 0.5rem; }
+    .ms-banner-btn {
+        padding: 0.25rem 0.75rem; border-radius: var(--radius-pill);
+        border: 1px solid currentColor; background: transparent; color: inherit;
+        font-size: 0.75rem; font-weight: 500; cursor: pointer;
+        transition: all var(--transition); white-space: nowrap; font-family: var(--font-body);
+    }
+    .ms-banner-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* ── Flash Messages ── */
+    .ms-flash-wrap { position: relative; z-index: 1045; }
+    .ms-flash {
+        display: flex; align-items: center; gap: 0.6rem;
+        padding: 0.875rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 0.875rem; animation: flashSlide 0.3s ease-out;
+    }
+    @keyframes flashSlide { from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;} }
+    .ms-flash-success { background: rgba(34,197,94,0.1); color: #86efac; }
+    .ms-flash-error   { background: rgba(248,113,113,0.1); color: #fca5a5; }
+    .ms-flash-warning { background: rgba(245,158,11,0.1); color: #fcd34d; }
+    .ms-flash-info    { background: rgba(0,212,170,0.08); color: var(--teal); }
+    .ms-flash-close {
+        margin-left: auto; background: none; border: none; color: inherit;
+        opacity: 0.6; cursor: pointer; font-size: 1rem; padding: 0; line-height: 1;
+        transition: opacity var(--transition);
+    }
+    .ms-flash-close:hover { opacity: 1; }
+
+    /* ── Loading Toast ── */
+    .ms-loading-toast {
+        position: fixed; top: 80px; right: 1.5rem; z-index: 9998;
+        display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem;
+        background: var(--navy-card); border: 1px solid var(--border);
+        border-radius: var(--radius-pill); box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        font-size: 0.8125rem; color: var(--teal);
+        opacity: 0; transform: translateY(-8px); transition: all var(--transition); pointer-events: none;
+    }
+    .ms-loading-toast.show { opacity: 1; transform: translateY(0); }
+    .ms-loading-spin {
+        width: 14px; height: 14px;
+        border: 1.5px solid rgba(0,212,170,0.3); border-top-color: var(--teal);
+        border-radius: 50%; animation: msSpin 0.8s linear infinite;
+    }
+    @keyframes msSpin { to { transform: rotate(360deg); } }
+
+    /* ── Skeleton ── */
+    .ms-skeleton {
+        background: linear-gradient(90deg,rgba(0,212,170,0.05) 25%,rgba(0,212,170,0.08) 50%,rgba(0,212,170,0.05) 75%);
+        background-size: 200% 100%; animation: msSkeleton 1.6s ease-in-out infinite; border-radius: var(--radius-md);
+        border: 1px solid rgba(0,212,170,0.06);
+    }
+    @keyframes msSkeleton { 0%{background-position:200% 0;}100%{background-position:-200% 0;} }
+
+    /* ── Main content ── */
+    #ms-main { padding-top: 66px; min-height: 100vh; }
+
+    /* ── Footer ── */
+    .ms-footer { background: var(--navy-mid); border-top: 1px solid var(--border); padding: 4rem 0 2rem; }
+    .ms-footer-grid {
+        max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+        display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 3rem; margin-bottom: 3rem;
+    }
+    .ms-footer-brand p { font-size: 0.84375rem; color: var(--muted); margin-top: 0.75rem; line-height: 1.7; }
+    .ms-footer-socials { display: flex; gap: 0.5rem; margin-top: 1.25rem; }
+    .ms-footer-social {
+        width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; background: var(--glass); border: 1px solid var(--border);
+        color: var(--muted); font-size: 0.875rem; transition: all var(--transition);
+    }
+    .ms-footer-social:hover { background: var(--teal-dim); border-color: var(--teal-border); color: var(--teal); transform: translateY(-2px); }
+    .ms-footer-col h5 { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); margin-bottom: 1rem; }
+    .ms-footer-col a { display: block; font-size: 0.84375rem; color: var(--muted); margin-bottom: 0.5rem; transition: color var(--transition); }
+    .ms-footer-col a:hover { color: var(--teal); }
+    .ms-footer-contact-item { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .ms-footer-contact-icon {
+        width: 36px; height: 36px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--teal-dim); border: 1px solid var(--teal-border);
+        border-radius: 50%; color: var(--teal); font-size: 0.875rem;
+    }
+    .ms-footer-contact-label { font-size: 0.7rem; color: var(--muted); }
+    .ms-footer-contact-val { font-size: 0.84375rem; color: var(--offwhite); }
+    .ms-footer-bottom {
+        max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 0;
+        border-top: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .ms-footer-bottom p { font-size: 0.8125rem; color: var(--muted); margin: 0; }
+    .ms-footer-bottom-links { display: flex; gap: 1.5rem; }
+    .ms-footer-bottom-links a { font-size: 0.8125rem; color: var(--muted); transition: color var(--transition); }
+    .ms-footer-bottom-links a:hover { color: var(--teal); }
+
+    /* ── Go-to-top ── */
+    #ms-gototop {
+        position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 900;
+        width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+        background: var(--teal); color: var(--navy); border: none;
+        border-radius: 50%; cursor: pointer; font-size: 0.875rem;
+        box-shadow: 0 4px 16px rgba(0,212,170,0.3);
+        opacity: 0; transform: translateY(10px) scale(0.9); transition: all var(--transition); pointer-events: none;
+    }
+    #ms-gototop.visible { opacity: 1; transform: none; pointer-events: auto; }
+    #ms-gototop:hover { box-shadow: 0 6px 24px rgba(0,212,170,0.5); transform: translateY(-2px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 991px) {
+        .ms-nav-links { display: none; }
+        .ms-hamburger { display: flex; }
+        .ms-status-pill { display: none; }
+        .ms-user-name { display: none; }
+    }
+    @media (max-width: 600px) {
+        .ms-footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .ms-footer-brand { grid-column: span 2; }
+        .ms-footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 400px) {
+        .ms-footer-grid { grid-template-columns: 1fr; }
+        .ms-footer-brand { grid-column: span 1; }
+    }
     </style>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'MedcuraAI')</title>
 </head>
 
-<body class="stretched page-transition"
-    data-loader-html="<div id='css3-spinner-svg-pulse-wrapper'><svg id='css3-spinner-svg-pulse' version='1.2' height='210' width='550' xmlns='https://www.w3.org/2000/svg' viewport='0 0 60 60' xmlns:xlink='https://www.w3.org/1999/xlink'><path id='css3-spinner-pulse' stroke='#DE6262' fill='none' stroke-width='2' stroke-linejoin='round' d='M0,90L250,90Q257,60 262,87T267,95 270,88 273,92t6,35 7,-60T290,127 297,107s2,-11 10,-10 1,1 8,-10T319,95c6,4 8,-6 10,-17s2,10 9,11h210'></svg></div>">
+<body>
 
-<!-- Skip to main content link for accessibility -->
-<a href="#main-content" class="sr-only sr-only-focusable btn btn-primary position-fixed" style="top: 10px; left: 10px; z-index: 9999;">Skip to main content</a>
+<a href="#ms-main" class="ms-skip-link">Skip to content</a>
 
-    {{-- Sidebar CSS/JS --}}
-    @auth
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    @include('layouts.sidebar')
-    <style>#header{display:none !important;}</style>
-    @endauth
+<!-- ═══ TOPBAR ═══ -->
+<nav id="ms-topbar" aria-label="Main navigation">
+    <div class="ms-topbar-inner">
 
-<!-- Prevent notification redirects after login -->
-<script>
-(function() {
-    // Check if we have a login parameter in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const loginParam = urlParams.get('login');
+        <a href="{{ url('/') }}" class="ms-brand">
+            <span class="ms-brand-icon"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span>
+            <span class="ms-brand-text">MedSuite<em>AI</em></span>
+        </a>
 
-    // If we have a login parameter, intercept fetch requests to notification endpoints
-    if (loginParam === 'success') {
-        const originalFetch = window.fetch;
+        @guest
+        <div class="ms-nav-links" role="navigation">
+            <a href="{{ url('/') }}" class="ms-nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
+            <a href="{{ route('about') }}" class="ms-nav-link {{ request()->routeIs('about') ? 'active' : '' }}">About</a>
+            <a href="{{ route('contact') }}" class="ms-nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
+            <a href="{{ route('doctors.index') }}" class="ms-nav-link {{ request()->routeIs('doctors.*') ? 'active' : '' }}">Find Doctors</a>
+        </div>
+        @endguest
 
-        window.fetch = function(url, options) {
-            // If this is a request to a notification endpoint, cancel it
-            if (url.includes('/api/notifications')) {
-                return Promise.resolve(new Response(JSON.stringify({}), { status: 200 }));
-            }
+        <div class="ms-topbar-spacer"></div>
 
-            // For all other requests, use the original fetch
-            return originalFetch.apply(this, arguments);
-        };
+        @auth
+        <div class="ms-status-pill">
+            <span class="ms-status-dot" aria-hidden="true"></span>
+            AI Online
+        </div>
 
-        // Also intercept any direct navigation to notification endpoints
-        const originalPushState = history.pushState;
-        history.pushState = function() {
-            const url = arguments[2];
-            if (url && url.includes('/api/notifications')) {
-                return;
-            }
-            return originalPushState.apply(this, arguments);
-        };
+        <!-- Mobile sidebar -->
+        <button id="ms-sidebar-toggle" class="ms-icon-btn d-lg-none" type="button" aria-label="Toggle sidebar">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
 
-        const originalReplaceState = history.replaceState;
-        history.replaceState = function() {
-            const url = arguments[2];
-            if (url && url.includes('/api/notifications')) {
-                // console.log('Blocking navigation to notification endpoint after login:', url);
-                return;
-            }
-            return originalReplaceState.apply(this, arguments);
-        };
-
-        // Restore original functions after a delay
-        setTimeout(() => {
-            window.fetch = originalFetch;
-            history.pushState = originalPushState;
-            history.replaceState = originalReplaceState;
-            }, 5000); // Wait 5 seconds before restoring
-    }
-})();
-</script>
-
-    <!-- Wrapper -->
-    <div id="wrapper">
-
-        <!-- Top Bar Start -->
-        <div id="top-bar" class="py-1 border-bottom"
-            style="background: white; color: #333; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div class="container">
-                <div class="row justify-content-between align-items-center">
-
-                    <!-- Left Side: Logo & Navigation -->
-                    <div class="col-md-auto d-flex align-items-center gap-3 flex-nowrap">
-                        <!-- Logo in Top Bar -->
-                        <div class="top-bar-logo">
-                            <a href="{{ url('/') }}" class="d-flex align-items-center text-decoration-none">
-                                <img style="width: 100px; height: 75px;" class="logo-default img-fluid"
-                                      src="{{ asset('demos/medical/images/logo-medical.png') }}?v={{ time() }}&cache={{ rand(1000,9999) }}"
-                                      alt="Medcura Logo">
-                            </a>
-                        </div>
-
-                        <!-- Quick Info & Status / Navigation Links -->
-                        <div class="d-none d-md-flex align-items-center gap-3 small">
-                            @auth
-                            <div class="d-flex align-items-center">
-                                <div class="status-indicator bg-success rounded-circle me-2"
-                                    style="width: 8px; height: 8px; box-shadow: 0 0 0 2px white;"></div>
-                                <span class="text-muted"><i class="bi bi-shield-check me-1 text-success"></i> AI System Online</span>
-                            </div>
-                            @else
-                            <a href="{{ url('/') }}" class="top-link" style="color: #333; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: all 0.3s ease; background: transparent; position: relative;">Home</a>
-                            <a href="{{ route('about') }}" class="top-link" style="color: #333; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: all 0.3s ease; background: transparent; position: relative;">About Us</a>
-                            <a href="{{ route('contact') }}" class="top-link" style="color: #333; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: all 0.3s ease; background: transparent; position: relative;">Contact</a>
-                            <a href="{{ route('doctors.index') }}" class="top-link" style="color: #333; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: all 0.3s ease; background: transparent; position: relative;">For Patients</a>
-                            @endauth
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Notifications & User Menu -->
-                    <div class="col-md-auto d-flex align-items-center gap-3">
-                        @auth
-                            <!-- Mobile Sidebar Toggle Button -->
-                            <button id="sidebarCollapse" class="btn btn-sm btn-outline-secondary d-lg-none d-flex align-items-center justify-content-center"
-                                    type="button" aria-label="Toggle navigation sidebar" aria-expanded="false"
-                                    title="Open sidebar menu"
-                                    style="background: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 50%; min-width: 44px; min-height: 44px; width: 44px; height: 44px;">
-                                <i class="fa-solid fa-bars" aria-hidden="true"></i>
-                            </button>
-
-                            <!-- Notifications Bell -->
-                            <div class="dropdown notifications-dropdown">
-                                <button class="btn btn-sm position-relative notification-bell dropdown-toggle d-flex align-items-center justify-content-center" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"
-                                    aria-label="Notifications menu" title="Notifications"
-                                    style="background: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 50%; min-width: 44px; min-height: 44px; width: 44px; height: 44px;">
-                                    <i class="bi bi-bell" aria-hidden="true"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-count"
-                                        id="notification-count" aria-label="unread notifications count"
-                                        style="font-size: 10px; padding: 2px 6px; display: none; font-weight: 600;">
-                                        0
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end shadow notifications-dropdown-menu"
-                                    role="menu"
-                                    aria-labelledby="notification-bell"
-                                    style="width: 320px; max-height: 350px; overflow-y: auto;">
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom" role="presentation">
-                                        <h6 class="mb-0" id="notification-header">Notifications</h6>
-                                        <div class="btn-group btn-group-sm" role="group" aria-label="Notification actions">
-                                            <button type="button" class="btn btn-outline-secondary mark-all-read-btn"
-                                                title="Mark all as read"
-                                                aria-label="Mark all notifications as read"
-                                                style="min-width: 44px; min-height: 44px;">
-                                                <i class="bi bi-check-all" aria-hidden="true"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary view-all-btn"
-                                                title="View all notifications"
-                                                aria-label="View all notifications"
-                                                style="min-width: 44px; min-height: 44px;">
-                                                <i class="bi bi-list-ul" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="notification-list" id="notification-list" role="list" aria-label="Notification list">
-                                        <div class="text-center py-4 text-muted" role="status" aria-live="polite">
-                                            <i class="bi bi-bell-slash display-6 d-block mb-2" aria-hidden="true"></i>
-                                            <small>Loading notifications...</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- User Dropdown -->
-                            <div class="dropdown">
-                                <button class="btn btn-sm d-flex align-items-center gap-2 dropdown-toggle user-dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"
-                                    style="background: #f8f9fa; color: #333; border: 1px solid #dee2e6; font-weight: 500; border-radius: 25px;">
-                                    <i class="bi bi-person-circle" aria-hidden="true"></i>
-                                    <div class="d-flex flex-column align-items-start d-none d-sm-flex">
-                                        <span class="small fw-semibold">{{ Auth::user()->name }}</span>
-                                        @if (Auth::user()->isSubUser())
-                                            <small class="opacity-75 small text-truncate" style="max-width: 120px;">{{ \App\Helpers\MenuHelper::getUserRoleDisplay(Auth::user()) }}</small>
-                                        @endif
-                                    </div>
-                                    <span class="d-sm-none">
-                                        <i class="bi bi-chevron-down" aria-hidden="true"></i>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow user-dropdown-menu">
-                                    @if (Auth::guard('admin')->check())
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-2"
-                                                href="{{ route('admin.dashboard') }}">
-                                                <i class="bi bi-shield-check"></i> Admin Dashboard
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-2"
-                                                href="{{ route('admin.users.index') }}">
-                                                <i class="bi bi-people"></i> Manage Users
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                    @endif
-                                    @if (Auth::user()->isDoctor())
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-2"
-                                                href="{{ route('settings') }}">
-                                                <i class="bi bi-gear"></i> Settings
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-2"
-                                                href="{{ route('doctor.sms-settings') }}">
-                                                <i class="fas fa-sms"></i> SMS Provider Settings
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center gap-2"
-                                                href="{{ route('doctor.profile.edit') }}">
-                                                <i class="fas fa-user-edit"></i>Edit Profile
-                                            </a>
-                                        </li>
-                                        @if (Auth::user()->isMainUser())
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center gap-2"
-                                                    href="{{ route('sub-users.index') }}">
-                                                    <i class="fas fa-users"></i> Manage Sub-Users
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endif
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2"
-                                            href="{{ route('notifications.settings') }}">
-                                            <i class="bi bi-gear"></i> Notification Settings
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <button type="submit"
-                                                class="dropdown-item text-danger d-flex align-items-center gap-2">
-                                                <i class="bi bi-box-arrow-right"></i> Logout
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        @endauth
-                        @guest
-                            <div class="d-flex gap-2 align-items-center">
-                                <a href="{{ route('login') }}"
-                                    class="btn btn-sm px-3 d-flex align-items-center justify-content-center"
-                                    style="background: #f8f9fa; color: #333; border: 1px solid #dee2e6; font-weight: 500; border-radius: 25px; min-height: 40px;">
-                                    <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>
-                                    <span class="d-none d-sm-inline">Login</span>
-                                    <span class="d-sm-none">Sign In</span>
-                                </a>
-                                <a href="{{ route('register') }}"
-                                    class="btn btn-sm px-3 d-flex align-items-center justify-content-center"
-                                    style="background: #DE6262; color: white; border: 1px solid #DE6262; font-weight: 500; border-radius: 25px; min-height: 40px;">
-                                    <i class="bi bi-person-plus me-1" aria-hidden="true"></i>
-                                    <span class="d-none d-sm-inline">Register</span>
-                                    <span class="d-sm-none">Sign Up</span>
-                                </a>
-                                <!-- Hamburger Button for Mobile Navigation -->
-                                <button class="cnvs-hamburger d-lg-none d-flex align-items-center justify-content-center"
-                                    type="button" aria-label="Toggle navigation menu" aria-expanded="false"
-                                    title="Open navigation menu"
-                                    style="background: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 50%; min-width: 44px; min-height: 44px; width: 44px; height: 44px;">
-                                    <div class="cnvs-hamburger-box">
-                                        <div class="cnvs-hamburger-inner"></div>
-                                    </div>
-                                </button>
-                            </div>
-                        @endguest
+        <!-- Notifications -->
+        <div class="ms-dropdown">
+            <button class="ms-icon-btn" id="ms-notif-toggle" type="button"
+                    aria-label="Notifications" aria-expanded="false" aria-haspopup="true">
+                <i class="bi bi-bell" aria-hidden="true"></i>
+                <span class="ms-notif-badge" id="notification-count" aria-label="unread notifications">0</span>
+            </button>
+            <div class="ms-dropdown-menu ms-notif-menu" id="ms-notif-menu" role="menu">
+                <div class="ms-notif-header">
+                    <span class="ms-notif-title">Notifications</span>
+                    <div class="ms-notif-actions">
+                        <button class="ms-notif-action-btn mark-all-read-btn" title="Mark all read" aria-label="Mark all as read">
+                            <i class="bi bi-check-all" aria-hidden="true"></i>
+                        </button>
+                        <button class="ms-notif-action-btn view-all-btn" title="View all" aria-label="View all">
+                            <i class="bi bi-list-ul" aria-hidden="true"></i>
+                        </button>
                     </div>
                 </div>
-
-
-
+                <div class="notification-list" id="notification-list" role="list" aria-live="polite">
+                    <div class="ms-notif-empty">
+                        <i class="bi bi-bell-slash" aria-hidden="true"></i>
+                        <span>Loading notifications…</span>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- User menu -->
+        <div class="ms-dropdown">
+            <button class="ms-user-chip" id="ms-user-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+                <span class="ms-user-avatar"><i class="bi bi-person" aria-hidden="true"></i></span>
+                <span class="ms-user-name">{{ Auth::user()->name }}</span>
+                <i class="bi bi-chevron-down" style="font-size:0.65rem;color:var(--muted)" aria-hidden="true"></i>
+            </button>
+            <div class="ms-dropdown-menu" id="ms-user-menu" role="menu">
+                <div class="ms-dropdown-header">{{ Auth::user()->name }}</div>
+
+                @if(Auth::guard('admin')->check())
+                <a class="ms-dropdown-item" href="{{ route('admin.dashboard') }}" role="menuitem">
+                    <i class="bi bi-shield-check"></i> Admin Dashboard
+                </a>
+                <a class="ms-dropdown-item" href="{{ route('admin.users.index') }}" role="menuitem">
+                    <i class="bi bi-people"></i> Manage Users
+                </a>
+                <div class="ms-dropdown-divider"></div>
+                @endif
+
+                @if(Auth::user()->isDoctor())
+                <a class="ms-dropdown-item" href="{{ route('settings') }}" role="menuitem"><i class="bi bi-gear"></i> Settings</a>
+                <a class="ms-dropdown-item" href="{{ route('doctor.sms-settings') }}" role="menuitem"><i class="fas fa-sms"></i> SMS Settings</a>
+                <a class="ms-dropdown-item" href="{{ route('doctor.profile.edit') }}" role="menuitem"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                @if(Auth::user()->isMainUser())
+                <div class="ms-dropdown-divider"></div>
+                <a class="ms-dropdown-item" href="{{ route('sub-users.index') }}" role="menuitem"><i class="fas fa-users"></i> Sub-Users</a>
+                @endif
+                @endif
+
+                <div class="ms-dropdown-divider"></div>
+                <a class="ms-dropdown-item" href="{{ route('notifications.settings') }}" role="menuitem">
+                    <i class="bi bi-bell-slash"></i> Notification Settings
+                </a>
+                <div class="ms-dropdown-divider"></div>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="ms-dropdown-item danger" role="menuitem"
+                            style="width:100%;text-align:left;background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:0.84375rem;">
+                        <i class="bi bi-box-arrow-right"></i> Sign Out
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        @else
+        <!-- Guest buttons -->
+        <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+            <a href="{{ route('login') }}" class="ms-btn-ghost-sm">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                <span class="d-none d-sm-inline">Sign In</span>
+            </a>
+            <a href="{{ route('register') }}" class="ms-btn-teal-sm">
+                <i class="bi bi-person-plus" aria-hidden="true"></i>
+                <span class="d-none d-sm-inline">Register</span>
+            </a>
+        </div>
+
+        <button class="ms-hamburger" id="ms-hamburger" aria-label="Open menu" aria-expanded="false">
+            <span class="ms-ham-line" aria-hidden="true"></span>
+            <span class="ms-ham-line" aria-hidden="true"></span>
+            <span class="ms-ham-line" aria-hidden="true"></span>
+        </button>
+        @endauth
+
+    </div>
+</nav>
+
+<!-- ═══ MOBILE DRAWER (guest) ═══ -->
+@guest
+<div class="ms-mobile-overlay" id="ms-overlay" aria-hidden="true"></div>
+<div class="ms-mobile-drawer" id="ms-drawer" role="dialog" aria-label="Navigation">
+    <div class="ms-drawer-header">
+        <div class="ms-brand">
+            <span class="ms-brand-icon"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span>
+            <span class="ms-brand-text">MedSuite<em>AI</em></span>
+        </div>
+        <button class="ms-drawer-close" id="ms-drawer-close" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <nav class="ms-drawer-nav">
+        <a href="{{ url('/') }}" class="ms-drawer-link"><i class="bi bi-house"></i> Home</a>
+        <a href="{{ route('about') }}" class="ms-drawer-link"><i class="bi bi-info-circle"></i> About Us</a>
+        <a href="{{ route('contact') }}" class="ms-drawer-link"><i class="bi bi-envelope"></i> Contact</a>
+        <a href="{{ route('doctors.index') }}" class="ms-drawer-link"><i class="bi bi-person-badge"></i> Find Doctors</a>
+    </nav>
+    <div class="ms-drawer-footer">
+        <a href="{{ route('register') }}"><button class="ms-drawer-btn"><i class="bi bi-person-plus"></i> Create Account</button></a>
+        <a href="{{ route('login') }}"><button class="ms-drawer-btn ms-drawer-btn-ghost"><i class="bi bi-box-arrow-in-right"></i> Sign In</button></a>
     </div>
 </div>
-<!-- Top Bar End -->
+@endguest
 
+<!-- ═══ SIDEBAR (auth) ═══ -->
+@auth
+<link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+@include('layouts.sidebar')
+@endauth
 
-        <!-- Screen Reader Announcements for Flash Messages -->
-        <div aria-live="polite" aria-atomic="true" class="sr-only">
-            @if (session('success'))
-                <div>Success: {{ session('success') }}</div>
-            @endif
-            @if (session('error'))
-                <div>Error: {{ session('error') }}</div>
-            @endif
-            @if (session('warning'))
-                <div>Warning: {{ session('warning') }}</div>
-            @endif
-            @if (session('info'))
-                <div>Information: {{ session('info') }}</div>
-            @endif
+<!-- ═══ IMPERSONATION BANNERS ═══ -->
+@if(session('impersonating_admin_id') && session('impersonating_hospital_admin_id') && session('hospital_admin_impersonation_started_at') && auth()->check() && auth()->user()->isDoctor())
+<div class="ms-banner ms-banner-chain" role="alert">
+    <div class="ms-banner-left"><i class="fas fa-users"></i>
+        <strong>Chain:</strong> {{ session('impersonating_admin_name') }} → {{ session('impersonating_hospital_admin_name') }} → Dr. {{ auth()->user()->name }}
+    </div>
+    <div class="ms-banner-actions">
+        <form method="POST" action="{{ route('return-to-hospital-admin') }}" style="display:inline">@csrf
+            <button type="submit" class="ms-banner-btn"><i class="fas fa-arrow-left"></i> Return to Hospital Admin</button>
+        </form>
+        <form method="POST" action="{{ route('return-to-admin') }}" style="display:inline">@csrf
+            <button type="submit" class="ms-banner-btn"><i class="fas fa-arrow-up"></i> Return to Admin</button>
+        </form>
+    </div>
+</div>
+@elseif(session('impersonating_hospital_admin_id') && empty(session('impersonating_admin_id')) && auth()->check() && auth()->user()->isDoctor())
+<div class="ms-banner ms-banner-hospital" role="alert">
+    <div class="ms-banner-left"><i class="fas fa-user-shield"></i>
+        <strong>Hospital Admin:</strong> {{ session('impersonating_hospital_admin_name') }} → Dr. {{ auth()->user()->name }}
+    </div>
+    <form method="POST" action="{{ route('return-to-hospital-admin') }}">@csrf
+        <button type="submit" class="ms-banner-btn"><i class="fas fa-arrow-left"></i> Return</button>
+    </form>
+</div>
+@elseif(session('impersonating_admin_id') && session('impersonating_user_id') && session('admin_impersonation_started_at') && empty(session('hospital_admin_impersonation_started_at')))
+@php $impUser = auth()->user() ?? \App\Models\User::find(session('impersonating_user_id')); @endphp
+<div class="ms-banner ms-banner-admin" role="alert">
+    <div class="ms-banner-left"><i class="fas fa-user-shield"></i>
+        <strong>Admin view:</strong> {{ session('impersonating_admin_name') }} → {{ $impUser?->name }}
+    </div>
+    <form method="POST" action="{{ route('return-to-admin') }}">@csrf
+        <button type="submit" class="ms-banner-btn"><i class="fas fa-arrow-left"></i> Return</button>
+    </form>
+</div>
+@endif
+
+<!-- ═══ FLASH MESSAGES ═══ -->
+<div class="ms-flash-wrap" aria-live="polite" aria-atomic="true">
+    @if(session('success'))
+    <div class="ms-flash ms-flash-success" role="alert">
+        <i class="fas fa-check-circle"></i> <strong>Success —</strong> {{ session('success') }}
+        <button class="ms-flash-close" onclick="this.parentElement.remove()" aria-label="Dismiss">×</button>
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="ms-flash ms-flash-error" role="alert">
+        <i class="fas fa-exclamation-circle"></i> <strong>Error —</strong> {{ session('error') }}
+        <button class="ms-flash-close" onclick="this.parentElement.remove()" aria-label="Dismiss">×</button>
+    </div>
+    @endif
+    @if(session('warning'))
+    <div class="ms-flash ms-flash-warning" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> <strong>Warning —</strong> {{ session('warning') }}
+        <button class="ms-flash-close" onclick="this.parentElement.remove()" aria-label="Dismiss">×</button>
+    </div>
+    @endif
+    @if(session('info'))
+    <div class="ms-flash ms-flash-info" role="alert">
+        <i class="fas fa-info-circle"></i> <strong>Info —</strong> {{ session('info') }}
+        <button class="ms-flash-close" onclick="this.parentElement.remove()" aria-label="Dismiss">×</button>
+    </div>
+    @endif
+</div>
+
+<!-- Loading toast -->
+<div class="ms-loading-toast" id="ms-loading-toast" aria-live="polite">
+    <div class="ms-loading-spin" aria-hidden="true"></div>
+    <span>Loading…</span>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div id="ms-main">
+    <main id="main-content" class="dashboard-container">
+        <div class="app-main">
+            @yield('content')
         </div>
+    </main>
+</div>
 
-        <!-- Flash Messages -->
-        @if (session('success') || session('error') || session('warning') || session('info'))
-            <div class="container-fluid px-0">
-                <div class="row">
-                    <div class="col-12">
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show m-0 rounded-0 border-0"
-                                role="alert" aria-live="assertive">
-                                <div class="container">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-check-circle me-2" aria-hidden="true"></i>
-                                        <strong>Success!</strong> {{ session('success') }}
-                                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"
-                                            aria-label="Close success message"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show m-0 rounded-0 border-0"
-                                role="alert" aria-live="assertive">
-                                <div class="container">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-exclamation-circle me-2" aria-hidden="true"></i>
-                                        <strong>Error!</strong> {{ session('error') }}
-                                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"
-                                            aria-label="Close error message"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if (session('warning'))
-                            <div class="alert alert-warning alert-dismissible fade show m-0 rounded-0 border-0"
-                                role="alert" aria-live="assertive">
-                                <div class="container">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
-                                        <strong>Warning!</strong> {{ session('warning') }}
-                                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"
-                                            aria-label="Close warning message"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if (session('info'))
-                            <div class="alert alert-info alert-dismissible fade show m-0 rounded-0 border-0"
-                                role="alert" aria-live="assertive">
-                                <div class="container">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
-                                        <strong>Info!</strong> {{ session('info') }}
-                                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"
-                                            aria-label="Close info message"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                </div>
+<!-- ═══ FOOTER (guest) ═══ -->
+@guest
+<footer class="ms-footer" role="contentinfo">
+    <div class="ms-footer-grid">
+        <div class="ms-footer-brand">
+            <div class="ms-brand">
+                <span class="ms-brand-icon"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span>
+                <span class="ms-brand-text">MedSuite<em>AI</em></span>
             </div>
-        @endif
-
-        @php
-            // DEBUG: Check session variables for banner display
-            $debugInfo = [
-                'admin_id' => session('impersonating_admin_id'),
-                'hospital_admin_id' => session('impersonating_hospital_admin_id'),
-                'admin_started' => session('admin_impersonation_started_at'),
-                'hospital_started' => session('hospital_admin_impersonation_started_at'),
-                'user_id' => session('impersonating_user_id'),
-                'user_role' => auth()->user()?->role,
-            ];
-        @endphp
-
-        <!-- Chain Impersonation: ONLY if hospital admin started time exists AND we have admin session -->
-        @if(session('impersonating_admin_id') && session('impersonating_hospital_admin_id') && session('hospital_admin_impersonation_started_at') && !empty(session('hospital_admin_impersonation_started_at')) && auth()->check() && auth()->user()->isDoctor())
-            <!-- Chain Impersonation Banner (Sky Blue) -->
-            <div class="bg-info py-2">
-                <div class="container">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-users me-2 text-white"></i>
-                            <small class="mb-0 text-white">
-                                <strong>Chain Impersonation:</strong>
-                                {{ session('impersonating_admin_name', 'Admin') }} → {{ session('impersonating_hospital_admin_name') }} → Dr. {{ auth()->user()->name }}
-                            </small>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <form method="POST" action="{{ route('return-to-hospital-admin') }}" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-light btn-sm py-1 px-2">
-                                    <i class="fas fa-arrow-left me-1"></i>Return to Hospital Admin
-                                </button>
-                            </form>
-                            <form method="POST" action="{{ route('return-to-admin') }}" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-light btn-sm py-1 px-2">
-                                    <i class="fas fa-arrow-up me-1"></i>Return to Admin
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @elseif(session('impersonating_hospital_admin_id') && empty(session('impersonating_admin_id')) && auth()->check() && auth()->user()->isDoctor())
-            <!-- Direct Hospital Admin Banner (Yellow) - Only when NO admin session -->
-            <div class="bg-warning py-2">
-                <div class="container">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-user-shield me-2"></i>
-                            <small class="mb-0">
-                                <strong>Hospital Admin Impersonation:</strong>
-                                {{ session('impersonating_hospital_admin_name') }} is viewing as Dr. {{ auth()->user()->name }}
-                            </small>
-                        </div>
-                        <form method="POST" action="{{ route('return-to-hospital-admin') }}" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-dark btn-sm py-1 px-2">
-                                <i class="fas fa-arrow-left me-1"></i>Return to Hospital Admin
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        @elseif(session('impersonating_admin_id') && session('impersonating_user_id') && session('admin_impersonation_started_at') && empty(session('hospital_admin_impersonation_started_at')))
-            <!-- Direct Admin Banner (Red) - Only when NO hospital admin session active -->
-            @php
-                $impersonatedUser = auth()->user();
-                $impersonatedUserId = session('impersonating_user_id');
-
-                // Fallback: if auth()->user() is null, try to get user from session
-                if (!$impersonatedUser && $impersonatedUserId) {
-                    $impersonatedUser = \App\Models\User::find($impersonatedUserId);
-                }
-
-                $userName = $impersonatedUser?->name ?? 'User';
-                $userRole = $impersonatedUser?->role ?? 'unknown';
-            @endphp
-            <div class="bg-danger py-2">
-                <div class="container">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-user-shield me-2 text-white"></i>
-                            <small class="mb-0 text-white">
-                                <strong>Admin Impersonation:</strong>
-                                {{ session('impersonating_admin_name', 'Admin') }} is viewing as {{ $userName }} ({{ ucfirst(str_replace('_', ' ', $userRole)) }})
-                            </small>
-                        </div>
-                        <form method="POST" action="{{ route('return-to-admin') }}" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-light btn-sm py-1 px-2">
-                                <i class="fas fa-arrow-left me-1"></i>Return to Admin
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        <!-- AJAX Loading Indicator -->
-        <div id="ajax-loading-overlay" class="ajax-loading-overlay">
-            <div class="loading-spinner"></div>
-            <span>Loading...</span>
-        </div>
-
-        <!-- Main Content -->
-        <div id="main-content" class="dashboard-container">
-            <!-- Seamless connection gradient -->
-            <div style="position: absolute; top: -5px; left: 0; right: 0; height: 15px; background: linear-gradient(to bottom, rgba(222, 98, 98, 0.2), transparent); pointer-events: none;"></div>
-            <main class="app-main">
-                @yield('content')
-            </main>
-        </div>
-
-    </div><!-- #wrapper end -->
-		<!-- Footer -->
-
-
-    @if (!auth()->check())
-        <!-- Footer -->
-        <footer id="footer" class="text-white py-5" role="contentinfo"
-    style="background: white; color: #333;">
-    <div class="container">
-        <div class="row g-4">
-            <!-- Company Info -->
-            <div class="col-lg-4 col-md-6">
-                <div class="footer-brand mb-4">
-                    <h4 class="mb-3" style="color: #DE6262 !important;">
-                        <i class="bi bi-heart-pulse me-2" style="color: #DE6262;"></i>
-                        Clinical Decision Support
-                    </h4>
-                    <p class="text-muted mb-4">
-                        Revolutionizing healthcare with cutting-edge clinical technology.
-                        Empowering medical professionals with advanced decision support tools for
-                        superior patient care and outcomes.
-                    </p>
-
-                    <!-- Social Links -->
-                    <div class="social-links">
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle me-2 p-2"
-                            style="width: 40px; height: 40px; border-color: #dee2e6; color: #333;">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle me-2 p-2"
-                            style="width: 40px; height: 40px; border-color: #dee2e6; color: #333;">
-                            <i class="bi bi-twitter"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle me-2 p-2"
-                            style="width: 40px; height: 40px; border-color: #dee2e6; color: #333;">
-                            <i class="bi bi-linkedin"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle me-2 p-2"
-                            style="width: 40px; height: 40px; border-color: #dee2e6; color: #333;">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Links -->
-            <div class="col-lg-2 col-md-6">
-                <h6 class="mb-3" style="color: #DE6262 !important;">Platform</h6>
-                <ul class="list-unstyled footer-links">
-                    @auth
-                        <li class="mb-2"><a href="{{ route('dashboard') }}" class="text-muted text-decoration-none hover-link">Dashboard</a></li>
-                        {{-- AI Ask temporarily disabled --}}
-                        {{-- <li class="mb-2"><a href="{{ route('ai.ask-ai') }}" class="text-muted text-decoration-none hover-link">AI Assistant</a></li> --}}
-                        <li class="mb-2"><a href="{{ route('doctor.cases.overview') }}" class="text-muted text-decoration-none hover-link">Cases Overview</a></li>
-                        <li class="mb-2"><a href="{{ route('settings') }}" class="text-muted text-decoration-none hover-link">Settings</a></li>
-                    @else
-                        <li class="mb-2"><a href="{{ url('/') }}" class="text-muted text-decoration-none hover-link">Home</a></li>
-                        <li class="mb-2"><a href="{{ route('about') }}" class="text-muted text-decoration-none hover-link">About Us</a></li>
-                        <li class="mb-2"><a href="{{ route('contact') }}" class="text-muted text-decoration-none hover-link">Contact</a></li>
-                        <li class="mb-2"><a href="{{ route('login') }}" class="text-muted text-decoration-none hover-link">Login</a></li>
-                    @endauth
-                </ul>
-            </div>
-
-            <!-- Resources -->
-            <div class="col-lg-2 col-md-6">
-                <h6 class="mb-3" style="color: #DE6262 !important;">Support</h6>
-                <ul class="list-unstyled footer-links">
-                    <li class="mb-2"><a href="{{ route('about') }}" class="text-muted text-decoration-none hover-link">About Platform</a></li>
-                    <li class="mb-2"><a href="{{ route('contact') }}" class="text-muted text-decoration-none hover-link">Contact Support</a></li>
-                    @auth
-                        <li class="mb-2"><a href="{{ route('settings') }}" class="text-muted text-decoration-none hover-link">Profile Settings</a></li>
-                    @endauth
-                </ul>
-            </div>
-
-            <!-- Contact & Support -->
-            <div class="col-lg-4 col-md-6">
-                <h6 class="mb-3" style="color: #DE6262 !important;">Contact & Support</h6>
-
-                <!-- Go To Top Button -->
-                <div id="gotoTop" class="fas fa-chevron-up rounded-circle"
-                    style="position: fixed; bottom: 20px; right: 20px; width: 40px; height: 40px; background-color: #DE6262; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; opacity: 0.8; transition: opacity 0.3s;">
-                </div>
-
-                <div class="d-flex align-items-center mb-3">
-                    <div class="contact-icon me-3"
-                        style="width: 40px; height: 40px; background: rgba(222,98,98,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <i class="bi bi-headset" style="color: #DE6262;"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted d-block">24/7 Support</small>
-                        <span style="color: #333;">AI-Powered Help Available</span>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-center mb-4">
-                    <div class="contact-icon me-3"
-                        style="width: 40px; height: 40px; background: rgba(222,98,98,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <i class="bi bi-shield-check" style="color: #DE6262;"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted d-block">Security & Privacy</small>
-                        <span style="color: #333;">HIPAA Compliant Platform</span>
-                    </div>
-                </div>
-
-                <!-- Quick Contact -->
-                <div class="quick-contact">
-                    <h6 class="mb-2" style="color: #333;">Need Help?</h6>
-                    <p class="text-muted small mb-3">Our AI-powered support is here to assist you</p>
-                    <a href="{{ route('contact') }}" class="btn btn-sm"
-                        style="background: #DE6262; color: white; border: none; border-radius: 25px;">
-                        <i class="bi bi-chat-dots me-2"></i>Contact Support
-                    </a>
-                </div>
+            <p>AI-powered clinical decision support for modern healthcare professionals. Secure, HIPAA-compliant, built for exceptional patient outcomes.</p>
+            <div class="ms-footer-socials">
+                <a href="#" class="ms-footer-social" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="ms-footer-social" aria-label="X / Twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="ms-footer-social" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="ms-footer-social" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
             </div>
         </div>
-
-        <!-- Footer Bottom -->
-        <hr class="my-4" style="border-color: #dee2e6;">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <p class="text-muted mb-0">
-                    &copy; {{ date('Y') }} MedCura Clinical Platform. All rights reserved.
-                </p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <div class="footer-legal-links">
-                    <span class="text-muted me-3">Secure & HIPAA Compliant</span>
-                    <a href="{{ route('contact') }}" class="text-muted text-decoration-none hover-link me-3">Contact Us</a>
-                    <a href="{{ route('admin.login') }}" class="text-muted text-decoration-none hover-link"
-                        style="font-size: 0.8rem;">Admin</a>
+        <div class="ms-footer-col">
+            <h5>Platform</h5>
+            <a href="{{ url('/') }}">Home</a>
+            <a href="{{ route('about') }}">About Us</a>
+            <a href="{{ route('contact') }}">Contact</a>
+            <a href="{{ route('login') }}">Sign In</a>
+        </div>
+        <div class="ms-footer-col">
+            <h5>Support</h5>
+            <a href="{{ route('about') }}">Platform Overview</a>
+            <a href="{{ route('contact') }}">Contact Support</a>
+            <a href="#">Documentation</a>
+            <a href="{{ route('admin.login') }}" style="font-size:0.75rem;opacity:0.45;">Admin Portal</a>
+        </div>
+        <div class="ms-footer-col">
+            <h5>Security & Trust</h5>
+            <div class="ms-footer-contact-item">
+                <div class="ms-footer-contact-icon"><i class="bi bi-shield-check"></i></div>
+                <div>
+                    <div class="ms-footer-contact-label">Compliance</div>
+                    <div class="ms-footer-contact-val">HIPAA Compliant & Encrypted</div>
                 </div>
             </div>
+            <div class="ms-footer-contact-item">
+                <div class="ms-footer-contact-icon"><i class="bi bi-headset"></i></div>
+                <div>
+                    <div class="ms-footer-contact-label">Support</div>
+                    <div class="ms-footer-contact-val">AI-Powered 24 / 7</div>
+                </div>
+            </div>
+            <a href="{{ route('contact') }}" class="ms-btn-teal-sm" style="margin-top:0.5rem;width:fit-content;">
+                <i class="bi bi-chat-dots"></i> Get Support
+            </a>
+        </div>
+    </div>
+    <div class="ms-footer-bottom">
+        <p>&copy; {{ date('Y') }} MedSuite AI. All rights reserved.</p>
+        <div class="ms-footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">HIPAA Compliance</a>
         </div>
     </div>
 </footer>
+@endguest
 
-    @endif
+<button id="ms-gototop" aria-label="Back to top" title="Back to top">
+    <i class="bi bi-chevron-up" aria-hidden="true"></i>
+</button>
 
-    <style>
-        .hover-link:hover {
-            color: #DE6262 !important;
-            transition: color 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background-color: #DE6262 !important;
-            border-color: #DE6262 !important;
-            color: white !important;
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-
-        .newsletter-signup input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .newsletter-signup input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #DE6262;
-            box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.25);
-            color: white;
-        }
-    </style>
-
-    </div><!-- #wrapper end -->
-
-    <!-- Go To Top
- ============================================= -->
-    <div id="gotoTop" class="fas fa-chevron-up rounded-circle"
-        style="position: fixed; bottom: 20px; right: 20px; width: 40px; height: 40px; background-color: #007bff; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; opacity: 0.8; transition: opacity 0.3s;">
-    </div>
-
-    <!-- JavaScripts
- ============================================= -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/plugins.min.js') }}"></script>
-    <script src="{{ asset('js/functions.bundle.js') }}"></script>
-    <!-- Ensure Bootstrap JS (with Popper) is available for dropdowns/modals -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    @auth
-    <!-- Sidebar JS -->
-    <script src="{{ asset('js/sidebar.js') }}" defer></script>
-    @endauth
-
-    <!-- Vite Assets (Laravel Echo & Pusher) -->
-    @viteReactRefresh
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
-
-    <!-- Notification System Styles -->
-    @include('notifications._styles')
-
-    <!-- Notification Manager Script -->
-    <script src="{{ asset('js/notification-manager.js?v=' . time()) }}"></script>
-
-    <!-- Notification Sound System -->
-    <script src="{{ asset('sounds/notification-sound.js?v=' . time()) }}"></script>
-
-    <!-- Notification Accessibility Test Script -->
-    <script src="{{ asset('js/notification-accessibility-test.js?v=' . time()) }}"></script>
-
-    <!-- Remove conflicting notification scripts - now handled by Vite -->
-
-{{-- Modals --}}
 @stack('modals')
 
-{{-- Extra scripts --}}
-@stack('scripts')
-
-{{-- AJAX Navigation Script --}}
-<script>
-$(document).ready(function() {
-   // Intercept sidebar link clicks
-   $(document).on('click', '.sidebar-nav a[data-ajax="true"]', function(e) {
-       e.preventDefault();
-
-       const $link = $(this);
-       const route = $link.data('route');
-       const url = $link.attr('href');
-
-       // Don't navigate if already active
-       if ($link.hasClass('active')) {
-           return;
-       }
-
-       // Update active state
-       $('.sidebar-nav .nav-link').removeClass('active');
-       $link.addClass('active');
-
-       // Load content via AJAX
-       loadPageContent(url, route);
-
-       // Update browser history
-       history.pushState({route: route, url: url}, '', url);
-   });
-
-   // Handle browser back/forward buttons
-   window.addEventListener('popstate', function(e) {
-       if (e.state && e.state.url) {
-           loadPageContent(e.state.url, e.state.route);
-       }
-   });
-});
-
-function loadPageContent(url, route) {
-    // Clean up voice assistant elements if navigating away from voice-assistant page
-    if (url !== '/ai/voice-assistant') {
-        // Clean up keyboard shortcuts help
-        const helpIndicator = document.querySelector('.keyboard-shortcuts-help');
-        if (helpIndicator) {
-            helpIndicator.remove();
-        }
-    }
-
-    // Show loading overlay and skeleton
-    const $loadingOverlay = $('#ajax-loading-overlay');
-    const $mainContent = $('#main-content');
-    const originalContent = $mainContent.html();
-
-    // Show loading overlay
-    $loadingOverlay.addClass('show');
-
-    $mainContent.html(`
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-12 col-lg-10">
-                    <!-- Skeleton Header -->
-                    <div class="skeleton-loader skeleton-header"></div>
-
-                    <!-- Skeleton Stats Cards -->
-                    <div class="skeleton-stats">
-                        <div class="skeleton-loader skeleton-stat-card"></div>
-                        <div class="skeleton-loader skeleton-stat-card"></div>
-                        <div class="skeleton-loader skeleton-stat-card"></div>
-                        <div class="skeleton-loader skeleton-stat-card"></div>
-                    </div>
-
-                    <!-- Skeleton Tabs -->
-                    <div class="skeleton-loader skeleton-tabs"></div>
-
-                    <!-- Skeleton Table -->
-                    <div class="skeleton-loader skeleton-table">
-                        <div class="skeleton-loader skeleton-table-header"></div>
-                        <div class="skeleton-loader skeleton-table-row"></div>
-                        <div class="skeleton-loader skeleton-table-row"></div>
-                        <div class="skeleton-loader skeleton-table-row"></div>
-                        <div class="skeleton-loader skeleton-table-row"></div>
-                        <div class="skeleton-loader skeleton-table-row"></div>
-                        <div class="skeleton-loader skeleton-table-row"></div>
-                        <div class="skeleton-loader skeleton-table-row"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `);
-
-   $.ajax({
-       url: url,
-       method: 'GET',
-       headers: {
-           'X-Requested-With': 'XMLHttpRequest',
-           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-       },
-       success: function(response) {
-           try {
-               // Hide loading overlay
-               $loadingOverlay.removeClass('show');
-
-               // Extract content from the response (between main-content div)
-               const $temp = $('<div>').html(response);
-               const newContent = $temp.find('#main-content').html();
-
-               if (newContent) {
-                   $mainContent.html(newContent);
-
-                   // Update page title
-                   const newTitle = $temp.find('title').text();
-                   if (newTitle) {
-                       document.title = newTitle;
-                   }
-
-                   // Mark content as AJAX loaded for components that need to know
-                   $mainContent.attr('data-ajax-loaded', 'true');
-
-                   // Re-initialize any JavaScript components (including executing scripts)
-                   initializePageComponents(route);
-
-                   // Scroll to top smoothly
-                   $('html, body').animate({ scrollTop: 0 }, 300);
-               } else {
-                   // If no main-content found, assume full page response
-                   $mainContent.html(response);
-               }
-           } catch (error) {
-               // console.error('Error parsing AJAX response:', error);
-               $mainContent.html(originalContent);
-               showAjaxError('Failed to load page content. Please try again.');
-           }
-       },
-       error: function(xhr, status, error) {
-           // Hide loading overlay
-           $loadingOverlay.removeClass('show');
-
-           // console.error('AJAX Error:', error);
-           $mainContent.html(originalContent);
-
-           // Fallback to regular navigation for critical errors
-           if (xhr.status === 0 || xhr.status >= 500) {
-               showAjaxError('Connection failed. Redirecting...');
-               setTimeout(() => {
-                   window.location.href = url;
-               }, 2000);
-           } else {
-               showAjaxError('Failed to load page. Please refresh and try again.');
-           }
-       }
-   });
-}
-
-function initializePageComponents(route) {
-    // Execute any script tags in the newly loaded content
-    executeScriptsInContent();
-
-    // Re-initialize DataTables if present
-    if (typeof $.fn.DataTable !== 'undefined') {
-        $('.dataTable').each(function() {
-            if ($.fn.DataTable.isDataTable(this)) {
-                $(this).DataTable().destroy();
-            }
-        });
-
-        // Re-initialize DataTables with new content
-        if (typeof initializeDataTable === 'function') {
-            initializeDataTable();
-        }
-    }
-
-    // Re-initialize Bootstrap components (Bootstrap 5 - no jQuery plugins)
-    if (typeof bootstrap !== 'undefined') {
-        // Re-initialize tooltips
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(element => {
-            const tooltip = bootstrap.Tooltip.getInstance(element);
-            if (tooltip) {
-                tooltip.dispose();
-            }
-            new bootstrap.Tooltip(element);
-        });
-
-        // Re-initialize popovers
-        document.querySelectorAll('[data-bs-toggle="popover"]').forEach(element => {
-            const popover = bootstrap.Popover.getInstance(element);
-            if (popover) {
-                popover.dispose();
-            }
-            new bootstrap.Popover(element);
-        });
-
-        // Clean up modals (dispose existing instances)
-        document.querySelectorAll('.modal').forEach(modalElement => {
-            const modal = bootstrap.Modal.getInstance(modalElement);
-            if (modal) {
-                modal.dispose();
-            }
-        });
-    }
-
-    // Trigger custom event for page-specific initializations
-    $(document).trigger('pageContentLoaded', [route]);
-}
-
-// Function to execute script tags in dynamically loaded content
-function executeScriptsInContent() {
-    // Find all script tags in the main content area that haven't been executed yet
-    const scripts = document.querySelectorAll('#main-content script:not([data-executed])');
-
-    // Separate external and inline scripts
-    const externalScripts = [];
-    const inlineScripts = [];
-
-    scripts.forEach(script => {
-        if (script.src) {
-            externalScripts.push(script);
-        } else if (script.textContent) {
-            inlineScripts.push(script);
-        }
-    });
-
-    // Load external scripts first, then execute inline scripts
-    if (externalScripts.length > 0) {
-        loadExternalScriptsSequentially(externalScripts, () => {
-            executeInlineScripts(inlineScripts);
-        });
-    } else {
-        executeInlineScripts(inlineScripts);
-    }
-}
-
-function loadExternalScriptsSequentially(scripts, callback) {
-    let index = 0;
-
-    function loadNext() {
-        if (index >= scripts.length) {
-            callback();
-            return;
-        }
-
-        const script = scripts[index];
-        const newScript = document.createElement('script');
-        newScript.src = script.src;
-        newScript.async = false; // Load synchronously to ensure proper order
-        newScript.defer = false;
-
-        // Copy any data attributes
-        Array.from(script.attributes).forEach(attr => {
-            if (attr.name.startsWith('data-')) {
-                newScript.setAttribute(attr.name, attr.value);
-            }
-        });
-
-        newScript.onload = () => {
-            // console.log('Loaded external script:', script.src);
-            script.setAttribute('data-executed', 'true');
-            index++;
-            loadNext();
-        };
-
-        newScript.onerror = () => {
-            // console.error('Failed to load external script:', script.src);
-            script.setAttribute('data-executed', 'true');
-            index++;
-            loadNext(); // Continue with next script even if one fails
-        };
-
-        // Replace the old script with the new one
-        script.parentNode.replaceChild(newScript, script);
-    }
-
-    loadNext();
-}
-
-function executeInlineScripts(scripts) {
-    scripts.forEach(script => {
-        try {
-            // Execute the script in global scope
-            (function() {
-                eval(script.textContent);
-            })();
-            script.setAttribute('data-executed', 'true');
-        } catch (error) {
-            // console.error('Error executing inline script:', error);
-        }
-    });
-}
-
-function showAjaxError(message) {
-   // Create a temporary error notification
-   const $error = $(`
-       <div class="alert alert-danger alert-dismissible fade show position-fixed"
-            style="top: 80px; right: 20px; z-index: 9999; min-width: 300px;">
-           <i class="fas fa-exclamation-triangle me-2"></i>
-           ${message}
-           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-       </div>
-   `);
-
-   $('body').append($error);
-
-   // Auto-remove after 5 seconds
-   setTimeout(() => {
-       $error.alert('close');
-   }, 5000);
-}
-</script>
-
-<script>
-    // Dropdown initialization
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof bootstrap === 'undefined') {
-            // console.error('Bootstrap not loaded, dropdowns will not work');
-            return;
-        }
-
-        setTimeout(function() {
-            // Initialize all dropdown toggles
-            document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-                try {
-                    if (!bootstrap.Dropdown.getInstance(toggle)) {
-                        new bootstrap.Dropdown(toggle, {
-                            autoClose: true,
-                            offset: [0, 2]
-                        });
-                    }
-                } catch (e) {
-                    // console.error('Error initializing dropdown:', e);
-                }
-            });
-
-            // Check notifications dropdown specifically
-            const notificationsDropdown = document.querySelector('.notifications-dropdown');
-            if (notificationsDropdown) {
-                const toggle = notificationsDropdown.querySelector('.dropdown-toggle');
-
-                if (toggle) {
-                    // Ensure Bootstrap dropdown is properly initialized for notifications
-                    try {
-                        if (!bootstrap.Dropdown.getInstance(toggle)) {
-                            const dropdownInstance = new bootstrap.Dropdown(toggle, {
-                                autoClose: true,
-                                offset: [0, 2]
-                            });
-                        }
-                    } catch (e) {
-                        // console.error('Error initializing notifications dropdown:', e);
-                    }
-                }
-            }
-
-            // Add event listener for notifications dropdown to load notifications when opened
-            if (notificationsDropdown) {
-                notificationsDropdown.addEventListener('shown.bs.dropdown', function() {
-                    loadNotifications();
-                    // Focus first focusable element in dropdown for keyboard navigation
-                    setTimeout(() => {
-                        const firstFocusable = notificationsDropdown.querySelector('.mark-all-read-btn, .view-all-btn, .notification-item');
-                        if (firstFocusable) {
-                            firstFocusable.focus();
-                        }
-                    }, 100);
-                });
-
-                // Add keyboard navigation support
-                notificationsDropdown.addEventListener('keydown', function(e) {
-                    const dropdownMenu = notificationsDropdown.querySelector('.dropdown-menu');
-                    if (!dropdownMenu) return;
-
-                    const focusableElements = dropdownMenu.querySelectorAll(
-                        '.mark-all-read-btn, .view-all-btn, .notification-item, .dropdown-item'
-                    );
-                    const firstElement = focusableElements[0];
-                    const lastElement = focusableElements[focusableElements.length - 1];
-
-                    switch (e.key) {
-                        case 'ArrowDown':
-                            e.preventDefault();
-                            const currentIndex = Array.from(focusableElements).indexOf(document.activeElement);
-                            const nextIndex = currentIndex < focusableElements.length - 1 ? currentIndex + 1 : 0;
-                            focusableElements[nextIndex].focus();
-                            break;
-                        case 'ArrowUp':
-                            e.preventDefault();
-                            const currentIndexUp = Array.from(focusableElements).indexOf(document.activeElement);
-                            const prevIndex = currentIndexUp > 0 ? currentIndexUp - 1 : focusableElements.length - 1;
-                            focusableElements[prevIndex].focus();
-                            break;
-                        case 'Home':
-                            e.preventDefault();
-                            firstElement.focus();
-                            break;
-                        case 'End':
-                            e.preventDefault();
-                            lastElement.focus();
-                            break;
-                        case 'Escape':
-                            e.preventDefault();
-                            const dropdownInstance = bootstrap.Dropdown.getInstance(notificationsDropdown.querySelector('.dropdown-toggle'));
-                            if (dropdownInstance) {
-                                dropdownInstance.hide();
-                            }
-                            break;
-                    }
-                });
-            }
-
-            // Fix dropdown click handling - Bootstrap's data-bs-toggle auto-handling not working
-            document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault(); // Prevent default Bootstrap behavior
-                    e.stopPropagation(); // Stop event bubbling
-
-                    const instance = bootstrap.Dropdown.getInstance(this);
-                    if (instance) {
-                        instance.toggle();
-                    }
-                });
-            });
-        }, 100);
-    });
-
-    // Fallback initialization
-    window.addEventListener('load', function() {
-        setTimeout(() => {
-            document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-                try {
-                    if (!bootstrap.Dropdown.getInstance(toggle)) {
-                        new bootstrap.Dropdown(toggle);
-                    }
-                } catch (e) {
-                    // console.error('Fallback dropdown initialization error:', e);
-                }
-            });
-        }, 500);
-    });
-
-        // MOBILE NAVIGATION TOGGLE - Show/Hide navigation links
-        function initializeMobileNavigation() {
-            // Find the hamburger button
-            let mobileMenuTrigger = document.querySelector('.primary-menu-trigger .cnvs-hamburger');
-            if (!mobileMenuTrigger) {
-                mobileMenuTrigger = document.querySelector('.cnvs-hamburger');
-            }
-            if (!mobileMenuTrigger) {
-                mobileMenuTrigger = document.querySelector('button[title="Open Mobile Menu"]');
-            }
-
-            if (!mobileMenuTrigger) {
-                // console.log('Hamburger button not found - checking all possible selectors');
-                // console.log('Available hamburger buttons:', document.querySelectorAll('.cnvs-hamburger'));
-                // console.log('Available primary-menu-trigger:', document.querySelectorAll('.primary-menu-trigger'));
-                return;
-            }
-
-            // console.log('Hamburger button found:', mobileMenuTrigger);
-
-            // Find the navigation links container
-            const navLinks = document.querySelector('.d-none.d-md-flex.align-items-center.gap-3.small');
-
-            // Create bottom sheet menu
-            const bottomSheet = document.createElement('div');
-            bottomSheet.className = 'bottom-sheet-menu';
-            bottomSheet.style.cssText = `
-                position: fixed;
-                bottom: -100%;
-                left: 0;
-                width: 100%;
-                max-height: 80vh;
-                background: white;
-                z-index: 9999999;
-                border-radius: 20px 20px 0 0;
-                box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
-                transition: bottom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-                overflow-y: auto;
-            `;
-
-            // Create menu content
-            const menuContent = `
-                <div style="
-                    padding: 20px;
-                    border-bottom: 1px solid #eee;
-                    background: linear-gradient(135deg, #DE6262 0%, #c54545 100%);
-                    color: white;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                ">
-                    <h3 style="margin: 0; font-size: 18px; font-weight: 600;">
-                        <i class="fas fa-bars me-2"></i>Navigation Menu
-                    </h3>
-                    <button class="close-bottom-sheet" style="
-                        background: none;
-                        border: none;
-                        color: white;
-                        font-size: 24px;
-                        cursor: pointer;
-                        padding: 5px;
-                    ">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="menu-items-container" style="padding: 20px;">
-                    <!-- Menu items will be added here -->
-                </div>
-            `;
-
-            bottomSheet.innerHTML = menuContent;
-
-            // Add menu items
-            const menuItemsContainer = bottomSheet.querySelector('.menu-items-container');
-
-            // Define menu items manually (since cloning was problematic)
-            const menuItems = [
-                {
-                    title: 'Dashboard',
-                    icon: 'fas fa-tachometer-alt',
-                    url: '{{ route("dashboard") }}',
-                    submenu: null
-                },
-                {{-- AI Ask temporarily disabled --}}
-                {{-- {
-                    title: 'Ask AI',
-                    // icon: 'fas fa-robot',
-                    // url: '{{ route("ai.ask-ai") }}',
-                    // submenu: null
-                }, --}}
-                {
-                    title: 'Voice Assistant',
-                    icon: 'fas fa-microphone',
-                    url: '{{ route("ai.ambient-listening.index") }}',
-                    submenu: null
-                },
-                {
-                    title: 'Medical Tools',
-                    icon: 'fas fa-stethoscope',
-                    url: '#',
-                    submenu: [
-                        { title: 'Patient Management', icon: 'fas fa-folder-medical', url: '/doctor/patient-management' },
-                        { title: 'Diagnosis', icon: 'fas fa-diagnoses', url: '/diagnosis' },
-                        { title: 'Medical Notes', icon: 'fas fa-notes-medical', url: '/medical-notes' }
-                    ]
-                },
-                {
-                    title: 'Appointments',
-                    icon: 'fas fa-calendar-check',
-                    url: '#',
-                    submenu: [
-                        { title: 'View Appointments', icon: 'fas fa-calendar', url: '{{ route("appointments.index") }}' },
-                        { title: 'Reviews', icon: 'fas fa-star', url: '{{ route("reviews.index") }}' }
-                    ]
-                },
-                {
-                    title: 'Sub Users',
-                    icon: 'fas fa-users',
-                    url: '{{ route("sub-users.index") }}',
-                    submenu: null
-                },
-
-                {
-                    title: 'Profile',
-                    icon: 'fas fa-user',
-                    url: '{{ route("doctor.profile.edit") }}',
-                    submenu: null
-                },
-                {
-                    title: 'Settings',
-                    icon: 'fas fa-cog',
-                    url: '{{ route("settings") }}',
-                    submenu: null
-                }
-            ];
-
-            // Add admin menu item if user is admin
-            const isAdmin = {{ Auth::check() && Auth::user() && Auth::user()->isAdmin() ? 'true' : 'false' }};
-            if (isAdmin) {
-                menuItems.splice(-2, 0, {
-                    title: 'Admin Panel',
-                    icon: 'fas fa-cog',
-                    url: '#',
-                    submenu: [
-                        { title: 'Dashboard', icon: 'fas fa-tachometer-alt', url: '{{ route("admin.dashboard") }}' },
-                        { title: 'User Management', icon: 'fas fa-users-cog', url: '{{ route("admin.users.index") }}' },
-                        { title: 'System Settings', icon: 'fas fa-sliders-h', url: '{{ route("admin.system-settings") }}' },
-                        { title: 'SMS Settings', icon: 'fas fa-comment-sms', url: '{{ route("admin.sms-settings") }}' },
-                        { title: 'WhatsApp Settings', icon: 'fab fa-whatsapp', url: '{{ route("admin.whatsapp-settings") }}' },
-                        { title: 'Billing', icon: 'fas fa-dollar-sign', url: '{{ route("admin.billing") }}' }
-                    ]
-                });
-            if (!navLinks) {
-                // console.log('Navigation links container not found - checking all possible selectors');
-                // console.log('Available navigation containers:', document.querySelectorAll('[class*="d-none"][class*="d-md-flex"]'));
-                // console.log('All div elements:', document.querySelectorAll('div').length);
-                return;
-            }
-
-            // console.log('Navigation links container found:', navLinks);
-            // console.log('Navigation links HTML:', navLinks.innerHTML);
-
-            // Function to toggle navigation
-            function toggleMobileNav() {
-                // console.log('Toggling mobile navigation');
-
-                if (navLinks.classList.contains('show-mobile-nav')) {
-                    // Hide navigation - remove the dropdown and event listeners
-                    navLinks.classList.remove('show-mobile-nav');
-                    if (navLinks._dropdown) {
-                        navLinks._dropdown.remove();
-                        navLinks._dropdown = null;
-                        // console.log('Navigation dropdown removed');
-                    }
-                    // Remove any click outside listeners
-                    document.removeEventListener('click', navLinks._closeHandler);
-                    navLinks._closeHandler = null;
-                    // console.log('Navigation hidden');
-                } else {
-                    // Create a professional dropdown matching site style
-                    const dropdown = document.createElement('div');
-                    dropdown.id = 'mobile-nav-dropdown';
-                    dropdown.style.cssText = `
-                        position: fixed;
-                        top: 80px;
-                        left: 0;
-                        right: 0;
-                        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-                        border-bottom: 1px solid rgba(255,255,255,0.1);
-                        padding: 20px;
-                        z-index: 99999;
-                        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    `;
-                    dropdown.innerHTML = `
-                        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-                            <a href="/" style="color: white; text-decoration: none; font-weight: 500; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); display: block; width: 100%; text-align: center; font-size: 16px;">Home</a>
-                            <a href="/about" style="color: white; text-decoration: none; font-weight: 500; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); display: block; width: 100%; text-align: center; font-size: 16px;">About Us</a>
-                            <a href="/contact" style="color: white; text-decoration: none; font-weight: 500; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); display: block; width: 100%; text-align: center; font-size: 16px;">Contact</a>
-                            <a href="/doctors" style="color: white; text-decoration: none; font-weight: 500; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); display: block; width: 100%; text-align: center; font-size: 16px;">For Patients</a>
-                        </div>
-                    `;
-
-                    document.body.appendChild(dropdown);
-                    // console.log('Created new visible dropdown element');
-
-                    // Store reference to remove it later
-                    navLinks._dropdown = dropdown;
-
-                    // Add click outside to close
-                    const closeDropdown = (e) => {
-                        if (!dropdown.contains(e.target) && e.target !== mobileMenuTrigger && !mobileMenuTrigger.contains(e.target)) {
-                            dropdown.remove();
-                            navLinks.classList.remove('show-mobile-nav');
-                            navLinks._dropdown = null;
-                            document.removeEventListener('click', closeDropdown);
-                            navLinks._closeHandler = null;
-                            // console.log('Dropdown closed by clicking outside');
-                        }
-                    };
-
-                    // Store the handler for cleanup
-                    navLinks._closeHandler = closeDropdown;
-
-                    // Add the event listener after a short delay to avoid immediate closing
-                    setTimeout(() => {
-                        document.addEventListener('click', closeDropdown);
-                    }, 100);
-                }
-
-                // console.log('Navigation links classes:', navLinks.className);
-                // console.log('Navigation links style display:', navLinks.style.display);
-
-                // Update hamburger animation
-                const hamburger = mobileMenuTrigger;
-                if (hamburger) {
-                    hamburger.classList.toggle('active');
-                    // console.log('Hamburger active class toggled');
-                }
-            }
-
-            // Function to close navigation
-            function closeMobileNav() {
-                // console.log('Closing mobile navigation');
-                navLinks.classList.remove('show-mobile-nav');
-
-                // Reset hamburger animation
-                const hamburger = mobileMenuTrigger;
-                if (hamburger) {
-                    hamburger.classList.remove('active');
-                }
-            }
-
-            // Add click event to hamburger
-            mobileMenuTrigger.addEventListener('click', function(e) {
-                // console.log('Hamburger clicked');
-                e.preventDefault();
-                e.stopPropagation();
-                toggleMobileNav();
-            });
-
-            // Close navigation when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!mobileMenuTrigger.contains(e.target) && !navLinks.contains(e.target)) {
-                    closeMobileNav();
-                }
-            });
-
-            // Close navigation on window resize to desktop
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 991) {
-                    closeMobileNav();
-                }
-            });
-
-            // Close navigation when a link is clicked
-            navLinks.addEventListener('click', function(e) {
-                if (e.target.closest('.top-link')) {
-                    closeMobileNav();
-                }
-            });
-        }
-
-        // Force fresh logo loading on mobile devices
-        function forceFreshLogoLoading() {
-            // Check if we're on mobile
-            if (window.innerWidth <= 768) {
-                const logos = document.querySelectorAll('img[src*="logo-medical"]');
-                logos.forEach(img => {
-                    const currentSrc = img.src;
-                    // Add timestamp to force fresh load
-                    const separator = currentSrc.includes('?') ? '&' : '?';
-                    img.src = currentSrc + separator + 'force=' + Date.now();
-                });
-            }
-        }
-
-        // Initialize mobile navigation on DOM ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Force fresh logo loading
-            forceFreshLogoLoading();
-
-            // Initialize mobile navigation toggle
-            initializeMobileNavigation();
-
-            // Only log in debug mode
-            if (window.location.search.includes('debug=true')) {
-            }
-        });
-
-        // Add manual test trigger (temporary for debugging)
-        window.testMobileNav = function() {
-            const navLinks = document.querySelector('.d-none.d-md-flex.align-items-center.gap-4.small');
-            if (navLinks) {
-                navLinks.classList.toggle('show-mobile-nav');
-            }
-        };
-
-        // Also initialize on page show (for back/forward navigation)
-        window.addEventListener('pageshow', function() {
-            // Re-initialize mobile navigation if needed
-            initializeMobileNavigation();
-        });
-
-        // For SPA-like navigation, reinitialize mobile navigation when needed
-        let mobileNavInitialized = false;
-
-        function initializeMobileNavIfNeeded() {
-            const mobileMenuTrigger = document.querySelector('.primary-menu-trigger .cnvs-hamburger') ||
-                                     document.querySelector('.cnvs-hamburger');
-
-            // Only reinitialize if trigger exists but we haven't initialized recently
-            if (mobileMenuTrigger && !mobileNavInitialized) {
-                initializeMobileNavigation();
-                mobileNavInitialized = true;
-
-                // Reset flag after a delay to allow re-initialization if needed
-                setTimeout(() => {
-                    mobileNavInitialized = false;
-                }, 5000);
-            }
-        }
-
-        // Check on navigation events instead of continuous polling
-        window.addEventListener('popstate', initializeMobileNavIfNeeded);
-        window.addEventListener('hashchange', initializeMobileNavIfNeeded);
-
-    // Function to load notifications into dropdown
-    function loadNotifications() {
-        const notificationList = document.getElementById('notification-list');
-        if (!notificationList) return;
-
-        // Only log in debug mode
-        if (window.location.search.includes('debug=true')) {
-        }
-
-        // Show loading state
-        notificationList.innerHTML = `
-            <div class="text-center py-4 text-muted">
-                <i class="bi bi-hourglass-split display-6 d-block mb-2"></i>
-                <small>Loading notifications...</small>
-            </div>
-        `;
-
-        // Fetch notifications from the server
-        fetch('/api/notifications')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-
-                if (data.notifications && data.notifications.length > 0) {
-                    // Render notifications
-                    let html = '';
-                    data.notifications.forEach(notification => {
-                        const date = new Date(notification.created_at).toLocaleDateString();
-                        const time = new Date(notification.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-                        html += `
-                            <div class="notification-item ${notification.read_at ? 'read' : 'unread'}" data-id="${notification.id}" data-link="${notification.data?.link || ''}" data-message="${notification.data?.message || ''}">
-                                <div class="d-flex align-items-start gap-3 p-3 border-bottom">
-                                    <div class="notification-icon">
-                                        <i class="bi ${notification.data?.icon || 'bi-bell'} text-${notification.data?.color || 'primary'}"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-start mb-1">
-                                            <h6 class="mb-0 small">${notification.data?.title || 'Notification'}</h6>
-                                            <small class="text-muted">${time}</small>
-                                        </div>
-                                        <p class="mb-0 small text-muted">${notification.data?.message || 'You have a new notification'}</p>
-                                        ${notification.data?.link ? `
-                                            <div class="mt-2">
-                                                <a href="${notification.data.link}" class="btn btn-sm btn-outline-primary">
-                                                    ${notification.data?.link_text || 'View Details'}
-                                                </a>
-                                            </div>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-
-                    notificationList.innerHTML = html;
-
-                    // Add click handlers to mark as read and redirect
-                    document.querySelectorAll('.notification-item.unread').forEach(item => {
-                        item.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            const notificationId = this.dataset.id;
-                            const link = this.dataset.link;
-                            const message = this.dataset.message;
-
-                            markAsRead(notificationId);
-
-                            // Close the dropdown
-                            const dropdown = bootstrap.Dropdown.getInstance(document.querySelector('.notifications-dropdown .dropdown-toggle'));
-                            if (dropdown) dropdown.hide();
-
-                            // Small delay to ensure dropdown closes before redirect
-                            setTimeout(() => {
-                                // Redirect based on notification type
-                                if (link) {
-                                    window.location.href = link;
-                                } else if (message && message.toLowerCase().includes('appointment')) {
-                                    window.location.href = '/appointments';
-                                } else {
-                                    // Default fallback to dashboard
-                                    window.location.href = '/dashboard';
-                                }
-                            }, 100);
-                        });
-                    });
-
-                } else {
-                    // No notifications
-                    notificationList.innerHTML = `
-                        <div class="text-center py-4 text-muted">
-                            <i class="bi bi-bell-slash display-6 d-block mb-2"></i>
-                            <small>No notifications</small>
-                        </div>
-                    `;
-                }
-            })
-            .catch(error => {
-                // console.error('Error loading notifications:', error);
-                notificationList.innerHTML = `
-                    <div class="text-center py-4 text-muted">
-                        <i class="bi bi-exclamation-triangle display-6 d-block mb-2"></i>
-                        <small>Error loading notifications</small>
-                    </div>
-                `;
-            });
-    }
-
-    // Function to mark notification as read
-    function markAsRead(notificationId) {
-        fetch(`/api/notifications/${notificationId}/read`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update UI
-                const notificationItem = document.querySelector(`[data-id="${notificationId}"]`);
-                if (notificationItem) {
-                    notificationItem.classList.remove('unread');
-                    notificationItem.classList.add('read');
-                }
-
-                // Update badge count
-                updateNotificationBadge();
-            }
-        })
-        .catch(error => {
-            // console.error('Error marking notification as read:', error);
-        });
-    }
-
-    // Function to update notification badge
-    function updateNotificationBadge() {
-        return new Promise((resolve) => {
-            // Use a timeout to prevent hanging requests
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => {
-                // Only abort if the controller hasn't been used already
-                if (!controller.signal.aborted) {
-                    controller.abort();
-                }
-            }, 10000); // Increased timeout to 10 seconds
-
-            fetch('/api/notifications/unread-count', {
-                signal: controller.signal,
-                credentials: 'same-origin',  // Include cookies for authentication
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    // Include CSRF token if available
-                    ...(document.querySelector('meta[name="csrf-token"]') && {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    })
-                }
-            })
-            .then(response => {
-                clearTimeout(timeoutId);
-
-                // Check if the response is a redirect
-                if (response.redirected) {
-                    throw new Error('Redirect detected. User may not be authenticated.');
-                }
-
-                // Check if response is JSON or HTML (error page)
-                const contentType = response.headers.get('content-type');
-                if (!response.ok) {
-                    if (contentType && contentType.includes('text/html')) {
-                        // If we get HTML back, it's likely an authentication error
-                        return response.text().then(html => {
-                            throw new Error('Authentication required. Please log in again.');
-                        });
-                    }
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                // Ensure we have JSON
-                if (!contentType || !contentType.includes('json')) {
-                    throw new Error('Invalid response format. Expected JSON.');
-                }
-
-                return response.json();
-            })
-            .then(data => {
-                const badge = document.getElementById('notification-count');
-                if (badge) {
-                    // Handle both old format (data.count) and new format (data.count)
-                    const count = data.count || 0;
-
-                    // Check if user is authenticated
-                    if (data.authenticated === false) {
-                        // User is not authenticated, hide badge
-                        badge.style.display = 'none';
-                        resolve(false);
-                        return;
-                    }
-
-                    if (count > 0) {
-                        badge.textContent = count > 99 ? '99+' : count;
-                        badge.style.display = 'block';
-                    } else {
-                        badge.style.display = 'none';
-                    }
-                }
-                resolve(true);
-            })
-            .catch(error => {
-                clearTimeout(timeoutId);
-
-                // Check if it's an AbortError (timeout)
-                if (error.name === 'AbortError') {
-                    // console.warn('Notification badge update timed out:', error);
-                } else {
-                    // console.error('Error updating notification badge:', error);
-                }
-
-                // Ensure badge is hidden on error
-                const badge = document.getElementById('notification-count');
-                if (badge) {
-                    badge.style.display = 'none';
-                }
-
-                // If it's an authentication error, we might want to redirect to login
-                if (error.message && (error.message.includes('Authentication required') || error.message.includes('Redirect detected'))) {
-                    // Optionally: show a message or redirect to login
-                    // window.location.href = '/login';
-                }
-                resolve(false);
-            });
-        });
-    }
-
-    // Load notifications on page load, but skip if we're in the middle of login redirect
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if this is a login redirect by looking for the login parameter in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const loginParam = urlParams.get('login');
-
-        // If we have a login parameter in URL, skip notifications for 5 seconds
-        if (loginParam === 'success') {
-            setTimeout(() => {
-                updateNotificationBadge();
-                // Start polling after login delay
-                startNotificationPolling();
-            }, 5000); // Wait 5 seconds before enabling notifications
-        } else {
-            // Otherwise, load notifications normally with a small delay
-            setTimeout(() => {
-                updateNotificationBadge();
-                // Start polling immediately
-                startNotificationPolling();
-            }, 1000);
-        }
-    });
-
-    // Optimized notification polling with exponential backoff
-    let notificationPollingInterval = null;
-    let pollingDelay = 30000; // Start with 30 seconds
-    const maxPollingDelay = 300000; // Max 5 minutes
-    const minPollingDelay = 15000; // Min 15 seconds
-
-    function startNotificationPolling() {
-        if (notificationPollingInterval) {
-            clearInterval(notificationPollingInterval);
-        }
-
-        notificationPollingInterval = setInterval(() => {
-            updateNotificationBadge().then(success => {
-                if (success) {
-                    // Reset to faster polling on success
-                    pollingDelay = Math.max(minPollingDelay, pollingDelay - 5000);
-                } else {
-                    // Increase delay on failure
-                    pollingDelay = Math.min(maxPollingDelay, pollingDelay * 1.5);
-                }
-                // Restart with new delay
-                startNotificationPolling();
-            });
-        }, pollingDelay);
-    }
-
-    // Stop polling when page becomes hidden to save resources
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            if (notificationPollingInterval) {
-                clearInterval(notificationPollingInterval);
-                notificationPollingInterval = null;
-            }
-        } else {
-            // Resume polling when page becomes visible
-            if (!notificationPollingInterval) {
-                startNotificationPolling();
-            }
-        }
-    });
-</script>
+<!-- ═══ SCRIPTS ═══ -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/morphext@2.4.7/dist/morphext.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
+<script src="{{ asset('js/functions.bundle.js?v=2') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 
 @auth
-<!-- Meta tags for notification system -->
-<meta name="user-id" content="{{ auth()->id() }}">
-<meta name="notification-sound-enabled" content="true">
-<meta name="notification-toast-enabled" content="true">
+<script src="{{ asset('js/sidebar.js') }}" defer></script>
+@endauth
 
-<!-- Notification Scripts -->
-<script src="{{ asset('sounds/notification-sound.js') }}"></script>
-<!-- Unified notifications now handled by Vite/Enhanced system -->
+@viteReactRefresh
+@vite(['resources/js/app.js', 'resources/css/app.css'])
 
-<!-- Debug Tools (only in development) -->
+@include('notifications._styles')
+<script src="{{ asset('js/notification-manager.js?v=' . time()) }}"></script>
+<script src="{{ asset('sounds/notification-sound.js?v=' . time()) }}"></script>
+<script src="{{ asset('js/notification-accessibility-test.js?v=' . time()) }}"></script>
+
 @if(config('app.debug'))
 <meta name="app-debug" content="true">
 <script src="{{ asset('js/notification-debug.js') }}"></script>
@@ -3177,41 +844,192 @@ function showAjaxError(message) {
 <script src="{{ asset('js/laravel-notification-catcher.js') }}"></script>
 <script src="{{ asset('js/appointment-notification-debug.js') }}"></script>
 <script src="{{ asset('js/backend-diagnosis.js') }}"></script>
-@endif
-
-@endauth
-
-<!-- WebSocket Test Scripts (only in development) -->
-@if(config('app.debug'))
 <script src="{{ asset('js/websocket-test.js') }}"></script>
 <script src="{{ asset('js/pusher-connection-test.js') }}"></script>
 @endif
 
 <script>
-// Prevent notification API calls immediately after login
-(function() {
-    // Check if we have a login parameter in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const loginParam = urlParams.get('login');
+(function () {
+    'use strict';
 
-    // If we have a login parameter, override the updateNotificationBadge function
-    if (loginParam === 'success') {
-        // Temporarily replace updateNotificationBadge with a no-op
-        const originalUpdateNotificationBadge = window.updateNotificationBadge;
-        window.updateNotificationBadge = function() {
-            // Restore the original function after a delay
-            setTimeout(() => {
-                window.updateNotificationBadge = originalUpdateNotificationBadge;
-                // Call it once more after the delay
-                if (originalUpdateNotificationBadge) {
-                    originalUpdateNotificationBadge();
-                }
-            }, 3000); // Wait 3 seconds before enabling notifications
-        };
+    /* ── Navbar scroll ── */
+    const topbar = document.getElementById('ms-topbar');
+    window.addEventListener('scroll', () => topbar.classList.toggle('scrolled', window.scrollY > 20), { passive: true });
+
+    /* ── Go-to-top ── */
+    const gototop = document.getElementById('ms-gototop');
+    if (gototop) {
+        window.addEventListener('scroll', () => gototop.classList.toggle('visible', window.scrollY > 400), { passive: true });
+        gototop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
+
+    /* ── Custom dropdowns ── */
+    function initDropdown(toggleId, menuId) {
+        const toggle = document.getElementById(toggleId);
+        const menu   = document.getElementById(menuId);
+        if (!toggle || !menu) return;
+        toggle.addEventListener('click', e => {
+            e.stopPropagation();
+            const open = menu.classList.contains('show');
+            closeAllDropdowns();
+            if (!open) { menu.classList.add('show'); toggle.setAttribute('aria-expanded', 'true'); }
+        });
+    }
+    function closeAllDropdowns() {
+        document.querySelectorAll('.ms-dropdown-menu').forEach(m => m.classList.remove('show'));
+        document.querySelectorAll('[aria-expanded]').forEach(t => t.setAttribute('aria-expanded', 'false'));
+    }
+    document.addEventListener('click', closeAllDropdowns);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllDropdowns(); });
+
+    initDropdown('ms-notif-toggle', 'ms-notif-menu');
+    initDropdown('ms-user-toggle', 'ms-user-menu');
+
+    /* Load notifications when panel opens */
+    const notifToggle = document.getElementById('ms-notif-toggle');
+    if (notifToggle) {
+        notifToggle.addEventListener('click', () => {
+            const m = document.getElementById('ms-notif-menu');
+            if (m && m.classList.contains('show')) loadNotifications();
+        });
+    }
+
+    /* ── Mobile drawer ── */
+    const hamburger = document.getElementById('ms-hamburger');
+    const overlay   = document.getElementById('ms-overlay');
+    const drawer    = document.getElementById('ms-drawer');
+    const drawerClose = document.getElementById('ms-drawer-close');
+
+    const openDrawer  = () => { drawer?.classList.add('show'); overlay?.classList.add('show'); hamburger?.classList.add('open'); hamburger?.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+    const closeDrawer = () => { drawer?.classList.remove('show'); overlay?.classList.remove('show'); hamburger?.classList.remove('open'); hamburger?.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+
+    hamburger?.addEventListener('click', openDrawer);
+    drawerClose?.addEventListener('click', closeDrawer);
+    overlay?.addEventListener('click', closeDrawer);
+
+    /* ── Auth sidebar toggle ── */
+    document.getElementById('ms-sidebar-toggle')?.addEventListener('click', () => {
+        document.getElementById('sidebarCollapse')?.click() ||
+        document.getElementById('sidebar')?.classList.toggle('active');
+    });
+
+    /* ── Loading toast ── */
+    const toast = document.getElementById('ms-loading-toast');
+    window.showLoadingToast = () => toast?.classList.add('show');
+    window.hideLoadingToast = () => toast?.classList.remove('show');
+
+    /* ── AJAX navigation ── */
+    $(document).on('click', '.sidebar-nav a[data-ajax="true"]', function (e) {
+        e.preventDefault();
+        const $link = $(this);
+        if ($link.hasClass('active')) return;
+        $('.sidebar-nav .nav-link').removeClass('active');
+        $link.addClass('active');
+        const url = $link.attr('href');
+        loadPageContent(url, $link.data('route'));
+        history.pushState({ url }, '', url);
+    });
+
+    window.addEventListener('popstate', e => { if (e.state?.url) loadPageContent(e.state.url); });
+
+    function loadPageContent(url) {
+        showLoadingToast();
+        const $main = $('#main-content');
+        $main.html([120,80,80,200,60,60,60].map(h =>
+            `<div class="ms-skeleton mb-3" style="height:${h}px;width:100%"></div>`
+        ).join(''));
+        $.ajax({
+            url, method: 'GET',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success(response) {
+                hideLoadingToast();
+                const $tmp = $('<div>').html(response);
+                const c = $tmp.find('#main-content').html();
+                if (c) { $main.html(c); document.title = $tmp.find('title').text() || document.title; }
+                $(document).trigger('pageContentLoaded');
+                $('html,body').animate({ scrollTop: 0 }, 250);
+            },
+            error(xhr) {
+                hideLoadingToast();
+                if (xhr.status === 0 || xhr.status >= 500) setTimeout(() => { window.location.href = url; }, 1500);
+            }
+        });
+    }
+
+    /* ── Notifications ── */
+    function loadNotifications() {
+        const list = document.getElementById('notification-list');
+        if (!list) return;
+        list.innerHTML = `<div class="ms-notif-empty"><div class="ms-loading-spin"></div><span>Loading…</span></div>`;
+        fetch('/api/notifications', { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(data => {
+                if (data.notifications?.length) {
+                    list.innerHTML = data.notifications.map(n => `
+                        <div class="ms-dropdown-item notification-item ${n.read_at ? '' : 'unread'}"
+                             data-id="${n.id}" data-link="${n.data?.link || ''}" tabindex="0" role="listitem">
+                            <i class="bi ${n.data?.icon || 'bi-bell'}" style="color:var(--teal)"></i>
+                            <div>
+                                <div style="font-size:0.8125rem;font-weight:500;color:var(--white)">${n.data?.title || 'Notification'}</div>
+                                <div style="font-size:0.75rem;color:var(--muted)">${n.data?.message || ''}</div>
+                            </div>
+                        </div>`).join('');
+                    list.querySelectorAll('.notification-item.unread').forEach(item =>
+                        item.addEventListener('click', () => {
+                            markAsRead(item.dataset.id);
+                            if (item.dataset.link) window.location.href = item.dataset.link;
+                        })
+                    );
+                } else {
+                    list.innerHTML = `<div class="ms-notif-empty"><i class="bi bi-bell-slash"></i><span>No notifications</span></div>`;
+                }
+            })
+            .catch(() => {
+                list.innerHTML = `<div class="ms-notif-empty"><i class="bi bi-exclamation-triangle"></i><span>Error loading</span></div>`;
+            });
+    }
+
+    function markAsRead(id) {
+        fetch(`/api/notifications/${id}/read`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content }
+        }).then(() => updateNotificationBadge());
+    }
+
+    function updateNotificationBadge() {
+        const badge = document.getElementById('notification-count');
+        if (!badge) return;
+        fetch('/api/notifications/unread-count', { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                const c = data.count || 0;
+                badge.textContent = c > 99 ? '99+' : c;
+                badge.style.display = c > 0 ? 'flex' : 'none';
+            })
+            .catch(() => { badge.style.display = 'none'; });
+    }
+
+    window.updateNotificationBadge = updateNotificationBadge;
+
+    /* ── Polling ── */
+    let pollingTimer = null, pollingDelay = 30000;
+    function startPolling() {
+        clearTimeout(pollingTimer);
+        pollingTimer = setTimeout(() => { updateNotificationBadge(); startPolling(); }, pollingDelay);
+    }
+    document.addEventListener('visibilitychange', () => {
+        document.hidden ? clearTimeout(pollingTimer) : startPolling();
+    });
+
+    /* ── Init ── */
+    document.addEventListener('DOMContentLoaded', () => {
+        const isLoginRedirect = new URLSearchParams(location.search).get('login') === 'success';
+        setTimeout(() => { updateNotificationBadge(); startPolling(); }, isLoginRedirect ? 5000 : 800);
+    });
 })();
 </script>
 
-    </body>
-
-    </html>
+@stack('scripts')
+</body>
+</html>

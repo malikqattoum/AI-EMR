@@ -9,7 +9,7 @@
 <style>
 /* Modern Dashboard Header Styling */
 .dashboard-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     border-radius: 16px;
     padding: 2.5rem;
     margin-bottom: 2rem;
@@ -26,8 +26,8 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #DE6262, #4ecdc4, #45b7d1, #96ceb4);
+    height: 3px;
+    background: linear-gradient(90deg, #00d4aa, #00a88a);
     background-size: 400% 400%;
     animation: gradient 3s ease infinite;
 }
@@ -39,7 +39,7 @@
 }
 
 .dashboard-header h1 {
-    color: #ffffff;
+    color: #e8edf5;
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
@@ -50,7 +50,7 @@
 }
 
 .dashboard-header p {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(232, 237, 231, 0.55);
     font-size: 1.1rem;
     font-weight: 400;
     margin-bottom: 0;
@@ -81,7 +81,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #2c3e50, #DE6262);
+    background: linear-gradient(90deg, #0a1628, #00d4aa);
 }
 
 .stats-icon {
@@ -95,7 +95,7 @@
     font-size: 1.5rem;
     color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
 }
 
 .stats-number {
@@ -172,7 +172,7 @@
 
 /* Enhanced Buttons */
 .btn-primary-custom {
-    background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     border: none;
     border-radius: 12px;
     padding: 0.5rem 1.2rem;
@@ -181,9 +181,9 @@
 }
 
 .btn-primary-custom:hover {
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(222, 98, 98, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.3);
 }
 
 .btn-secondary-custom {
@@ -254,7 +254,7 @@
 }
 
 .sort-link:hover {
-    color: #DE6262;
+    color: #00d4aa;
 }
 
 /* Modal Styling */
@@ -638,7 +638,7 @@
         <!-- Doctor-Specific Dashboard Sections -->
         <div class="row mb-5">
             <div class="col-12">
-                <div class="dashboard-header" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                <div class="dashboard-header" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                     <h3 style="margin: 0; color: white; font-size: 1.8rem;">
                         <i class="fas fa-stethoscope me-2"></i>
                         Doctor Dashboard
@@ -654,7 +654,7 @@
         <div class="row mb-5">
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-calendar-day"></i>
                     </div>
                     <p class="stats-number">{{ $doctorData['stats']['today_appointments'] }}</p>
@@ -669,7 +669,7 @@
 
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-clock"></i>
                     </div>
                     <p class="stats-number">{{ $doctorData['stats']['pending_appointments'] }}</p>
@@ -684,7 +684,7 @@
 
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-star"></i>
                     </div>
                     <p class="stats-number">{{ number_format($doctorData['stats']['average_rating'], 1) }}</p>
@@ -699,7 +699,7 @@
 
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-dollar-sign"></i>
                     </div>
                     <p class="stats-number">${{ number_format($doctorData['stats']['revenue_this_month'], 0) }}</p>
@@ -717,7 +717,7 @@
         <div class="row mb-5">
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-file-medical"></i>
                     </div>
                     <p class="stats-number">{{ auth()->user()->doctorDiagnoses()->count() }}</p>
@@ -727,7 +727,7 @@
 
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-calendar-day"></i>
                     </div>
                     <p class="stats-number">{{ auth()->user()->doctorDiagnoses()->whereDate('created_at', today())->count() }}</p>
@@ -737,7 +737,7 @@
 
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-comments"></i>
                     </div>
                     <p class="stats-number">{{ auth()->user()->doctorDiagnoses()->withCount('followUps')->get()->sum('follow_ups_count') }}</p>
@@ -747,7 +747,7 @@
 
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-star"></i>
                     </div>
                     <p class="stats-number">
@@ -1089,7 +1089,7 @@
             </div>
             <div class="col-lg-4 mb-4">
                 <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
                         <i class="fas fa-calendar-week"></i>
                     </div>
                     <p class="stats-number">{{ $weeklyCount }}</p>
@@ -1581,7 +1581,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 type: 'gradient',
                 gradient: {
                     shade: 'light',
-                    gradientToColors: ['#667eea'],
+                    gradientToColors: ['#0a1628'],
                     shadeIntensity: 1,
                     type: 'horizontal',
                     opacityFrom: 0.4,
@@ -1589,7 +1589,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     stops: [0, 100]
                 }
             },
-            colors: ['#667eea'],
+            colors: ['#0a1628'],
             tooltip: {
                 theme: 'dark',
                 style: {

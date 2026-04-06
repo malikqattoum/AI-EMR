@@ -16,7 +16,7 @@
     }
 
     .pagination .page-link {
-        color: #DE6262;
+        color: #00d4aa;
         border: 1px solid #dee2e6;
         padding: 0.5rem 0.75rem;
         font-size: 0.875rem;
@@ -26,13 +26,13 @@
 
     .pagination .page-link:hover {
         color: white;
-        background-color: #DE6262;
-        border-color: #DE6262;
+        background-color: #00d4aa;
+        border-color: #00d4aa;
     }
 
     .pagination .page-item.active .page-link {
-        background-color: #DE6262;
-        border-color: #DE6262;
+        background-color: #00d4aa;
+        border-color: #00d4aa;
         color: white;
     }
 

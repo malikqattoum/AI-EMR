@@ -253,7 +253,7 @@
         }
 
         .status-dot.recording {
-            background-color: #DE6262;
+            background-color: #00d4aa;
             animation: pulse 0.5s infinite;
         }
 
@@ -332,7 +332,7 @@
         }
 
         .message-segment.doctor {
-            border-left-color: #DE6262;
+            border-left-color: #00d4aa;
         }
 
         .message-segment.unknown {
@@ -564,14 +564,14 @@
         }
         #voiceAssistantTabs .nav-link:not(.active):hover {
             background-color: #f8f9fa !important;
-            color: #DE6262 !important;
-            border-color: #DE6262 !important;
+            color: #00d4aa !important;
+            border-color: #00d4aa !important;
         }
         #voiceAssistantTabs .nav-link.active {
-            background-color: #DE6262 !important;
+            background-color: #00d4aa !important;
             color: white !important;
-            border: 1px solid #DE6262 !important;
-            box-shadow: 0 2px 4px rgba(222, 98, 98, 0.2) !important;
+            border: 1px solid #00d4aa !important;
+            box-shadow: 0 2px 4px rgba(0, 212, 170, 0.2) !important;
         }
 
         /* Enhanced tab-content connection */
@@ -583,17 +583,17 @@
         /* Recording state visual emphasis */
         #transcriptCard.recording-active {
             animation: recordingGlow 2s ease-in-out infinite alternate;
-            border-color: #DE6262 !important;
-            box-shadow: 0 0 20px rgba(222, 98, 98, 0.4) !important;
+            border-color: #00d4aa !important;
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.4) !important;
         }
 
         @keyframes recordingGlow {
             from {
-                box-shadow: 0 0 20px rgba(222, 98, 98, 0.4);
-                border-color: #DE6262;
+                box-shadow: 0 0 20px rgba(0, 212, 170, 0.4);
+                border-color: #00d4aa;
             }
             to {
-                box-shadow: 0 0 30px rgba(222, 98, 98, 0.7);
+                box-shadow: 0 0 30px rgba(0, 212, 170, 0.7);
                 border-color: #c55252;
             }
         }

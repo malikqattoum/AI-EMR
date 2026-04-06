@@ -75,7 +75,7 @@
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0, 212, 170, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -87,7 +87,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
 }
 
 .dashboard-header h2 {
@@ -150,11 +150,11 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
 
     .page-header h1 {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -182,18 +182,18 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
 
     .stats-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 30px rgba(222, 98, 98, 0.15);
+        box-shadow: 0 12px 30px rgba(0, 212, 170, 0.15);
     }
 
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -229,14 +229,14 @@
     }
 
     .nav-tabs .nav-link:hover {
-        background: rgba(222, 98, 98, 0.15);
-        color: #DE6262 !important;
-        border-color: #DE6262 !important;
-        box-shadow: 0 2px 6px rgba(222, 98, 98, 0.2) !important;
+        background: rgba(0, 212, 170, 0.15);
+        color: #00d4aa !important;
+        border-color: #00d4aa !important;
+        box-shadow: 0 2px 6px rgba(0, 212, 170, 0.2) !important;
     }
 
     .nav-tabs .nav-link.active {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         color: white !important;
         box-shadow: 0 4px 15px rgba(222, 98, 98, 0.3);
     }
@@ -249,7 +249,7 @@
     }
 
     .table-custom thead th {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         color: white;
         font-weight: 600;
         border: none;
@@ -267,7 +267,7 @@
     }
 
     .table-custom tbody tr:hover {
-        background-color: rgba(222, 98, 98, 0.03);
+        background-color: rgba(0, 212, 170, 0.03);
     }
 
     .patient-row {
@@ -276,7 +276,7 @@
     }
 
     .patient-row:hover {
-        background-color: rgba(222, 98, 98, 0.05);
+        background-color: rgba(0, 212, 170, 0.05);
     }
 
     .badge {
@@ -302,7 +302,7 @@
     }
 
     .btn-custom-primary {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         border: none;
         color: white;
         font-weight: 600;
@@ -335,11 +335,11 @@
     }
 
     .btn-custom-secondary:hover {
-        border-color: #DE6262;
-        color: #DE6262;
-        background: rgba(222, 98, 98, 0.05);
+        border-color: #00d4aa;
+        color: #00d4aa;
+        background: rgba(0, 212, 170, 0.05);
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(222, 98, 98, 0.15);
+        box-shadow: 0 4px 8px rgba(0, 212, 170, 0.15);
         text-decoration: none;
     }
 
@@ -349,17 +349,17 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
         background: white;
-        border-color: #DE6262;
-        color: #DE6262;
+        border-color: #00d4aa;
+        color: #00d4aa;
         font-weight: 600;
     }
 
     .btn-expand-visit:hover {
-        background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+        background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
         color: white;
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(222, 98, 98, 0.3);
-        border-color: #DE6262;
+        border-color: #00d4aa;
     }
 
     .empty-state {
@@ -490,9 +490,9 @@
     }
 
     .table-pagination button:hover:not(:disabled) {
-        background: #DE6262;
+        background: #00d4aa;
         color: white;
-        border-color: #DE6262;
+        border-color: #00d4aa;
     }
 
     .table-pagination button:disabled {
@@ -683,8 +683,8 @@
 
     .insurance-management-form .form-control:focus,
     .insurance-management-form .form-select:focus {
-        border-color: #DE6262;
-        box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.25);
+        border-color: #00d4aa;
+        box-shadow: 0 0 0 0.2rem rgba(0, 212, 170, 0.25);
     }
 
     .eligibility-status-dashboard .card {
@@ -767,7 +767,7 @@
     .btn:focus,
     .form-control:focus,
     .form-select:focus {
-        outline: 2px solid #DE6262;
+        outline: 2px solid #00d4aa;
         outline-offset: 2px;
     }
 

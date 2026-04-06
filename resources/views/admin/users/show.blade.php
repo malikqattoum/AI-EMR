@@ -22,7 +22,7 @@
     .user-avatar-large {
         width: 60px;
         height: 60px;
-        background: linear-gradient(135deg, #DE6262 0%, #c55252 100%);
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -31,7 +31,7 @@
         font-weight: 700;
         font-size: 1.5rem;
         margin-bottom: 1rem;
-        box-shadow: 0 4px 12px rgba(222, 98, 98, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
     }
 
     .info-item {

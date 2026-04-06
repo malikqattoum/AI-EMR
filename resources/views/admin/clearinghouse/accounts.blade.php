@@ -41,8 +41,8 @@
     }
 
     .provider-badge {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
+        color: #060d1f;
         padding: 2px 8px;
         border-radius: 8px;
         font-size: 0.75rem;

@@ -22,20 +22,20 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 40px;
-            border-bottom: 2px solid #DE6262;
+            border-bottom: 2px solid #00d4aa;
             padding-bottom: 20px;
         }
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #DE6262;
+            color: #00d4aa;
         }
         .invoice-title {
             text-align: right;
         }
         .invoice-title h1 {
             font-size: 36px;
-            color: #DE6262;
+            color: #00d4aa;
             margin: 0;
         }
         .invoice-number {
@@ -52,7 +52,7 @@
             width: 45%;
         }
         .billing-info h3, .invoice-info h3 {
-            color: #DE6262;
+            color: #00d4aa;
             border-bottom: 1px solid #eee;
             padding-bottom: 5px;
             margin-bottom: 15px;
@@ -86,7 +86,7 @@
             margin-bottom: 20px;
         }
         .items-table th {
-            background-color: #DE6262;
+            background-color: #00d4aa;
             color: white;
             padding: 12px;
             text-align: left;
@@ -121,8 +121,8 @@
         .grand-total {
             font-size: 18px;
             font-weight: bold;
-            color: #DE6262;
-            border-top: 2px solid #DE6262;
+            color: #00d4aa;
+            border-top: 2px solid #00d4aa;
             padding-top: 10px;
         }
         .footer {
@@ -140,7 +140,7 @@
             margin: 30px 0;
         }
         .payment-info h4 {
-            color: #DE6262;
+            color: #00d4aa;
             margin-bottom: 15px;
         }
         @media print {
@@ -204,7 +204,7 @@
 
         <!-- Line Items -->
         <div class="line-items">
-            <h3 style="color: #DE6262; margin-bottom: 20px;">Invoice Details</h3>
+            <h3 style="color: #00d4aa; margin-bottom: 20px;">Invoice Details</h3>
             <table class="items-table">
                 <thead>
                     <tr>

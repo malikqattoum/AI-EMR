@@ -5,10 +5,10 @@
 @section('styles')
 <style>
 .stat-card {
-    background: white;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
     border-radius: 0.75rem;
     padding: 1.5rem;
-    border: 1px solid #e5e7eb;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -16,7 +16,7 @@
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0,212,170,0.25);
 }
 
 .stat-card::before {
@@ -26,34 +26,34 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, #00d4aa, #0f1c3a);
 }
 
 .stat-card.total-waitlists::before {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(135deg, #00d4aa, #0a1628);
 }
 
 .stat-card.active-offers::before {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
+    background: linear-gradient(135deg, #fbbf24, #d97706);
 }
 
 .stat-card.avg-wait-time::before {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
 }
 
 .stat-card.fulfillment-rate::before {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background: linear-gradient(135deg, #00d4aa, #059669);
 }
 
 .stat-number {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #1f2937;
+    color: #00d4aa;
     margin-bottom: 0.5rem;
 }
 
 .stat-label {
-    color: #6b7280;
+    color: rgba(232,237,231,0.55);
     font-size: 0.875rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -71,23 +71,23 @@
 }
 
 .trend-up {
-    background-color: #dcfce7;
-    color: #166534;
+    background-color: rgba(0,212,170,0.15);
+    color: #00d4aa;
 }
 
 .trend-down {
-    background-color: #fee2e2;
-    color: #991b1b;
+    background-color: rgba(248,113,113,0.15);
+    color: #f87171;
 }
 
 .trend-stable {
-    background-color: #f3f4f6;
-    color: #374151;
+    background-color: rgba(255,255,255,0.08);
+    color: rgba(232,237,231,0.55);
 }
 
 .waitlist-item {
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
     border-radius: 0.75rem;
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -96,7 +96,7 @@
 }
 
 .waitlist-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0,212,170,0.25);
     transform: translateY(-2px);
 }
 
@@ -104,11 +104,12 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
+    border: 2px solid rgba(0,212,170,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #00d4aa;
     font-weight: 700;
     margin-right: 1rem;
 }
@@ -121,10 +122,10 @@
     margin-right: 0.5rem;
 }
 
-.priority-urgent { background-color: #dc2626; }
-.priority-high { background-color: #ea580c; }
-.priority-medium { background-color: #d97706; }
-.priority-low { background-color: #65a30d; }
+.priority-urgent { background-color: #f87171; }
+.priority-high { background-color: #fbbf24; }
+.priority-medium { background-color: #60a5fa; }
+.priority-low { background-color: #00d4aa; }
 
 .status-badge {
     padding: 0.25rem 0.75rem;
@@ -133,31 +134,31 @@
     font-weight: 600;
 }
 
-.status-active { background-color: #dcfce7; color: #166534; }
-.status-paused { background-color: #fef3c7; color: #92400e; }
-.status-cancelled { background-color: #fee2e2; color: #991b1b; }
+.status-active { background-color: rgba(0,212,170,0.15); color: #00d4aa; }
+.status-paused { background-color: rgba(251,191,36,0.15); color: #fbbf24; }
+.status-cancelled { background-color: rgba(248,113,113,0.15); color: #f87171; }
 
 .offer-alert {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
+    background: linear-gradient(135deg, rgba(0,212,170,0.2) 0%, rgba(0,212,170,0.05) 100%);
+    border: 1px solid rgba(0,212,170,0.2);
+    color: #e8edf5;
     border-radius: 0.5rem;
     padding: 1rem;
     margin-top: 1rem;
     text-align: center;
-    animation: pulse 2s infinite;
 }
 
 .recent-entry {
-    border-left: 4px solid #3b82f6;
-    background-color: #f8fafc;
+    border-left: 4px solid rgba(0,212,170,0.4);
+    background-color: rgba(10,22,40,0.5);
     padding: 1rem;
     margin-bottom: 0.75rem;
     border-radius: 0 0.5rem 0.5rem 0;
 }
 
-.entry-status-offered { border-left-color: #f59e0b; background-color: #fffbeb; }
-.entry-status-accepted { border-left-color: #10b981; background-color: #f0fdf4; }
-.entry-status-declined { border-left-color: #ef4444; background-color: #fef2f2; }
+.entry-status-offered { border-left-color: #fbbf24; }
+.entry-status-accepted { border-left-color: #00d4aa; }
+.entry-status-declined { border-left-color: #f87171; }
 
 .activity-timeline {
     position: relative;
@@ -171,7 +172,7 @@
     top: 0;
     bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, #3b82f6, #e5e7eb);
+    background: linear-gradient(to bottom, rgba(0,212,170,0.4), rgba(0,212,170,0.05));
 }
 
 .activity-item {
@@ -187,12 +188,12 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #3b82f6;
+    background: #00d4aa;
 }
 
 .quick-action-card {
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
     border-radius: 0.5rem;
     padding: 1rem;
     text-align: center;
@@ -201,8 +202,8 @@
 }
 
 .quick-action-card:hover {
-    border-color: #3b82f6;
-    background-color: #eff6ff;
+    border-color: rgba(0,212,170,0.4);
+    background-color: rgba(0,212,170,0.05);
     transform: translateY(-2px);
 }
 
@@ -210,8 +211,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #3b82f6;
-    color: white;
+    background: rgba(0,212,170,0.15);
+    color: #00d4aa;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -222,13 +223,13 @@
 .empty-state {
     text-align: center;
     padding: 3rem;
-    color: #6b7280;
+    color: rgba(232,237,231,0.55);
 }
 
 .empty-state i {
     font-size: 4rem;
     margin-bottom: 1rem;
-    color: #d1d5db;
+    color: rgba(232,237,231,0.2);
 }
 
 .refresh-button {
@@ -238,10 +239,10 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(135deg, #00d4aa, #059669);
     color: white;
     border: none;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 12px rgba(0,212,170,0.3);
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 1000;
@@ -249,13 +250,16 @@
 
 .refresh-button:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 6px 20px rgba(0,212,170,0.4);
 }
 
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
 }
+
+.text-muted { color: rgba(232,237,231,0.55) !important; }
+.bg-secondary { background-color: rgba(255,255,255,0.08) !important; color: rgba(232,237,231,0.55) !important; }
 </style>
 @endsection
 
@@ -273,7 +277,7 @@
                     <button class="btn btn-outline-primary" onclick="exportWaitlistData()">
                         <i class="fas fa-download me-2"></i>Export
                     </button>
-                    <a href="{{ route('doctor.waitlist.manage') }}" class="btn btn-primary">
+                    <a href="{{ route('doctor.waitlist.manage') }}" class="btn btn-primary" style="background: #00d4aa; border-color: #00d4aa; color: #060d1f;">
                         <i class="fas fa-cog me-2"></i>Manage Waitlist
                     </a>
                 </div>
@@ -317,11 +321,11 @@
         <!-- Active Waitlists -->
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-header bg-white border-0 py-3">
+                <div class="card-header" style="background: rgba(0,212,170,0.05); border-bottom: 1px solid rgba(0,212,170,0.12); color: #e8edf5;">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Active Waitlists</h5>
                         <div class="d-flex gap-2">
-                            <select class="form-select form-select-sm" style="width: auto;" id="priorityFilter">
+                            <select class="form-select form-select-sm" style="width: auto; background: rgba(10,22,40,0.9); border-color: rgba(0,212,170,0.2); color: #e8edf5;" id="priorityFilter">
                                 <option value="">All Priorities</option>
                                 <option value="urgent">Urgent</option>
                                 <option value="high">High</option>
@@ -363,13 +367,13 @@
                                         </div>
                                         <div class="text-end">
                                             <div class="mb-2">
-                                                <span class="badge bg-secondary">{{ ucfirst($waitlist->service_type) }}</span>
+                                                <span class="badge" style="background: rgba(255,255,255,0.08); color: rgba(232,237,231,0.7);">{{ ucfirst($waitlist->service_type) }}</span>
                                             </div>
                                             <div class="text-sm text-muted">
                                                 Joined {{ $waitlist->created_at->diffForHumans() }}
                                             </div>
                                             <div class="mt-2">
-                                                <a href="{{ route('doctor.waitlist.show-patient', $waitlist->id) }}" class="btn btn-outline-primary btn-sm">
+                                                <a href="{{ route('doctor.waitlist.show-patient', $waitlist->id) }}" class="btn btn-outline-primary btn-sm" style="border-color: rgba(0,212,170,0.3); color: #00d4aa;">
                                                     View Details
                                                 </a>
                                             </div>
@@ -405,8 +409,8 @@
         <div class="col-lg-4">
             <!-- Quick Actions -->
             <div class="card mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="mb-0">Quick Actions</h5>
+                <div class="card-header bg-white border-0 py-3" style="background: rgba(0,212,170,0.05) !important; border-bottom: 1px solid rgba(0,212,170,0.12) !important; color: #e8edf5;">
+                    <h5 class="mb-0" style="color: #e8edf5;">Quick Actions</h5>
                 </div>
                 <div class="card-body">
                     <div class="row g-2">
@@ -448,8 +452,8 @@
 
             <!-- Priority Distribution -->
             <div class="card mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="mb-0">Priority Distribution</h5>
+                <div class="card-header" style="background: rgba(0,212,170,0.05); border-bottom: 1px solid rgba(0,212,170,0.12); color: #e8edf5;">
+                    <h5 class="mb-0" style="color: #e8edf5;">Priority Distribution</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
@@ -459,7 +463,7 @@
                                     <span class="priority-indicator priority-{{ $priority }}"></span>
                                     <span>{{ $label }}</span>
                                 </div>
-                                <span class="badge bg-secondary">{{ $stats['by_priority'][$priority] ?? 0 }}</span>
+                                <span class="badge" style="background: rgba(255,255,255,0.08); color: rgba(232,237,231,0.7);">{{ $stats['by_priority'][$priority] ?? 0 }}</span>
                             </div>
                         @endforeach
                     </div>
@@ -490,8 +494,8 @@
 
             <!-- Recent Activity -->
             <div class="card">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="mb-0">Recent Activity</h5>
+                <div class="card-header" style="background: rgba(0,212,170,0.05); border-bottom: 1px solid rgba(0,212,170,0.12); color: #e8edf5;">
+                    <h5 class="mb-0" style="color: #e8edf5;">Recent Activity</h5>
                 </div>
                 <div class="card-body">
                     <div class="activity-timeline">
@@ -507,7 +511,7 @@
                                                 {{ \Carbon\Carbon::parse($entry->slot_date)->format('M j, Y') }}
                                                 at {{ \Carbon\Carbon::parse($entry->slot_time)->format('g:i A') }}
                                             </p>
-                                            <span class="badge bg-{{ $entry->status === 'offered' ? 'warning' : ($entry->status === 'accepted' ? 'success' : 'danger') }}">
+                                            <span class="badge" style="background: {{ $entry->status === 'offered' ? 'rgba(251,191,36,0.15)' : ($entry->status === 'accepted' ? 'rgba(0,212,170,0.15)' : 'rgba(248,113,113,0.15)') }}; color: {{ $entry->status === 'offered' ? '#fbbf24' : ($entry->status === 'accepted' ? '#00d4aa' : '#f87171') }};">
                                                 {{ ucfirst($entry->status) }}
                                             </span>
                                         </div>

@@ -65,32 +65,33 @@
 
         .admin-sidebar {
             width: 280px;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(180deg, #0a1628 0%, #0f1c3a 100%);
             color: white;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 1000;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            border-right: 1px solid rgba(0,212,170,0.1);
         }
 
         .admin-content {
             flex: 1;
             margin-left: 280px;
-            background: #f8f9fa;
+            background: #060d1f;
             min-height: 100vh;
         }
 
         .admin-header {
-            background: white;
+            background: rgba(10,22,40,0.95);
             padding: 1rem 2rem;
-            border-bottom: 1px solid #dee2e6;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0,212,170,0.12);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .sidebar-brand {
             padding: 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(0,212,170,0.1);
             text-align: center;
         }
 
@@ -119,14 +120,14 @@
 
         .nav-link:hover {
             color: white;
-            background: rgba(255,255,255,0.1);
-            border-left-color: #DE6262;
+            background: rgba(0,212,170,0.1);
+            border-left-color: #00d4aa;
         }
 
         .nav-link.active {
             color: white;
-            background: rgba(222,98,98,0.2);
-            border-left-color: #DE6262;
+            background: rgba(0,212,170,0.15);
+            border-left-color: #00d4aa;
         }
 
         .nav-link i {
@@ -183,12 +184,140 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,212,170,0.2);
+            border: 2px solid rgba(0,212,170,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 0.75rem;
         }
+
+        /* Dark theme overrides for child pages */
+        :root {
+            --navy: #060d1f;
+            --navy-card: #0f1c3a;
+            --teal: #00d4aa;
+            --offwhite: #e8edf5;
+            --muted: rgba(232,237,231,0.55);
+            --card-bg: rgba(10,22,40,0.9);
+            --card-border: rgba(0,212,170,0.12);
+        }
+        .card {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+            border-radius: 16px !important;
+            color: var(--offwhite);
+        }
+        .card-header {
+            background: rgba(0,212,170,0.05) !important;
+            border-bottom: 1px solid var(--card-border) !important;
+            color: var(--offwhite) !important;
+        }
+        .card-body { background: transparent !important; color: var(--offwhite); }
+        .table {
+            color: var(--offwhite);
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: rgba(0,212,170,0.03);
+            --bs-table-hover-bg: rgba(0,212,170,0.05);
+        }
+        .table thead th {
+            background-color: rgba(0,212,170,0.08) !important;
+            border-color: var(--card-border) !important;
+            color: var(--offwhite) !important;
+        }
+        .table tbody td { border-color: var(--card-border) !important; }
+        .form-control, .form-select {
+            background: rgba(10,22,40,0.8) !important;
+            border: 1px solid var(--card-border) !important;
+            color: var(--offwhite) !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: rgba(0,212,170,0.5) !important;
+            box-shadow: 0 0 0 3px rgba(0,212,170,0.1) !important;
+        }
+        .form-label { color: var(--offwhite) !important; }
+        .btn-primary {
+            background: var(--teal) !important;
+            border-color: var(--teal) !important;
+            color: var(--navy) !important;
+        }
+        .btn-primary:hover {
+            background: #00e8bb !important;
+        }
+        .btn-outline-primary {
+            border-color: rgba(0,212,170,0.3) !important;
+            color: var(--teal) !important;
+        }
+        .btn-outline-primary:hover {
+            background: rgba(0,212,170,0.08) !important;
+            border-color: var(--teal) !important;
+        }
+        .alert-success { background: rgba(0,212,170,0.08) !important; border-color: rgba(0,212,170,0.2) !important; color: var(--teal) !important; }
+        .alert-danger { background: rgba(248,113,113,0.08) !important; border-color: rgba(248,113,113,0.2) !important; color: #f87171 !important; }
+        .alert-info { background: rgba(59,130,246,0.08) !important; border-color: rgba(59,130,246,0.2) !important; color: #60a5fa !important; }
+        .text-muted { color: var(--muted) !important; }
+        .text-dark { color: var(--offwhite) !important; }
+        .bg-white { background: var(--card-bg) !important; }
+        .bg-light { background: rgba(0,212,170,0.05) !important; }
+        .dropdown-menu {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+        }
+        .dropdown-item {
+            color: var(--offwhite) !important;
+        }
+        .dropdown-item:hover { background: rgba(0,212,170,0.08) !important; }
+        .modal-content {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+            color: var(--offwhite);
+        }
+        .modal-header {
+            background: rgba(0,212,170,0.05) !important;
+            border-bottom: 1px solid var(--card-border) !important;
+        }
+        .modal-footer { border-top: 1px solid var(--card-border) !important; }
+        .badge.bg-success { background: rgba(0,212,170,0.15) !important; color: var(--teal) !important; }
+        .badge.bg-danger { background: rgba(248,113,113,0.15) !important; color: #f87171 !important; }
+        .badge.bg-warning { background: rgba(251,191,36,0.15) !important; color: #fbbf24 !important; }
+        .badge.bg-info { background: rgba(59,130,246,0.15) !important; color: #60a5fa !important; }
+        .page-item.active .page-link { background: var(--teal) !important; border-color: var(--teal) !important; color: var(--navy) !important; }
+        .page-link { background: var(--card-bg) !important; border-color: var(--card-border) !important; color: var(--offwhite) !important; }
+        .breadcrumb { background: transparent !important; }
+        .breadcrumb-item a { color: var(--teal) !important; }
+        .breadcrumb-item.active { color: var(--muted) !important; }
+        h1, h2, h3, h4, h5, h6 { color: var(--offwhite) !important; }
+        .dashboard-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
+            border: 1px solid rgba(0,212,170,0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .dashboard-header h1, .dashboard-header h2, .dashboard-header h3 { color: var(--offwhite) !important; }
+        .dashboard-header p { color: var(--muted) !important; }
+        .stats-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        .table-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+        }
+        .text-white { color: var(--offwhite) !important; }
+        .btn-outline-secondary {
+            border-color: rgba(255,255,255,0.15) !important;
+            color: var(--offwhite) !important;
+        }
+        .btn-outline-secondary:hover {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(255,255,255,0.25) !important;
+        }
+        .admin-header .h4 { color: var(--offwhite) !important; }
     </style>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">

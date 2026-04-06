@@ -18,7 +18,7 @@
         margin: 0 auto 20px;
         position: relative;
         background: conic-gradient(
-            #DE6262 0deg {{ $usagePercentage * 3.6 }}deg,
+            #00d4aa 0deg {{ $usagePercentage * 3.6 }}deg,
             #e9ecef {{ $usagePercentage * 3.6 }}deg 360deg
         );
         display: flex;
@@ -38,7 +38,7 @@
     .usage-percentage {
         font-size: 24px;
         font-weight: 700;
-        color: #DE6262;
+        color: #00d4aa;
         position: relative;
         z-index: 1;
     }
@@ -55,7 +55,7 @@
         padding: 20px;
         background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
         border-radius: 15px;
-        border: 1px solid rgba(222, 98, 98, 0.1);
+        border: 1px solid rgba(0, 212, 170, 0.1);
     }
     
     .usage-number {
@@ -316,7 +316,7 @@
 @section('footer-content')
     <p style="margin-top: 15px; font-size: 13px; color: #6c757d;">
         <strong>Usage Questions?</strong> Contact our support team at 
-        <a href="mailto:support@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #DE6262;">
+        <a href="mailto:support@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #00d4aa;">
             support@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com
         </a>
     </p>

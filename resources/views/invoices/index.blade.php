@@ -9,9 +9,9 @@
         min-height: 100vh;
         padding: 0px 0 2rem 0;
         margin-top: -5px;
-        border-top: 5px solid #DE6262;
+        border-top: 5px solid #00d4aa;
         border-radius: 15px 15px 0 0;
-        box-shadow: 0 -4px 20px rgba(222, 98, 98, 0.1);
+        box-shadow: 0 -4px 20px rgba(0, 212, 170, 0.1);
         position: relative;
         z-index: 1;
     }
@@ -23,7 +23,7 @@
         left: 0;
         right: 0;
         height: 15px;
-        background: linear-gradient(to bottom, rgba(222, 98, 98, 0.2), transparent);
+        background: linear-gradient(to bottom, rgba(0, 212, 170, 0.2), transparent);
         pointer-events: none;
     }
 
@@ -49,7 +49,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
     
     .stats-card {
@@ -72,12 +72,12 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
     
     .stats-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 30px rgba(222, 98, 98, 0.15);
+        box-shadow: 0 12px 30px rgba(0, 212, 170, 0.15);
     }
 
     /* Enhanced Table Styling */
@@ -88,7 +88,7 @@
     }
     
     .table-custom thead th {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         color: white;
         font-weight: 600;
         border: none;
@@ -105,7 +105,7 @@
     }
     
     .table-custom tbody tr:hover {
-        background-color: rgba(222, 98, 98, 0.05);
+        background-color: rgba(0, 212, 170, 0.05);
     }
 
     /* Page Header */
@@ -126,11 +126,11 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
     
     .page-header h1 {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -142,7 +142,7 @@
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -175,7 +175,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
 </style>
 <style>
@@ -186,7 +186,7 @@
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0, 212, 170, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -198,7 +198,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
 }
 
 .dashboard-header h2 {
@@ -285,10 +285,10 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem;">Outstanding</div>
-                                    <div style="font-size: 1.25rem; font-weight: 600; color: #DE6262;">${{ number_format($totalUnpaid, 2) }}</div>
+                                    <div style="font-size: 1.25rem; font-weight: 600; color: #00d4aa;">${{ number_format($totalUnpaid, 2) }}</div>
                                 </div>
                                 <div class="align-self-center">
-                                    <i class="fas fa-exclamation-triangle" style="font-size: 1.2rem; color: #DE6262;"></i>
+                                    <i class="fas fa-exclamation-triangle" style="font-size: 1.2rem; color: #00d4aa;"></i>
                                 </div>
                             </div>
                         </div>
@@ -349,7 +349,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem;">Subscription Expires</div>
-                                    <div style="font-size: 1.1rem; font-weight: 600; color: #DE6262;">
+                                    <div style="font-size: 1.1rem; font-weight: 600; color: #00d4aa;">
                                         @if(auth()->user()->monthlyInvoiceSetting && auth()->user()->monthlyInvoiceSetting->subscription_ends_at)
                                             {{ auth()->user()->monthlyInvoiceSetting->subscription_ends_at->format('M d, Y') }}
                                         @elseif(auth()->user()->monthlyInvoiceSetting && auth()->user()->monthlyInvoiceSetting->isUnlimitedSubscription())
@@ -364,7 +364,7 @@
                                     </div>
                                 </div>
                                 <div class="align-self-center">
-                                    <i class="fas fa-calendar-times" style="font-size: 1.2rem; color: #DE6262;"></i>
+                                    <i class="fas fa-calendar-times" style="font-size: 1.2rem; color: #00d4aa;"></i>
                                 </div>
                             </div>
                         </div>
@@ -475,7 +475,7 @@
                                     @foreach($invoices as $invoice)
                                         <tr class="{{ $invoice->isOverdue() ? 'table-danger' : '' }}">
                                             <td>
-                                                <strong style="color: #DE6262;">#{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</strong>
+                                                <strong style="color: #00d4aa;">#{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</strong>
                                                 <br>
                                                 <small class="text-muted" style="font-size: 0.75rem;">{{ $invoice->created_at->format('M d, Y') }}</small>
                                             </td>

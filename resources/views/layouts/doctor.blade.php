@@ -45,8 +45,11 @@
         .doctor-content {
             flex: 1;
             margin-left: 280px;
-            background: #f1f5f9;
+            background: #060d1f;
             min-height: 100vh;
+        }
+        body {
+            background: #060d1f !important;
         }
         .sidebar-brand {
             padding: 1.25rem;
@@ -75,8 +78,8 @@
         }
         .nav-link.active {
             color: white;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.35);
         }
         .nav-link i { width: 22px; margin-right: 0.85rem; text-align: center; font-size: 1rem; }
         .nav-section {
@@ -108,8 +111,8 @@
             align-items: center;
             justify-content: center;
             padding: 0.85rem 1rem;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
+            background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
+            color: #060d1f;
             border: none;
             border-radius: 12px;
             font-size: 0.9rem;
@@ -117,12 +120,12 @@
             text-decoration: none;
             cursor: pointer;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
         }
         .quick-action-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-            color: white;
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
+            color: #060d1f;
         }
         .quick-action-btn i { margin-right: 0.5rem; }
 
@@ -186,10 +189,105 @@
         /* Active state for AI pages */
         .nav-link.active-ai {
             color: white;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
         }
+
+        /* Dark theme overrides for child pages */
+        :root {
+            --navy: #060d1f;
+            --navy-card: #0f1c3a;
+            --teal: #00d4aa;
+            --offwhite: #e8edf5;
+            --muted: rgba(232,237,231,0.55);
+            --card-bg: rgba(10,22,40,0.9);
+            --card-border: rgba(0,212,170,0.12);
+            --teal-dim: rgba(0,212,170,0.1);
+        }
+        body { background: var(--navy) !important; }
+        .dashboard-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%) !important;
+            border: 1px solid rgba(0,212,170,0.15) !important;
+            border-radius: 16px !important;
+            padding: 2rem !important;
+            margin-bottom: 2rem !important;
+            position: relative;
+            overflow: hidden;
+        }
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--teal), transparent);
+        }
+        .dashboard-header h1, .dashboard-header h2 {
+            color: var(--offwhite) !important;
+            font-weight: 700;
+        }
+        .dashboard-header p { color: var(--muted) !important; }
+        .dashboard-header .btn {
+            background: rgba(255,255,255,0.06) !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            color: var(--muted) !important;
+        }
+        .dashboard-header .btn:hover {
+            background: rgba(255,255,255,0.1) !important;
+            color: var(--offwhite) !important;
+        }
+        .table-card {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+            border-radius: 16px !important;
+            padding: 1.75rem !important;
+            margin-bottom: 1.5rem !important;
+            backdrop-filter: blur(12px);
+        }
+        .card {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+            border-radius: 16px !important;
+        }
+        .card-header {
+            background: rgba(0,212,170,0.05) !important;
+            border-bottom: 1px solid var(--card-border) !important;
+            color: var(--offwhite) !important;
+        }
+        .card-body { background: transparent !important; }
+        .form-control, .form-select {
+            background: rgba(10,20,40,0.8) !important;
+            border: 1px solid var(--card-border) !important;
+            color: var(--offwhite) !important;
+            border-radius: 10px !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: rgba(0,212,170,0.5) !important;
+            box-shadow: 0 0 0 3px rgba(0,212,170,0.08) !important;
+        }
+        .form-control::placeholder { color: rgba(232,237,231,0.25) !important; }
+        .form-select option { background: var(--navy-card); color: var(--offwhite); }
+        .form-label { color: var(--offwhite) !important; }
+        .form-text, .text-muted { color: var(--muted) !important; }
+        .alert-success { background: rgba(0,212,170,0.08) !important; border: 1px solid rgba(0,212,170,0.2) !important; color: var(--teal) !important; border-radius: 12px; }
+        .alert-danger { background: rgba(248,113,113,0.08) !important; border: 1px solid rgba(248,113,113,0.2) !important; color: #f87171 !important; border-radius: 12px; }
+        .btn-primary { background: var(--teal) !important; border-color: var(--teal) !important; color: var(--navy) !important; font-weight: 600; }
+        .btn-primary:hover { background: #00e8bb !important; transform: translateY(-1px); }
+        .btn-secondary-custom, .btn-secondary { background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: var(--muted) !important; }
+        .btn-secondary-custom:hover, .btn-secondary:hover { background: rgba(255,255,255,0.1) !important; color: var(--offwhite) !important; }
+        .btn-outline-primary { border-color: rgba(0,212,170,0.3) !important; color: var(--teal) !important; }
+        .btn-outline-primary:hover { background: rgba(0,212,170,0.08) !important; }
+        .text-primary { color: var(--teal) !important; }
+        .text-success { color: var(--teal) !important; }
+        .text-dark { color: var(--offwhite) !important; }
+        .text-secondary { color: var(--muted) !important; }
+        .bg-light { background: rgba(255,255,255,0.04) !important; }
+        .bg-white { background: var(--card-bg) !important; }
+        .border { border-color: var(--card-border) !important; }
+        .border-top { border-color: var(--card-border) !important; }
+        .text-center { color: var(--muted); }
     </style>
+
+    @yield('styles')
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- PWA Meta Tags -->

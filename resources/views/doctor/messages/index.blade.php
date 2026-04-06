@@ -1,17 +1,70 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Messages')
+
+@push('styles')
+<style>
+:root {
+    --navy: #060d1f;
+    --navy-card: #0f1c3a;
+    --teal: #00d4aa;
+    --offwhite: #e8edf5;
+    --muted: rgba(232,237,231,0.55);
+    --card-border: rgba(0,212,170,0.12);
+    --card-bg: rgba(10,22,40,0.9);
+}
+.dashboard-header {
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(0,212,170,0.15);
+}
+.dashboard-header h2, .h1 { color: var(--offwhite) !important; font-weight: 700; }
+.dashboard-header p { color: var(--muted) !important; }
+.dashboard-header i { color: var(--teal); }
+.card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+.card-body { background: transparent !important; padding: 0 !important; }
+.list-group-item {
+    background: transparent !important;
+    border-bottom: 1px solid var(--card-border) !important;
+    padding: 1rem 1.25rem !important;
+    transition: background 0.2s;
+}
+.list-group-item:hover { background: rgba(0,212,170,0.05) !important; }
+.list-group-item:last-child { border-bottom: none !important; }
+.list-group-item h6 { color: var(--offwhite) !important; font-weight: 600; }
+.list-group-item .text-muted { color: var(--muted) !important; }
+.card-footer {
+    background: rgba(0,212,170,0.03) !important;
+    border-top: 1px solid var(--card-border) !important;
+    padding: 1rem !important;
+}
+.text-dark { color: var(--offwhite) !important; }
+.badge.bg-info { background: rgba(59,130,246,0.15) !important; color: #60a5fa !important; }
+.badge.bg-secondary { background: rgba(255,255,255,0.08) !important; color: var(--muted) !important; }
+.badge.bg-success { background: rgba(0,212,170,0.15) !important; color: var(--teal) !important; }
+.alert-success { background: rgba(0,212,170,0.08) !important; border: 1px solid rgba(0,212,170,0.2) !important; color: var(--teal) !important; border-radius: 12px; }
+.text-center.py-5 { color: var(--muted); }
+.text-muted { color: var(--muted) !important; }
+</style>
+@endpush
 
 @section('content')
 <div class="dashboard-container">
     <div class="container-fluid px-3 px-md-4">
-        <div class="dashboard-header py-3 border-bottom mb-4">
-            <div class="d-flex justify-content-between align-items-center">
+        <div class="dashboard-header d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center">
                 <div>
-                    <h1 class="h2 mb-1">
-                        <i class="fas fa-comments text-primary me-2"></i>
+                    <h2 class="h1 mb-1">
+                        <i class="fas fa-comments me-2"></i>
                         Patient Messages
-                    </h1>
+                    </h2>
                     <p class="text-muted mb-0">Conversations with your patients</p>
                 </div>
             </div>

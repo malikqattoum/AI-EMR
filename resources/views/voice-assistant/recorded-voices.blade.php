@@ -9,7 +9,7 @@
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0, 212, 170, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -21,7 +21,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
 }
 
 .dashboard-header h2 {

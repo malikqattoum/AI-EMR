@@ -24,7 +24,7 @@
         <div class="row mt-4">
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);">
                         <i class="fas fa-clipboard-list"></i>
                     </div>
                     <p class="stats-number">{{ $stats['total_programs'] }}</p>

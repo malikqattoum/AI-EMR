@@ -1,20 +1,16 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Appointment Settings')
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-<link rel="stylesheet" href="{{ asset('demos/medical/medical.css') }}">
-
+@section('styles')
 <style>
 /* Professional Dashboard Header Styling */
 .dashboard-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    border-radius: 15px;
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%) !important;
+    border-radius: 16px;
     padding: 2rem;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0,212,170,0.15) !important;
     position: relative;
     overflow: hidden;
 }
@@ -25,12 +21,12 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    height: 3px;
+    background: linear-gradient(90deg, #00d4aa, transparent);
 }
 
 .dashboard-header h2 {
-    color: #ffffff;
+    color: #e8edf5;
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
@@ -45,7 +41,7 @@
 }
 
 .dashboard-header p {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(232,237,231,0.55);
     font-size: 1.1rem;
     font-weight: 500;
     margin-bottom: 0;
@@ -53,16 +49,16 @@
 
 /* Button styles within header */
 .dashboard-header .btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
+    background: rgba(0,212,170,0.1) !important;
+    border: 1px solid rgba(0,212,170,0.2) !important;
+    color: #00d4aa !important;
     transition: all 0.3s ease;
 }
 
 .dashboard-header .btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-    color: white;
+    background: rgba(0,212,170,0.15) !important;
+    border-color: rgba(0,212,170,0.4) !important;
+    color: #00d4aa;
     transform: translateY(-1px);
 }
 
@@ -82,7 +78,7 @@
     }
 }
 </style>
-@endpush
+@endsection
 
 @section('content')
 <div class="dashboard-container">

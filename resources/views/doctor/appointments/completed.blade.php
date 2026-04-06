@@ -307,7 +307,7 @@
             <div class="col-lg-4">
                 <!-- Quick Actions -->
                 <div class="table-card mb-4 shadow-sm">
-                    <div class="bg-gradient-primary text-white p-4 rounded-top" style="background: linear-gradient(135deg, #DE6262 0%, #c54545 100%);">
+                    <div class="bg-gradient-primary text-white p-4 rounded-top" style="background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%); border-bottom: 3px solid #00d4aa;">
                         <h5 class="mb-0 fw-bold">
                             <i class="fas fa-bolt me-2"></i>Quick Actions
                         </h5>

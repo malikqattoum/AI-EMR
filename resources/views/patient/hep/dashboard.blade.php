@@ -28,7 +28,7 @@
         <div class="row mb-4">
             <div class="col-lg-3 col-md-6 mb-3">
                 <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="stats-icon" style="background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);">
                         <i class="fas fa-clipboard-list" aria-hidden="true"></i>
                     </div>
                     <div class="stats-number" aria-label="{{ $activeAssignments->count() + $completedAssignments->count() }} total programs">{{ $activeAssignments->count() + $completedAssignments->count() }}</div>

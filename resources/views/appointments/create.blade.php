@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('demos/medical/medical.css') }}">
 <style>
 .booking-hero {
-    background: linear-gradient(135deg, #DE6262 0%, #DE6280 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #DE6280 100%);
     padding: 2rem 0;
     margin-bottom: 2rem;
 }
@@ -39,12 +39,12 @@
 
 .booking-option:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(222, 98, 98, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 212, 170, 0.15);
 }
 
 .booking-option.selected {
-    border-color: #DE6262;
-    background: linear-gradient(135deg, rgba(222, 98, 98, 0.05) 0%, rgba(222, 98, 128, 0.05) 100%);
+    border-color: #00d4aa;
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(222, 98, 128, 0.05) 100%);
 }
 
 .date-option {
@@ -57,13 +57,13 @@
 }
 
 .date-option:hover {
-    border-color: #DE6262;
-    background: rgba(222, 98, 98, 0.05);
+    border-color: #00d4aa;
+    background: rgba(0, 212, 170, 0.05);
 }
 
 .date-option.selected {
-    border-color: #DE6262;
-    background: linear-gradient(135deg, rgba(222, 98, 98, 0.1) 0%, rgba(222, 98, 128, 0.1) 100%);
+    border-color: #00d4aa;
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(222, 98, 128, 0.1) 100%);
 }
 
 .time-slot {
@@ -78,19 +78,19 @@
 }
 
 .time-slot:hover {
-    border-color: #DE6262;
-    background: rgba(222, 98, 98, 0.05);
-    color: #DE6262;
+    border-color: #00d4aa;
+    background: rgba(0, 212, 170, 0.05);
+    color: #00d4aa;
 }
 
 .time-slot.selected {
-    background: linear-gradient(135deg, #DE6262 0%, #DE6280 100%);
-    border-color: #DE6262;
+    background: linear-gradient(135deg, #00d4aa 0%, #DE6280 100%);
+    border-color: #00d4aa;
     color: white;
 }
 
 .btn-book {
-    background: linear-gradient(135deg, #DE6262 0%, #DE6280 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #DE6280 100%);
     border: none;
     border-radius: 12px;
     padding: 1rem 2rem;
@@ -102,7 +102,7 @@
 
 .btn-book:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(222, 98, 98, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4);
     color: white;
 }
 
@@ -113,13 +113,13 @@
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #DE6262;
-    box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.25);
+    border-color: #00d4aa;
+    box-shadow: 0 0 0 0.2rem rgba(0, 212, 170, 0.25);
 }
 
 .form-check-input:checked {
-    background-color: #DE6262;
-    border-color: #DE6262;
+    background-color: #00d4aa;
+    border-color: #00d4aa;
 }
 
 .section-title {
@@ -128,20 +128,20 @@
     color: #2c3e50;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #DE6262;
+    border-bottom: 2px solid #00d4aa;
     display: inline-block;
 }
 
 .summary-card {
-    background: linear-gradient(135deg, rgba(222, 98, 98, 0.05) 0%, rgba(222, 98, 128, 0.05) 100%);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(222, 98, 128, 0.05) 100%);
+    border: 1px solid rgba(0, 212, 170, 0.2);
     border-radius: 12px;
     padding: 1.5rem;
 }
 
 .info-item {
     padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(222, 98, 98, 0.1);
+    border-bottom: 1px solid rgba(0, 212, 170, 0.1);
 }
 
 .info-item:last-child {
@@ -157,13 +157,13 @@
 }
 
 .appointment-type-card:hover {
-    border-color: #DE6262;
-    background: rgba(222, 98, 98, 0.05);
+    border-color: #00d4aa;
+    background: rgba(0, 212, 170, 0.05);
 }
 
 .appointment-type-card.selected {
-    border-color: #DE6262;
-    background: linear-gradient(135deg, rgba(222, 98, 98, 0.1) 0%, rgba(222, 98, 128, 0.1) 100%);
+    border-color: #00d4aa;
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(222, 98, 128, 0.1) 100%);
 }
 
 .icon-circle {
@@ -198,7 +198,7 @@
 }
 
 .progress-step.active {
-    background: linear-gradient(135deg, #DE6262 0%, #DE6280 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #DE6280 100%);
     color: white;
 }
 
@@ -335,7 +335,7 @@
             </div>
             <div class="text-center mt-3">
                 <small class="text-muted">Already have an account?
-                    <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}" class="text-decoration-none" style="color: #DE6262;">Sign in here</a>
+                    <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}" class="text-decoration-none" style="color: #00d4aa;">Sign in here</a>
                 </small>
             </div>
         </div>
@@ -750,30 +750,30 @@
                                 </div>
                                 <div class="info-item d-flex justify-content-between fs-5">
                                     <span class="fw-semibold">Total:</span>
-                                    <span class="fw-bold" style="color: #DE6262;">${{ number_format($doctor->consultation_fee / 100, 2) }}</span>
+                                    <span class="fw-bold" style="color: #00d4aa;">${{ number_format($doctor->consultation_fee / 100, 2) }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Important Information -->
                         <div class="section-card">
-                            <h3 class="h6 fw-semibold mb-3" style="color: #DE6262;">Important Reminders</h3>
+                            <h3 class="h6 fw-semibold mb-3" style="color: #00d4aa;">Important Reminders</h3>
                             <div class="small text-muted">
                                 <div class="d-flex mb-2">
-                                    <i class="fas fa-check-circle me-2 mt-1" style="color: #DE6262;"></i>
+                                    <i class="fas fa-check-circle me-2 mt-1" style="color: #00d4aa;"></i>
                                     <span>Arrive 15 minutes early for in-person visits</span>
                                 </div>
                                 <div class="d-flex mb-2">
-                                    <i class="fas fa-check-circle me-2 mt-1" style="color: #DE6262;"></i>
+                                    <i class="fas fa-check-circle me-2 mt-1" style="color: #00d4aa;"></i>
                                     <span>Bring valid ID and insurance information</span>
                                 </div>
                                 <div class="d-flex mb-2">
-                                    <i class="fas fa-check-circle me-2 mt-1" style="color: #DE6262;"></i>
+                                    <i class="fas fa-check-circle me-2 mt-1" style="color: #00d4aa;"></i>
                                     <span>Confirmation email will be sent shortly</span>
                                 </div>
                                 @if(!$doctor->auto_approve_appointments)
                                 <div class="d-flex">
-                                    <i class="fas fa-info-circle me-2 mt-1" style="color: #DE6262;"></i>
+                                    <i class="fas fa-info-circle me-2 mt-1" style="color: #00d4aa;"></i>
                                     <span>Appointment requires doctor's approval</span>
                                 </div>
                                 @endif
@@ -788,9 +788,9 @@
 
                         <p class="small text-muted text-center">
                             By booking, you agree to our
-                            <a href="#" class="text-decoration-none" style="color: #DE6262;">terms of service</a>
+                            <a href="#" class="text-decoration-none" style="color: #00d4aa;">terms of service</a>
                             and
-                            <a href="#" class="text-decoration-none" style="color: #DE6262;">privacy policy</a>.
+                            <a href="#" class="text-decoration-none" style="color: #00d4aa;">privacy policy</a>.
                         </p>
                     </div>
                 </div>

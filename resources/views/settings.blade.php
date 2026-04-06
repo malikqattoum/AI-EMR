@@ -178,7 +178,7 @@
                         </div>
 
                             <div class="text-center mt-4">
-                                <button type="submit" class="btn" style="background-color: #DE6262; color: white;">
+                                <button type="submit" class="btn" style="background-color: #00d4aa; color: white;">
                                     Save Settings
                                 </button>
                             </div>
@@ -342,8 +342,8 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 #custom_specialty_settings:focus {
-    border-color: #DE6262;
-    box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.25);
+    border-color: #00d4aa;
+    box-shadow: 0 0 0 0.2rem rgba(0, 212, 170, 0.25);
 }
 
 /* Volume slider cross-browser compatibility */
@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #DE6262;
+    background: #00d4aa;
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid #fff;
@@ -371,14 +371,14 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 #notification_volume::-webkit-slider-thumb:hover {
-    background: #c85151;
+    background: #00a88a;
     transform: scale(1.1);
 }
 
 #notification_volume::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #DE6262;
+    background: #00d4aa;
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid #fff;
@@ -387,14 +387,14 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 #notification_volume::-moz-range-thumb:hover {
-    background: #c85151;
+    background: #00a88a;
     transform: scale(1.1);
 }
 
 #notification_volume::-ms-thumb {
     width: 20px;
     height: 20px;
-    background: #DE6262;
+    background: #00d4aa;
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid #fff;
@@ -403,19 +403,19 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 #notification_volume::-ms-thumb:hover {
-    background: #c85151;
+    background: #00a88a;
 }
 
 #notification_volume:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 3px rgba(222, 98, 98, 0.3);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3);
 }
 
 #notification_volume:focus::-moz-range-thumb {
-    box-shadow: 0 0 0 3px rgba(222, 98, 98, 0.3);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3);
 }
 
 #notification_volume:focus::-ms-thumb {
-    box-shadow: 0 0 0 3px rgba(222, 98, 98, 0.3);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.3);
 }
 
 /* Volume icons styling */

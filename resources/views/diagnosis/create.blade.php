@@ -266,15 +266,15 @@
 }
 
 .card-header {
-    background-color: #DE6262;
+    background-color: #00d4aa;
     color: white;
     border-bottom: none;
 }
 
 .btn-outline-primary:checked + label,
 .btn-outline-primary.active {
-    background-color: #DE6262;
-    border-color: #DE6262;
+    background-color: #00d4aa;
+    border-color: #00d4aa;
 }
 </style>
 

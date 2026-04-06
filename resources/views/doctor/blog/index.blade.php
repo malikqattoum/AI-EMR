@@ -6,12 +6,12 @@
 <style>
 /* Professional Dashboard Header Styling */
 .dashboard-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
     border-radius: 15px;
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0,212,170,0.15);
     position: relative;
     overflow: hidden;
 }
@@ -22,12 +22,12 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    height: 3px;
+    background: linear-gradient(90deg, #00d4aa, transparent);
 }
 
 .dashboard-header h2 {
-    color: #ffffff;
+    color: #e8edf5;
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
@@ -42,7 +42,7 @@
 }
 
 .dashboard-header p {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(232,237,231,0.55);
     font-size: 1.1rem;
     font-weight: 500;
     margin-bottom: 0;

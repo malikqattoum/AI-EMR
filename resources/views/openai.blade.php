@@ -35,7 +35,7 @@
                         <!-- Horizontal line connecting steps -->
                         <div style="content: ''; position: absolute; top: 25px; left: 10%; right: 10%; height: 2px; background-color: #e9ecef; z-index: 0;"></div>
                         <div class="progress-step active" data-step="patient" style="position: relative; z-index: 1; text-align: center; width: 20%;">
-                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #DE6262; color: white; font-size: 1.25rem; margin: 0 auto; border: 2px solid #DE6262; box-shadow: 0 0 0 5px rgba(222, 98, 98, 0.2);">
+                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #00d4aa; color: white; font-size: 1.25rem; margin: 0 auto; border: 2px solid #00d4aa; box-shadow: 0 0 0 5px rgba(0, 212, 170, 0.2);">
                                 <i class="fas fa-user-circle"></i>
                             </div>
                             <div class="step-label mt-2">Patient</div>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="progress mt-3" style="height: 8px; border-radius: 4px; background-color: #f8f9fa;">
-                        <div class="progress-bar" role="progressbar" style="width: 20%; background-color: #DE6262;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar" role="progressbar" style="width: 20%; background-color: #00d4aa;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
 
@@ -432,11 +432,11 @@
                                 <!-- Custom Symptoms Input -->
                                 <div class="mt-2">
                                     <label class="form-label">
-                                        <i class="fas fa-plus-circle me-1" style="color: #DE6262"></i> Add Custom Symptoms:
+                                        <i class="fas fa-plus-circle me-1" style="color: #00d4aa"></i> Add Custom Symptoms:
                                     </label>
                                     <div class="input-group">
                                         <input type="text" id="custom_symptom_input" class="form-control" placeholder="Type a custom symptom...">
-                                        <button type="button" id="add_custom_symptom" style="background-color: #DE6262; color: white;">Add</button>
+                                        <button type="button" id="add_custom_symptom" style="background-color: #00d4aa; color: white;">Add</button>
                                     </div>
                                     <div id="custom_symptoms_container" class="mt-2"></div>
                                     <input type="hidden" id="custom_symptoms_data" name="custom_symptoms" value="">
@@ -1017,7 +1017,7 @@ X-ray: No abnormalities detected">{{ $patientToEdit->test_results ?? '' }}</text
         </div>
 
         <div class="progress mb-2" style="height: 16px; background-color: #eef1f4; border-radius: 10px;">
-            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%; background: linear-gradient(90deg, #DE6262, #ff8a65);"></div>
+            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%; background: linear-gradient(90deg, #00d4aa, #00a88a);"></div>
         </div>
         <div class="text-center" style="font-size: 0.85rem; color:#6c757d;">
             Please wait while the AI analyzes the data...

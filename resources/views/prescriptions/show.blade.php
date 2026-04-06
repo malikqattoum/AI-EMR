@@ -10,7 +10,7 @@
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
+    border: 1px solid rgba(0, 212, 170, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -22,7 +22,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
+    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
 }
 
 .dashboard-header h2 {
@@ -63,13 +63,13 @@
 }
 
 .dashboard-header .btn-primary {
-    background: #DE6262;
-    border-color: #DE6262;
+    background: #00d4aa;
+    border-color: #00d4aa;
 }
 
 .dashboard-header .btn-primary:hover {
-    background: #c44d4d;
-    border-color: #c44d4d;
+    background: #00a88a;
+    border-color: #00a88a;
 }
 
 /* Responsive adjustments */

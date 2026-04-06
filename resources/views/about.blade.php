@@ -1,248 +1,545 @@
 @extends('master')
 
-@section('title', 'About Us')
+@section('title', 'About Us — MedSuite AI')
 
 @push('styles')
-<style>
-/* Professional Dashboard Header Styling */
-.dashboard-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(222, 98, 98, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(135deg, #DE6262 0%, #2c3e50 100%);
-}
-
-.dashboard-header h2 {
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.dashboard-header h2::before {
-    content: 'ℹ️';
-    font-size: 2rem;
-}
-
-.dashboard-header p {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .dashboard-header {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .dashboard-header h2 {
-        font-size: 2rem;
-    }
-
-    .dashboard-header p {
-        font-size: 1rem;
-    }
-}
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 @endpush
 
 @section('content')
-<div class="dashboard-header">
-    <h2>About</h2>
-    <p>Learn more about us</p>
+<div class="page-root">
+
+    <!-- ═══════════ PAGE HERO ═══════════ -->
+    <section class="page-hero">
+        <div class="page-hero-bg">
+            <div class="page-orb page-orb-1"></div>
+            <div class="page-orb page-orb-2"></div>
+            <div class="page-grid-overlay"></div>
+        </div>
+        <div class="page-hero-inner">
+            <div class="page-eyebrow">
+                <span class="page-eyebrow-dot"></span>
+                About MedSuite AI
+            </div>
+            <h1 class="page-hero-title">
+                Built by clinicians,<br>
+                <em>for the future</em><br>
+                <span class="page-title-accent">of healthcare.</span>
+            </h1>
+            <p class="page-hero-sub">
+                We believe technology should amplify the human side of medicine — not replace it. MedSuite AI is the platform that makes that vision real.
+            </p>
+            <nav class="page-breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a>
+                <i class="bi bi-chevron-right"></i>
+                <span>About Us</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- ═══════════ FEATURES SECTION ═══════════ -->
+    <section class="page-section page-features-section">
+        <div class="page-container">
+            <div class="page-section-header">
+                <div class="page-eyebrow page-eyebrow-light">Core Capabilities</div>
+                <h2 class="page-section-title">Everything your<br><em>practice needs</em></h2>
+                <p class="page-section-sub">Discover what makes MedSuite AI the platform of choice for modern healthcare professionals.</p>
+            </div>
+
+            <div class="page-features-grid">
+                @foreach($features as $feature)
+                <div class="page-feat-card">
+                    <div class="page-feat-icon"><i class="{{ $feature['icon'] }}"></i></div>
+                    <h3>{{ $feature['title'] }}</h3>
+                    <p>{{ $feature['description'] }}</p>
+                    <div class="page-feat-glow"></div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ COUNTERS SECTION ═══════════ -->
+    <section class="page-section page-counters-section">
+        <div class="page-container">
+            <div class="page-counters-grid">
+                <div class="page-counter-card">
+                    <div class="page-counter-icon"><i class="bi bi-stethoscope"></i></div>
+                    <div class="page-counter-value">15,000+</div>
+                    <div class="page-counter-label">Consultations Completed</div>
+                </div>
+                <div class="page-counter-card">
+                    <div class="page-counter-icon"><i class="bi bi-people-fill"></i></div>
+                    <div class="page-counter-value">1,200+</div>
+                    <div class="page-counter-label">Healthcare Professionals</div>
+                </div>
+                <div class="page-counter-card">
+                    <div class="page-counter-icon"><i class="bi bi-calendar-check-fill"></i></div>
+                    <div class="page-counter-value">75,000+</div>
+                    <div class="page-counter-label">Patient Appointments</div>
+                </div>
+                <div class="page-counter-card">
+                    <div class="page-counter-icon"><i class="bi bi-star-fill"></i></div>
+                    <div class="page-counter-value">4.8<span class="page-counter-star">★</span></div>
+                    <div class="page-counter-label">Patient Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ WHAT WE DO SECTION ═══════════ -->
+    <section class="page-section page-what-section">
+        <div class="page-container">
+            <div class="page-what-grid">
+
+                <!-- Left: Description + Features -->
+                <div class="page-what-left">
+                    <div class="page-eyebrow page-eyebrow-light">Who We Are</div>
+                    <h2 class="page-section-title">{{ $whatWeDoTitle }}</h2>
+                    <p class="page-what-desc">{{ $whatWeDoDescription }}</p>
+
+                    <div class="page-what-features">
+                        @foreach($whatWeDoFeatures as $feature)
+                        <div class="page-what-feature">
+                            <div class="page-what-feature-icon"><i class="{{ $feature['icon'] }}"></i></div>
+                            <span>{{ $feature['description'] }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    <a href="{{ route('register.doctor') }}" class="page-btn-primary">
+                        <span>Get Started Today</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Right: How It Works + Core Principles -->
+                <div class="page-what-right">
+
+                    <!-- How It Works -->
+                    <div class="page-card">
+                        <div class="page-card-header">
+                            <i class="bi bi-clipboard-check-fill"></i>
+                            <h4>How It Works</h4>
+                        </div>
+                        <div class="page-steps">
+                            <div class="page-step">
+                                <div class="page-step-circle"><i class="bi bi-person-plus-fill"></i></div>
+                                <div class="page-step-content">
+                                    <strong>Register</strong>
+                                    <span>Create your account</span>
+                                </div>
+                            </div>
+                            <div class="page-step-line"></div>
+                            <div class="page-step">
+                                <div class="page-step-circle"><i class="bi bi-gear-fill"></i></div>
+                                <div class="page-step-content">
+                                    <strong>Configure</strong>
+                                    <span>Set up your profile</span>
+                                </div>
+                            </div>
+                            <div class="page-step-line"></div>
+                            <div class="page-step">
+                                <div class="page-step-circle"><i class="bi bi-stethoscope"></i></div>
+                                <div class="page-step-content">
+                                    <strong>Patient Care</strong>
+                                    <span>Start providing care</span>
+                                </div>
+                            </div>
+                            <div class="page-step-line"></div>
+                            <div class="page-step">
+                                <div class="page-step-circle"><i class="bi bi-people-fill"></i></div>
+                                <div class="page-step-content">
+                                    <strong>Manage</strong>
+                                    <span>Handle patients</span>
+                                </div>
+                            </div>
+                            <div class="page-step-line"></div>
+                            <div class="page-step">
+                                <div class="page-step-circle"><i class="bi bi-graph-up-arrow"></i></div>
+                                <div class="page-step-content">
+                                    <strong>Grow</strong>
+                                    <span>Expand your practice</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Core Principles -->
+                    <div class="page-card">
+                        <div class="page-card-header">
+                            <i class="bi bi-heart-fill"></i>
+                            <h4>Core Principles</h4>
+                        </div>
+                        <ul class="page-principles-list">
+                            <li><i class="bi bi-check-circle-fill"></i> Evidence-based medical practice</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Comprehensive patient management</li>
+                            <li><i class="bi bi-check-circle-fill"></i> HIPAA-compliant security standards</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Professional practice growth tools</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Multi-channel patient communication</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Automated workflow optimization</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
 
-<!-- Hero Section with Image Slider -->
-<section class="page-title dark page-title-center p-0 position-relative" style="min-height: 350px; overflow: hidden;">
-    <div class="fslider" data-arrows="false" data-pagi="false" data-animation="fade" data-hover="false">
-        <div class="flexslider">
-            <div class="slider-wrap">
-                <div class="slide"><img src="demos/medical/images/about-us/page-title/1.jpg" alt="Page Title Image" style="width:100%;height:350px;object-fit:cover;"></div>
-                <div class="slide"><img src="demos/medical/images/about-us/page-title/2.jpg" alt="Page Title Image" style="width:100%;height:350px;object-fit:cover;"></div>
-                <div class="slide"><img src="demos/medical/images/about-us/page-title/3.jpg" alt="Page Title Image" style="width:100%;height:350px;object-fit:cover;"></div>
-                <div class="slide"><img src="demos/medical/images/about-us/page-title/4.jpg" alt="Page Title Image" style="width:100%;height:350px;object-fit:cover;"></div>
-            </div>
-            <div class="vertical-middle vertical-middle-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(224,234,252,0.7);">
-                <div class="container py-5">
-                    <div class="page-title-row text-center">
-                        <div class="page-title-content">
-                            <h1 class="display-4 fw-bold mb-2" style="color: #1b1b18;">{{ $aboutTitle }}</h1>
-                            <span class="lead" style="color: #444;">{{ $aboutTagline }}</span>
-                        </div>
-                        <nav aria-label="breadcrumb" class="mt-3">
-                            <ol class="breadcrumb justify-content-center">
-                                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">About Us</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAGE TOKENS & BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-root {
+    --navy:        #060d1f;
+    --navy-mid:    #0c1633;
+    --navy-card:   #0f1c3a;
+    --navy-input:  #0a1428;
+    --teal:        #00d4aa;
+    --teal-dim:    rgba(0,212,170,0.10);
+    --teal-glow:   rgba(0,212,170,0.25);
+    --white:       #ffffff;
+    --offwhite:    #e8edf5;
+    --muted:       rgba(232,237,245,0.45);
+    --border:      rgba(255,255,255,0.07);
+    --border-hi:   rgba(255,255,255,0.14);
+    --glass:       rgba(255,255,255,0.035);
+    --error:       #f87171;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body:    'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--navy) !important; color: var(--offwhite) !important; font-family: var(--font-body) !important; }
+a { text-decoration: none; color: inherit; }
 
-<!-- Features Section -->
-<section class="py-5" style="background: #f8f9fa;">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold mb-3">Key Features</h2>
-            <p class="text-muted">Discover what makes our platform unique for doctors and patients.</p>
-        </div>
-        <div class="row g-4 justify-content-center">
-            @foreach($features as $feature)
-            <div class="col-sm-6 col-lg-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            <i class="{{ $feature['icon'] }}" style="font-size: 2.5rem; color: #DE6262;"></i>
-                        </div>
-                        <h5 class="card-title fw-semibold">{{ $feature['title'] }}</h5>
-                        <p class="card-text text-muted">{{ $feature['description'] }}</p>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAGE HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-hero {
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 8rem 2rem 5rem;
+}
+.page-hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+}
+.page-orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5;
+}
+.page-orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,170,0.2) 0%, transparent 65%);
+    top: -200px; left: -200px;
+    animation: orbFloat 12s ease-in-out infinite;
+}
+.page-orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 65%);
+    bottom: -100px; right: -100px;
+    animation: orbFloat 15s ease-in-out infinite reverse;
+}
+.page-grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+@keyframes orbFloat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08) translate(10px, -10px); }
+}
 
-<!-- Counters Section -->
-<section class="py-5" style="background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);">
-    <div class="container">
-        <div class="row text-center g-4">
-            <div class="col-md-3">
-                <div class="p-4 rounded shadow-sm bg-white">
-                    <i class="fas fa-stethoscope fa-3x mb-2" style="color: #DE6262;"></i>
-                    <h2 class="fw-bold mb-0">15,000+</h2>
-                    <p class="mb-0 text-muted">Consultations Completed</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="p-4 rounded shadow-sm bg-white">
-                    <i class="fas fa-user-md fa-3x mb-2" style="color: #DE6262;"></i>
-                    <h2 class="fw-bold mb-0">1,200+</h2>
-                    <p class="mb-0 text-muted">Healthcare Professionals</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="p-4 rounded shadow-sm bg-white">
-                    <i class="fas fa-calendar-check fa-3x mb-2" style="color: #DE6262;"></i>
-                    <h2 class="fw-bold mb-0">75,000+</h2>
-                    <p class="mb-0 text-muted">Patient Appointments</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="p-4 rounded shadow-sm bg-white">
-                    <i class="fas fa-microphone fa-3x mb-2" style="color: #DE6262;"></i>
-                    <h2 class="fw-bold mb-0">4.8★</h2>
-                    <p class="mb-0 text-muted">Patient Satisfaction</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+.page-hero-inner {
+    position: relative; z-index: 2;
+    max-width: 700px; margin: 0 auto;
+    text-align: center;
+    animation: heroIn 0.8s ease-out both;
+}
+@keyframes heroIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 
-<!-- What We Do Section -->
-<section class="py-5" style="background: #fff;">
-    <div class="container">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="mb-4">
-                    <h2 class="fw-bold mb-3">{{ $whatWeDoTitle }}</h2>
-                    <p class="lead text-muted">{{ $whatWeDoDescription }}</p>
-                </div>
-                <div class="row g-3">
-                    @foreach($whatWeDoFeatures as $wwdFeature)
-                    <div class="col-12">
-                        <div class="d-flex align-items-start">
-                            <i class="{{ $wwdFeature['icon'] }} me-3" style="font-size: 1.5rem; color: #DE6262;"></i>
-                            <span class="text-muted">{{ $wwdFeature['description'] }}</span>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <!-- How It Works Section (Stepper Style) -->
-                <div class="how-it-works p-4 rounded shadow-sm bg-white mb-4">
-                    <div class="heading-block mb-3 border-bottom-0 text-center">
-                        <h4 class="fw-bold mb-2" style="color: #DE6262;"><i class="fas fa-clipboard-list me-2"></i>How It Works</h4>
-                        <span class="text-muted">Complete healthcare platform workflow</span>
-                    </div>
-                    <div class="row text-center align-items-center justify-content-center g-0 mb-3">
-                        <div class="col-6 col-md-2">
-                            <div class="step-circle mx-auto mb-2" style="background:#DE6262;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;"><i class="fas fa-user-plus"></i></div>
-                            <div class="fw-semibold small">Register</div>
-                            <div class="small text-muted">Create account</div>
-                        </div>
-                        <div class="col-1 d-none d-md-block"><div style="height:2px;width:100%;background:#DE6262;margin:0 0.5rem;"></div></div>
-                        <div class="col-6 col-md-2">
-                            <div class="step-circle mx-auto mb-2" style="background:#DE6262;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;"><i class="fas fa-cog"></i></div>
-                            <div class="fw-semibold small">Setup</div>
-                            <div class="small text-muted">Configure profile</div>
-                        </div>
-                        <div class="col-1 d-none d-md-block"><div style="height:2px;width:100%;background:#DE6262;margin:0 0.5rem;"></div></div>
-                        <div class="col-6 col-md-2">
-                            <div class="step-circle mx-auto mb-2" style="background:#DE6262;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;"><i class="fas fa-stethoscope"></i></div>
-                            <div class="fw-semibold small">Patient Care</div>
-                            <div class="small text-muted">Provide treatment</div>
-                        </div>
-                        <div class="col-1 d-none d-md-block"><div style="height:2px;width:100%;background:#DE6262;margin:0 0.5rem;"></div></div>
-                        <div class="col-6 col-md-2">
-                            <div class="step-circle mx-auto mb-2" style="background:#DE6262;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;"><i class="fas fa-users"></i></div>
-                            <div class="fw-semibold small">Manage</div>
-                            <div class="small text-muted">Handle patients</div>
-                        </div>
-                        <div class="col-1 d-none d-md-block"><div style="height:2px;width:100%;background:#DE6262;margin:0 0.5rem;"></div></div>
-                        <div class="col-6 col-md-2">
-                            <div class="step-circle mx-auto mb-2" style="background:#DE6262;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;"><i class="fas fa-chart-line"></i></div>
-                            <div class="fw-semibold small">Grow</div>
-                            <div class="small text-muted">Expand practice</div>
-                        </div>
-                    </div>
-                    <div class="mt-4 text-center">
-                        <a href="/login" class="btn btn-lg rounded-pill px-4 shadow" style="background:#DE6262;color:#fff;border:none;">Get Started Today</a>
-                    </div>
-                </div>
-                <!-- Core Principles Section -->
-                <div class="core-principles p-4 rounded shadow-sm bg-white mt-4">
-                    <div class="heading-block mb-3 border-bottom-0">
-                        <h4 class="fw-bold mb-2"><i class="fas fa-heart me-2" style="color: #DE6262;"></i>Core Principles</h4>
-                        <span class="text-muted">What drives MedCura AI Platform</span>
-                    </div>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Evidence-based medical practice</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Comprehensive patient management</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> HIPAA-compliant security standards</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Professional practice growth tools</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Multi-channel patient communication</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Automated workflow optimization</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+.page-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1.5rem;
+}
+.page-eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal); box-shadow: 0 0 8px var(--teal);
+    animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;}50%{opacity:0.4;} }
+.page-eyebrow-light { color: var(--teal); }
 
+.page-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.05;
+    color: var(--white); margin-bottom: 1.25rem;
+}
+.page-hero-title em { color: var(--teal); font-style: italic; }
+.page-title-accent { color: var(--offwhite); font-style: normal; }
+
+.page-hero-sub {
+    font-size: 1.05rem; color: var(--muted); line-height: 1.75;
+    margin-bottom: 2rem; max-width: 540px; margin-left: auto; margin-right: auto;
+}
+
+.page-breadcrumb {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    font-size: 0.8125rem; color: var(--muted);
+}
+.page-breadcrumb a { color: var(--teal); transition: opacity 0.2s; }
+.page-breadcrumb a:hover { opacity: 0.8; }
+.page-breadcrumb i { font-size: 0.6rem; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-section {
+    padding: 5rem 2rem;
+}
+
+.page-container {
+    max-width: 1100px; margin: 0 auto;
+}
+
+.page-section-header {
+    text-align: center; margin-bottom: 4rem;
+}
+.page-section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1;
+    color: var(--white); margin-bottom: 1rem;
+}
+.page-section-title em { color: var(--teal); font-style: italic; }
+.page-section-sub {
+    font-size: 0.95rem; color: var(--muted); max-width: 500px;
+    margin: 0 auto; line-height: 1.7;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FEATURES GRID
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-features-section {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+.page-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.page-feat-card {
+    position: relative;
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+}
+.page-feat-card:hover {
+    border-color: rgba(0,212,170,0.3);
+    transform: translateY(-3px);
+}
+.page-feat-icon {
+    width: 48px; height: 48px;
+    background: var(--teal-dim);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal); font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+.page-feat-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem; font-weight: 600; color: var(--white);
+    margin-bottom: 0.6rem;
+}
+.page-feat-card p {
+    font-size: 0.875rem; color: var(--muted); line-height: 1.65;
+}
+.page-feat-glow {
+    position: absolute; bottom: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COUNTERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-counters-section {
+    background: var(--navy);
+}
+.page-counters-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+.page-counter-card {
+    text-align: center;
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    transition: border-color 0.3s;
+}
+.page-counter-card:hover { border-color: rgba(0,212,170,0.3); }
+.page-counter-icon {
+    font-size: 1.75rem; color: var(--teal); margin-bottom: 1rem;
+}
+.page-counter-value {
+    font-family: var(--font-display);
+    font-size: 2.5rem; font-weight: 600; color: var(--white);
+    margin-bottom: 0.25rem;
+}
+.page-counter-star { color: var(--teal); }
+.page-counter-label {
+    font-size: 0.8125rem; color: var(--muted);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   WHAT WE DO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-what-section {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--border);
+}
+.page-what-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+.page-what-left .page-section-title { text-align: left; font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.page-what-desc {
+    font-size: 0.9rem; color: var(--muted); line-height: 1.75;
+    margin-bottom: 2rem;
+}
+.page-what-features {
+    display: flex; flex-direction: column; gap: 0.875rem;
+    margin-bottom: 2.5rem;
+}
+.page-what-feature {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.page-what-feature-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--teal-dim);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal); font-size: 0.875rem;
+    margin-top: 2px;
+}
+.page-what-feature span {
+    font-size: 0.875rem; color: var(--muted); line-height: 1.5;
+}
+
+.page-btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    background: var(--teal); color: var(--navy);
+    font-size: 0.9rem; font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.25s;
+    box-shadow: 0 0 24px rgba(0,212,170,0.25);
+}
+.page-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(0,212,170,0.4);
+}
+.page-btn-primary i { font-size: 0.8rem; }
+
+/* Right column */
+.page-what-right {
+    display: flex; flex-direction: column; gap: 1.5rem;
+}
+.page-card {
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+}
+.page-card-header {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.page-card-header i { color: var(--teal); font-size: 1rem; }
+.page-card-header h4 {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 600; color: var(--white);
+}
+
+/* Steps */
+.page-steps { display: flex; flex-direction: column; }
+.page-step {
+    display: flex; align-items: center; gap: 1rem;
+}
+.page-step-circle {
+    width: 36px; height: 36px; flex-shrink: 0;
+    background: var(--teal-dim);
+    border: 1px solid rgba(0,212,170,0.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal); font-size: 0.8rem;
+}
+.page-step-content {
+    display: flex; flex-direction: column;
+}
+.page-step-content strong {
+    font-size: 0.8125rem; font-weight: 500; color: var(--white);
+}
+.page-step-content span {
+    font-size: 0.75rem; color: var(--muted);
+}
+.page-step-line {
+    width: 2px; height: 20px;
+    background: var(--border);
+    margin: 0 0 0 1.1rem;
+}
+
+/* Principles list */
+.page-principles-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.75rem;
+}
+.page-principles-list li {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.8125rem; color: var(--muted);
+}
+.page-principles-list li i {
+    color: var(--teal); font-size: 0.875rem; flex-shrink: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 900px) {
+    .page-what-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .page-what-left .page-section-title { text-align: center; }
+    .page-what-left { text-align: center; }
+    .page-what-features { align-items: center; }
+    .page-btn-primary { margin: 0 auto; }
+}
+@media (max-width: 768px) {
+    .page-counters-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-hero { padding: 7rem 1.5rem 4rem; min-height: auto; }
+}
+@media (max-width: 480px) {
+    .page-counters-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .page-counter-card { padding: 1.5rem 1rem; }
+    .page-counter-value { font-size: 2rem; }
+}
+</style>
 @endsection

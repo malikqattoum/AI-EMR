@@ -225,11 +225,11 @@
 }
 
 .blog-content blockquote {
-    border-left: 4px solid #DE6262;
+    border-left: 4px solid #00d4aa;
     padding-left: 1rem;
     margin: 1.5rem 0;
     font-style: italic;
-    color: #666;
+    color: rgba(232,237,231,0.7);
 }
 </style>
 @endpush

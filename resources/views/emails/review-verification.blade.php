@@ -13,7 +13,7 @@
             padding: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -29,7 +29,7 @@
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #0a1628;
         }
         .rating {
             color: #ffd700;
@@ -37,7 +37,7 @@
         }
         .verify-button {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
             color: white;
             padding: 15px 30px;
             text-decoration: none;
@@ -54,7 +54,7 @@
             font-size: 16px;
             text-align: center;
             margin: 20px 0;
-            border: 1px dashed #667eea;
+            border: 1px dashed #0a1628;
         }
         .footer {
             text-align: center;

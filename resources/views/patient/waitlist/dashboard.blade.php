@@ -51,7 +51,7 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
     display: flex;
     align-items: center;
     justify-content: center;

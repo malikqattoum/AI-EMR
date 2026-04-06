@@ -28,7 +28,7 @@ $doctor = $doctor ?? auth()->user()->doctor ?? null;
                              class="img-fluid rounded-3 shadow-lg">
                     @else
                         <div class="placeholder-image d-flex align-items-center justify-content-center rounded-3 shadow-lg"
-                             style="height: 400px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                             style="height: 400px; background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);">
                             <i class="fas fa-user-md fa-5x text-white opacity-50"></i>
                         </div>
                     @endif
@@ -145,7 +145,7 @@ $doctor = $doctor ?? auth()->user()->doctor ?? null;
                              class="img-fluid rounded-3 shadow-lg">
                     @else
                         <div class="placeholder-image d-flex align-items-center justify-content-center rounded-3 shadow-lg"
-                             style="height: 400px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                             style="height: 400px; background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);">
                             <i class="fas fa-user-md fa-5x text-white opacity-50"></i>
                         </div>
                     @endif

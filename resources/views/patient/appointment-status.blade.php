@@ -231,7 +231,7 @@
     <style>
         .appointment-status-container {
             padding: 2rem 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
             min-height: 100vh;
         }
 
@@ -252,7 +252,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #0a1628, #0f1c3a);
         }
 
         .status-icon {
@@ -447,7 +447,7 @@
         }
 
         .estimated-time-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
             color: white;
             border-radius: 12px;
             padding: 1.5rem;

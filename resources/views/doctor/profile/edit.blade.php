@@ -1,11 +1,22 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Edit Doctor Profile')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/doctor-portal.css') }}">
 <link rel="stylesheet" href="{{ asset('css/custom-openai.css') }}">
 <link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
 <style>
+/* Teal Dashboard Header Override */
+.dashboard-header {
+    background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%) !important;
+    border-color: rgba(14, 148, 136, 0.3) !important;
+}
+
+.dashboard-header::before {
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+}
+
 .appointment-type-preference-card {
     border: 2px solid #e9ecef;
     transition: all 0.3s ease;
@@ -905,15 +916,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     type === 'warning' ? 'exclamation-triangle' :
                     type === 'error' ? 'exclamation-circle' : 'info-circle';
 
-        notification.innerHTML = `
-            <i class="fas fa-${icon} me-2"></i>${message}
-            <button type="button" class="btn-close" aria-label="Close"></button>
-        `;
-
-        // Add close functionality
-        notification.querySelector('.btn-close').addEventListener('click', function() {
-            notification.remove();
-        });
+        notification.innerHTML = `<i class="fas fa-${icon} me-2"></i>`;
+        notification.appendChild(document.createTextNode(message));
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn-close';
+        closeBtn.setAttribute('aria-label', 'Close');
+        closeBtn.onclick = function() { notification.remove(); };
+        notification.appendChild(closeBtn);
 
         // Add to page
         document.body.appendChild(notification);

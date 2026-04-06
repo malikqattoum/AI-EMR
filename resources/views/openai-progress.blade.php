@@ -33,7 +33,7 @@
       border-radius: 10px;
     }
     .progress-bar {
-      background: linear-gradient(90deg, #DE6262, #ff8a65);
+      background: linear-gradient(90deg, #00d4aa, #ff8a65);
     }
     .subtext {
       color: #6c757d;

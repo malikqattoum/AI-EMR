@@ -95,13 +95,13 @@
 }
 
 .notification-item:hover {
-    background-color: rgba(222, 98, 98, 0.05) !important;
+    background-color: rgba(0, 212, 170, 0.05) !important;
     transform: translateX(4px);
 }
 
 .notification-item.unread {
-    background-color: rgba(222, 98, 98, 0.02) !important;
-    border-left: 3px solid #DE6262;
+    background-color: rgba(0, 212, 170, 0.02) !important;
+    border-left: 3px solid #00d4aa;
 }
 
 .notification-item.read {
@@ -114,14 +114,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(222, 98, 98, 0.1);
+    background: rgba(0, 212, 170, 0.1);
     border-radius: 50%;
     font-size: 14px;
 }
 
 .notification-item.unread .notification-icon {
-    background: rgba(222, 98, 98, 0.2);
-    color: #DE6262;
+    background: rgba(0, 212, 170, 0.2);
+    color: #00d4aa;
 }
 
 .notification-time {

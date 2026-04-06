@@ -41,7 +41,7 @@
         }
 
         .blog-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
             color: white;
             padding: 60px 0;
         }
@@ -111,7 +111,7 @@
             left: 0;
             width: 0%;
             height: 3px;
-            background: linear-gradient(to right, #667eea, #764ba2);
+            background: linear-gradient(to right, #0a1628, #0f1c3a);
             z-index: 1000;
             transition: width 0.3s ease;
         }

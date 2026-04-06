@@ -55,7 +55,7 @@
     }
 
     .custom-table tbody tr:hover {
-        background: linear-gradient(135deg, rgba(222, 98, 98, 0.05) 0%, rgba(222, 98, 98, 0.02) 100%);
+        background: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(0, 212, 170, 0.02) 100%);
         transform: scale(1.01);
     }
 
@@ -67,21 +67,21 @@
     }
 
     .btn-view-details {
-        background: linear-gradient(135deg, #DE6262 0%, #c55252 100%);
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
         border: none;
         color: white;
         font-weight: 500;
         padding: 0.5rem 1rem;
         border-radius: 20px;
-        box-shadow: 0 2px 8px rgba(222, 98, 98, 0.3);
+        box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3);
         transition: all 0.3s ease;
         font-size: 0.85rem;
     }
 
     .btn-view-details:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(222, 98, 98, 0.4);
-        background: linear-gradient(135deg, #c55252 0%, #b04848 100%);
+        box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+        background: linear-gradient(135deg, #00a88a 0%, #008f75 100%);
         color: white;
     }
 
@@ -112,7 +112,7 @@
         left: 0;
         width: 100%;
         height: 4px;
-        background: linear-gradient(135deg, #DE6262 0%, #c55252 100%);
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
     }
 
     .response-modal-body {
@@ -194,8 +194,8 @@
     }
 
     .dataTables_filter input:focus {
-        border-color: #DE6262 !important;
-        box-shadow: 0 0 0 0.2rem rgba(222, 98, 98, 0.15) !important;
+        border-color: #00d4aa !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 212, 170, 0.15) !important;
     }
 
     /* Responsive Modal Styles */
@@ -325,21 +325,21 @@
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button {
-        color: #DE6262 !important;
+        color: #00d4aa !important;
         border-radius: 8px !important;
         margin: 0 2px !important;
         transition: all 0.3s ease !important;
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-        background: linear-gradient(135deg, #DE6262 0%, #c55252 100%) !important;
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%) !important;
         color: white !important;
         border: none !important;
-        box-shadow: 0 2px 8px rgba(222, 98, 98, 0.3) !important;
+        box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3) !important;
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        background: linear-gradient(135deg, #DE6262 0%, #c55252 100%) !important;
+        background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%) !important;
         color: white !important;
         border: none !important;
     }

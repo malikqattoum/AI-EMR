@@ -14,7 +14,7 @@
             padding: 20px;
         }
         .header {
-            background-color: #DE6262;
+            background-color: #00d4aa;
             color: white;
             padding: 20px;
             text-align: center;
@@ -27,7 +27,7 @@
         }
         .credentials-box {
             background-color: #fff;
-            border: 2px solid #DE6262;
+            border: 2px solid #00d4aa;
             border-radius: 8px;
             padding: 20px;
             margin: 20px 0;
@@ -35,7 +35,7 @@
         }
         .login-button {
             display: inline-block;
-            background-color: #DE6262;
+            background-color: #00d4aa;
             color: white;
             padding: 12px 30px;
             text-decoration: none;

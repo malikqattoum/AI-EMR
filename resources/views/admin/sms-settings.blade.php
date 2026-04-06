@@ -71,7 +71,7 @@
         justify-content: center;
         gap: 1rem;
         padding: 1.5rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
         border-radius: 10px;
         color: #fff;
         margin-bottom: 2rem;
@@ -196,14 +196,14 @@
         letter-spacing: 0.5px;
     }
 
-    .stat-card.primary { border-top: 4px solid #667eea; }
-    .stat-card.success { border-top: 4px solid #28a745; }
-    .stat-card.warning { border-top: 4px solid #ffc107; }
+    .stat-card.primary { border-top: 4px solid #00d4aa; }
+    .stat-card.success { border-top: 4px solid #00d4aa; }
+    .stat-card.warning { border-top: 4px solid #fbbf24; }
     .stat-card.info { border-top: 4px solid #17a2b8; }
 
     .expand-btn {
         cursor: pointer;
-        color: #667eea;
+        color: #00d4aa;
         font-size: 0.85rem;
     }
 

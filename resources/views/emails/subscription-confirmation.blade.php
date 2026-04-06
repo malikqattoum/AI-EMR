@@ -31,7 +31,7 @@
         display: flex;
         align-items: center;
         padding: 12px 0;
-        border-bottom: 1px solid rgba(222, 98, 98, 0.1);
+        border-bottom: 1px solid rgba(0, 212, 170, 0.1);
     }
     
     .feature-item:last-child {
@@ -225,7 +225,7 @@
 @section('footer-content')
     <p style="margin-top: 15px; font-size: 13px; color: #6c757d;">
         <strong>Need Help?</strong> Contact our support team at 
-        <a href="mailto:support@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #DE6262;">
+        <a href="mailto:support@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #00d4aa;">
             support@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com
         </a>
     </p>

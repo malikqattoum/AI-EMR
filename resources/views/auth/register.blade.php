@@ -1,506 +1,662 @@
 @extends('master')
 
-@section('title', 'Register - MedSuite')
+@section('title', 'Register — MedSuite AI')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 @endpush
 
-<x-auth-layout
-    :headline="'Join MedSuite'"
-    :subtext="'Create your account and revolutionize patient care with advanced AI diagnosis tools and seamless practice management.'"
-    :showBrand="true"
-    brandIcon="bi-shield-check"
-    brandName="MedSuite"
-    :features="[
-        ['icon' => 'bi-robot', 'text' => 'AI-Powered Diagnosis'],
-        ['icon' => 'bi-mic', 'text' => 'Voice Assistant Technology'],
-        ['icon' => 'bi-people', 'text' => 'Patient Management'],
-        ['icon' => 'bi-globe', 'text' => 'Professional Landing Pages']
-    ]"
->
-    <!-- Register Form -->
-    <form method="POST" action="{{ route('register') }}" class="register-form">
-        @csrf
+@section('content')
+<div class="msdr-root">
 
-        <!-- Form Header -->
-        <div class="form-header text-center mb-5">
-            <div class="form-icon">
-                <i class="bi bi-person-plus"></i>
-            </div>
-            <h2 class="form-title">Create Account</h2>
-            <p class="form-subtitle">Join MedSuite as a healthcare professional</p>
+    <!-- ═══ LEFT PANEL ═══ -->
+    <aside class="msdr-panel">
+        <div class="msdr-panel-bg">
+            <div class="msdr-panel-orb msdr-panel-orb-1"></div>
+            <div class="msdr-panel-orb msdr-panel-orb-2"></div>
+            <div class="msdr-panel-grid"></div>
         </div>
 
-        <!-- Name Field -->
-        <div class="form-group mb-4">
-            <label for="name" class="form-label">
-                <i class="bi bi-person me-2"></i>Full Name
-            </label>
-            <input
-                id="name"
-                type="text"
-                name="name"
-                class="form-control @if($errors ?? false) @error('name') is-invalid @enderror @endif"
-                value="{{ old('name') }}"
-                required
-                autofocus
-                placeholder="Enter your full name"
-            >
-            @error('name')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <!-- Email Field -->
-        <div class="form-group mb-4">
-            <label for="email" class="form-label">
-                <i class="bi bi-envelope me-2"></i>Email Address
-            </label>
-            <input
-                id="email"
-                type="email"
-                name="email"
-                class="form-control @error('email') is-invalid @enderror"
-                value="{{ old('email') }}"
-                required
-                placeholder="Enter your email"
-            >
-            @error('email')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <!-- Phone Number Field -->
-        <div class="form-group mb-4">
-            <label for="phone" class="form-label">
-                <i class="bi bi-telephone me-2"></i>Phone Number <span class="text-danger">*</span>
-            </label>
-            <input
-                id="phone"
-                type="tel"
-                name="phone"
-                class="form-control @error('phone') is-invalid @enderror"
-                value="{{ old('phone') }}"
-                required
-                placeholder="+1234567890"
-                pattern="^\+?[1-9]\d{1,14}$"
-            >
-            <div class="form-text">
-                <small class="text-muted">
-                    <i class="bi bi-info-circle me-1"></i>
-                    Required for SMS invoice reminders. Include country code.
-                </small>
-            </div>
-            @error('phone')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <!-- Password Field -->
-        <div class="form-group mb-4">
-            <label for="password" class="form-label">
-                <i class="bi bi-lock me-2"></i>Password
-            </label>
-            <div class="password-input-wrapper">
-                <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    class="form-control @error('password') is-invalid @enderror"
-                    required
-                    placeholder="Create a strong password"
-                >
-                <button type="button" class="password-toggle" onclick="togglePassword('password')">
-                    <i class="bi bi-eye" id="password-eye"></i>
-                </button>
-            </div>
-            @error('password')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <!-- Confirm Password Field -->
-        <div class="form-group mb-4">
-            <label for="password_confirmation" class="form-label">
-                <i class="bi bi-shield-check me-2"></i>Confirm Password
-            </label>
-            <div class="password-input-wrapper">
-                <input
-                    id="password_confirmation"
-                    type="password"
-                    name="password_confirmation"
-                    class="form-control @error('password_confirmation') is-invalid @enderror"
-                    required
-                    placeholder="Confirm your password"
-                >
-                <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation')">
-                    <i class="bi bi-eye" id="password_confirmation-eye"></i>
-                </button>
-            </div>
-            @error('password_confirmation')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <!-- Medical Specialty Field -->
-        <div class="form-group mb-4">
-            <label for="specialty_select" class="form-label">
-                <i class="bi bi-heart-pulse me-2"></i>Medical Specialty <span class="text-danger">*</span>
-            </label>
-            <select class="form-control" name="specialty_select" id="specialty_select" onchange="toggleCustomSpecialty()">
-                <option value="">-- Select Your Specialty --</option>
-
-                <optgroup label="General & Internal Medicine">
-                    <option value="General Practitioner">General Practitioner (GP) / Family Medicine</option>
-                    <option value="Internal Medicine">Internal Medicine (Internist)</option>
-                </optgroup>
-
-                <optgroup label="Internal Medicine Subspecialties">
-                    <option value="Cardiology">Cardiology (Heart)</option>
-                    <option value="Pulmonology">Pulmonology (Lungs)</option>
-                    <option value="Gastroenterology">Gastroenterology (Digestive system)</option>
-                    <option value="Nephrology">Nephrology (Kidneys)</option>
-                    <option value="Endocrinology">Endocrinology (Hormones & glands)</option>
-                    <option value="Hematology">Hematology (Blood)</option>
-                    <option value="Rheumatology">Rheumatology (Joints & autoimmune diseases)</option>
-                    <option value="Dermatology">Dermatology (Skin, hair, nails)</option>
-                </optgroup>
-
-                <optgroup label="Emergency & Critical Care">
-                    <option value="Emergency Medicine">Emergency Medicine</option>
-                    <option value="Critical Care">Critical Care / Intensive Care Medicine</option>
-                </optgroup>
-
-                <optgroup label="Neurology & Psychiatry">
-                    <option value="Neurology">Neurology (Brain & nerves)</option>
-                    <option value="Neurosurgery">Neurosurgery (Brain & spine surgery)</option>
-                    <option value="Psychiatry">Psychiatry (Mental health)</option>
-                </optgroup>
-
-                <optgroup label="Surgical Specialties">
-                    <option value="General Surgery">General Surgery</option>
-                    <option value="Orthopedic Surgery">Orthopedic Surgery (Bones & joints)</option>
-                    <option value="Cardiothoracic Surgery">Cardiothoracic Surgery (Heart & lungs)</option>
-                    <option value="Plastic & Reconstructive Surgery">Plastic & Reconstructive Surgery</option>
-                    <option value="Urology">Urology (Urinary & male reproductive system)</option>
-                    <option value="Ophthalmic Surgery">Ophthalmic Surgery (Eye surgery)</option>
-                </optgroup>
-
-                <optgroup label="Pediatrics & Women's Health">
-                    <option value="Pediatrics">Pediatrics</option>
-                    <option value="Obstetrics & Gynecology">Obstetrics & Gynecology (OB/GYN)</option>
-                </optgroup>
-
-                <optgroup label="Diagnostic & Support Specialties">
-                    <option value="Radiology">Radiology (Medical imaging)</option>
-                    <option value="Pathology">Pathology (Laboratory medicine)</option>
-                    <option value="Oncology">Oncology (Medical cancer care)</option>
-                </optgroup>
-
-                <optgroup label="Other">
-                    <option value="Geriatrics">Geriatrics (Elderly care)</option>
-                    <option value="Sports Medicine">Sports Medicine</option>
-                    <option value="Physical Medicine & Rehabilitation">Physical Medicine & Rehabilitation</option>
-                    <option value="other">Other (Please specify)</option>
-                </optgroup>
-            </select>
-
-            <!-- Custom Specialty Input (Hidden by default) -->
-            <div id="custom_specialty_container" class="mt-2" style="display: none;">
-                <input
-                    type="text"
-                    name="custom_specialty"
-                    id="custom_specialty"
-                    class="form-control @if($errors ?? false) @error('custom_specialty') is-invalid @enderror @endif"
-                    placeholder="Please enter your medical specialty"
-                    value="{{ old('custom_specialty') }}"
-                >
-                @if($errors ?? false)
-                    @error('custom_specialty')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                @endif
-            </div>
-
-            <!-- Hidden field to store the final specialty value -->
-            <input type="hidden" name="specialty" id="specialty" value="{{ old('specialty') }}">
-
-            @if($errors ?? false)
-                @error('specialty')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            @endif
-        </div>
-
-        <!-- Terms Agreement -->
-        <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="terms" required>
-            <label class="form-check-label" for="terms">
-                I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a>
-            </label>
-        </div>
-
-        <!-- Register Button -->
-        <button type="submit" class="btn btn-primary w-100 mb-3">
-            <i class="bi bi-person-plus me-2"></i>
-            Create MedSuite Account
-        </button>
-
-        <!-- Divider -->
-        <div class="auth-divider">
-            <span>or</span>
-        </div>
-
-        <!-- Login Link -->
-        <div class="text-center">
-            <p class="mb-0">Already have an account?</p>
-            <a href="{{ route('login') }}" class="auth-link-primary">
-                Sign in here <i class="bi bi-arrow-right ms-1"></i>
+        <div class="msdr-panel-inner">
+            <!-- Brand -->
+            <a href="/" class="msdr-brand">
+                <span class="msdr-brand-icon"><i class="bi bi-heart-pulse-fill"></i></span>
+                <span class="msdr-brand-name">MedSuite<em>AI</em></span>
             </a>
+
+            <!-- Headline -->
+            <div class="msdr-panel-headline">
+                <h2>Join the next<br>generation of<br><em>clinical care.</em></h2>
+                <p>Your AI-powered practice management platform — from patient records to intelligent diagnosis support.</p>
+            </div>
+
+            <!-- Features list -->
+            <ul class="msdr-panel-features">
+                <li>
+                    <div class="msdr-pf-icon"><i class="bi bi-robot"></i></div>
+                    <div>
+                        <strong>AI Medical Copilot</strong>
+                        <span>Clinical decision support at every appointment</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="msdr-pf-icon"><i class="bi bi-mic-fill"></i></div>
+                    <div>
+                        <strong>Voice Transcription</strong>
+                        <span>Hands-free documentation in real time</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="msdr-pf-icon"><i class="bi bi-people-fill"></i></div>
+                    <div>
+                        <strong>Patient Management</strong>
+                        <span>Complete records and smart timelines</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="msdr-pf-icon"><i class="bi bi-globe2"></i></div>
+                    <div>
+                        <strong>Professional Page</strong>
+                        <span>Your own bookable landing page</span>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Trust indicators -->
+            <div class="msdr-panel-trust">
+                <div class="msdr-trust-row">
+                    <i class="bi bi-shield-check-fill"></i>
+                    <span>HIPAA Compliant & End-to-End Encrypted</span>
+                </div>
+                <div class="msdr-trust-row">
+                    <i class="bi bi-star-fill"></i>
+                    <span>Trusted by 500+ healthcare professionals</span>
+                </div>
+            </div>
         </div>
-    </form>
-</x-auth-layout>
+    </aside>
+
+    <!-- ═══ RIGHT PANEL — FORM ═══ -->
+    <main class="msdr-form-panel">
+
+        <!-- Top strip -->
+        <div class="msdr-form-topbar">
+            <a href="{{ route('register') }}" class="msdr-back-btn">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+            <span class="msdr-topbar-hint">Already have an account?</span>
+            <a href="{{ route('login') }}" class="msdr-topbar-link">Sign in <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+
+        <!-- Form wrapper -->
+        <div class="msdr-form-wrapper">
+            <!-- Progress dots -->
+            <div class="msdr-progress">
+                <div class="msdr-progress-step msdr-progress-step-done"><i class="bi bi-check"></i></div>
+                <div class="msdr-progress-line msdr-progress-line-done"></div>
+                <div class="msdr-progress-step msdr-progress-step-active">2</div>
+                <div class="msdr-progress-line"></div>
+                <div class="msdr-progress-step">3</div>
+                <span class="msdr-progress-label">Account Details</span>
+            </div>
+
+            <div class="msdr-form-header">
+                <h1>Create your<br><em>account.</em></h1>
+                <p>Fill in your professional details to get started. It only takes 2 minutes.</p>
+            </div>
+
+            <!-- FORM -->
+            <form method="POST" action="{{ route('register') }}" class="msdr-form" novalidate>
+                @csrf
+
+                <!-- Full Name -->
+                <div class="msdr-field">
+                    <label for="name" class="msdr-label">
+                        <i class="bi bi-person"></i> Full Name
+                    </label>
+                    <div class="msdr-input-wrap">
+                        <input
+                            id="name" type="text" name="name"
+                            class="msdr-input @error('name') msdr-input-error @enderror"
+                            value="{{ old('name') }}" required autofocus
+                            placeholder="Dr. Sarah Mitchell"
+                        >
+                    </div>
+                    @error('name')
+                        <div class="msdr-error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Email -->
+                <div class="msdr-field">
+                    <label for="email" class="msdr-label">
+                        <i class="bi bi-envelope"></i> Email Address
+                    </label>
+                    <div class="msdr-input-wrap">
+                        <input
+                            id="email" type="email" name="email"
+                            class="msdr-input @error('email') msdr-input-error @enderror"
+                            value="{{ old('email') }}" required
+                            placeholder="you@clinic.com"
+                        >
+                    </div>
+                    @error('email')
+                        <div class="msdr-error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Phone -->
+                <div class="msdr-field">
+                    <label for="phone" class="msdr-label">
+                        <i class="bi bi-telephone"></i> Phone Number
+                        <span class="msdr-label-required">Required</span>
+                    </label>
+                    <div class="msdr-input-wrap">
+                        <input
+                            id="phone" type="tel" name="phone"
+                            class="msdr-input @error('phone') msdr-input-error @enderror"
+                            value="{{ old('phone') }}" required
+                            placeholder="+1 234 567 8900"
+                            pattern="^\+?[1-9]\d{1,14}$"
+                        >
+                    </div>
+                    <div class="msdr-field-hint">
+                        <i class="bi bi-info-circle"></i> Used for SMS appointment reminders. Include country code.
+                    </div>
+                    @error('phone')
+                        <div class="msdr-error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Passwords row -->
+                <div class="msdr-field-row">
+                    <!-- Password -->
+                    <div class="msdr-field">
+                        <label for="password" class="msdr-label">
+                            <i class="bi bi-lock"></i> Password
+                        </label>
+                        <div class="msdr-input-wrap msdr-input-wrap-toggle">
+                            <input
+                                id="password" type="password" name="password"
+                                class="msdr-input @error('password') msdr-input-error @enderror"
+                                required placeholder="Create a strong password"
+                            >
+                            <button type="button" class="msdr-eye-btn" onclick="msdrToggle('password', 'eye-pw')">
+                                <i id="eye-pw" class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        @error('password')
+                            <div class="msdr-error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="msdr-field">
+                        <label for="password_confirmation" class="msdr-label">
+                            <i class="bi bi-shield-check"></i> Confirm Password
+                        </label>
+                        <div class="msdr-input-wrap msdr-input-wrap-toggle">
+                            <input
+                                id="password_confirmation" type="password" name="password_confirmation"
+                                class="msdr-input @error('password_confirmation') msdr-input-error @enderror"
+                                required placeholder="Confirm password"
+                            >
+                            <button type="button" class="msdr-eye-btn" onclick="msdrToggle('password_confirmation', 'eye-pc')">
+                                <i id="eye-pc" class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        @error('password_confirmation')
+                            <div class="msdr-error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Specialty -->
+                <div class="msdr-field">
+                    <label for="specialty_select" class="msdr-label">
+                        <i class="bi bi-heart-pulse"></i> Medical Specialty
+                        <span class="msdr-label-required">Required</span>
+                    </label>
+
+                    <div class="msdr-select-wrap">
+                        <select
+                            id="specialty_select" name="specialty_select"
+                            class="msdr-input msdr-select"
+                            onchange="msdrToggleSpecialty()"
+                        >
+                            <option value="">— Select your specialty —</option>
+                            <optgroup label="General & Internal Medicine">
+                                <option value="General Practitioner">General Practitioner / Family Medicine</option>
+                                <option value="Internal Medicine">Internal Medicine</option>
+                            </optgroup>
+                            <optgroup label="Internal Medicine Subspecialties">
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Pulmonology">Pulmonology</option>
+                                <option value="Gastroenterology">Gastroenterology</option>
+                                <option value="Nephrology">Nephrology</option>
+                                <option value="Endocrinology">Endocrinology</option>
+                                <option value="Hematology">Hematology</option>
+                                <option value="Rheumatology">Rheumatology</option>
+                                <option value="Dermatology">Dermatology</option>
+                            </optgroup>
+                            <optgroup label="Emergency & Critical Care">
+                                <option value="Emergency Medicine">Emergency Medicine</option>
+                                <option value="Critical Care">Critical Care / ICU</option>
+                            </optgroup>
+                            <optgroup label="Neurology & Psychiatry">
+                                <option value="Neurology">Neurology</option>
+                                <option value="Neurosurgery">Neurosurgery</option>
+                                <option value="Psychiatry">Psychiatry</option>
+                            </optgroup>
+                            <optgroup label="Surgical Specialties">
+                                <option value="General Surgery">General Surgery</option>
+                                <option value="Orthopedic Surgery">Orthopedic Surgery</option>
+                                <option value="Cardiothoracic Surgery">Cardiothoracic Surgery</option>
+                                <option value="Plastic & Reconstructive Surgery">Plastic & Reconstructive Surgery</option>
+                                <option value="Urology">Urology</option>
+                                <option value="Ophthalmic Surgery">Ophthalmic Surgery</option>
+                            </optgroup>
+                            <optgroup label="Pediatrics & Women's Health">
+                                <option value="Pediatrics">Pediatrics</option>
+                                <option value="Obstetrics & Gynecology">Obstetrics & Gynecology (OB/GYN)</option>
+                            </optgroup>
+                            <optgroup label="Diagnostic & Support">
+                                <option value="Radiology">Radiology</option>
+                                <option value="Pathology">Pathology</option>
+                                <option value="Oncology">Oncology</option>
+                            </optgroup>
+                            <optgroup label="Other">
+                                <option value="Geriatrics">Geriatrics</option>
+                                <option value="Sports Medicine">Sports Medicine</option>
+                                <option value="Physical Medicine & Rehabilitation">Physical Medicine & Rehabilitation</option>
+                                <option value="other">Other (specify below)</option>
+                            </optgroup>
+                        </select>
+                        <i class="bi bi-chevron-down msdr-select-arrow"></i>
+                    </div>
+
+                    <!-- Custom specialty input -->
+                    <div id="msdr-custom-specialty" class="msdr-custom-reveal" style="display:none; margin-top: 0.75rem;">
+                        <input
+                            type="text" name="custom_specialty" id="custom_specialty"
+                            class="msdr-input @error('custom_specialty') msdr-input-error @enderror"
+                            placeholder="Enter your specialty"
+                            value="{{ old('custom_specialty') }}"
+                        >
+                        @error('custom_specialty')
+                            <div class="msdr-error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Hidden fields -->
+                    <input type="hidden" name="specialty" id="specialty" value="{{ old('specialty') }}">
+                    <input type="hidden" name="selected_plan" id="selected_plan" value="{{ $selectedPlan ?? 'professional' }}">
+                    <input type="hidden" name="selected_billing" id="selected_billing" value="{{ $selectedBilling ?? 'monthly' }}">
+
+                    @error('specialty')
+                        <div class="msdr-error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Terms -->
+                <div class="msdr-terms">
+                    <input class="msdr-checkbox" type="checkbox" id="terms" required>
+                    <label for="terms">
+                        I agree to MedSuite's
+                        <a href="#" class="msdr-link">Terms of Service</a> and
+                        <a href="#" class="msdr-link">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="msdr-submit">
+                    <span>Create My Account</span>
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+
+                <!-- Bottom hint -->
+                <p class="msdr-bottom-hint">
+                    <i class="bi bi-lock-fill"></i>
+                    Your data is encrypted and HIPAA-compliant. We never sell your information.
+                </p>
+            </form>
+        </div>
+    </main>
+</div>
 
 <style>
-/* Register Form Styles */
-.register-form {
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+    --navy:       #060d1f;
+    --navy-mid:   #0c1633;
+    --navy-card:  #0f1c3a;
+    --navy-input: #0a1428;
+    --teal:       #00d4aa;
+    --teal-dim:   rgba(0,212,170,0.10);
+    --teal-glow:  rgba(0,212,170,0.25);
+    --white:      #ffffff;
+    --offwhite:   #e8edf5;
+    --muted:      rgba(232,237,245,0.45);
+    --border:     rgba(255,255,255,0.07);
+    --border-focus: rgba(0,212,170,0.5);
+    --glass:      rgba(255,255,255,0.03);
+    --error:      #f87171;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body:    'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--navy); color: var(--offwhite); font-family: var(--font-body); }
+a { text-decoration: none; color: inherit; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ROOT LAYOUT — TWO PANEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.msdr-root {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    min-height: 100vh;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LEFT PANEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.msdr-panel {
+    position: sticky; top: 0;
+    height: 100vh; overflow: hidden;
+    background: var(--navy-mid);
+    border-right: 1px solid var(--border);
+}
+.msdr-panel-bg { position: absolute; inset: 0; pointer-events: none; }
+.msdr-panel-orb {
+    position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.6;
+}
+.msdr-panel-orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,212,170,0.2) 0%, transparent 65%);
+    top: -200px; left: -150px;
+    animation: panelOrb 10s ease-in-out infinite;
+}
+.msdr-panel-orb-2 {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 65%);
+    bottom: -100px; right: -100px;
+    animation: panelOrb 13s ease-in-out infinite reverse;
+}
+.msdr-panel-grid {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+@keyframes panelOrb {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1) translate(10px, -10px); }
+}
+
+.msdr-panel-inner {
+    position: relative; z-index: 2;
+    height: 100%; display: flex; flex-direction: column;
+    padding: 2.5rem 2.5rem;
+    overflow-y: auto;
+}
+
+.msdr-brand {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--white);
+    margin-bottom: 3.5rem;
+}
+.msdr-brand-icon {
+    width: 32px; height: 32px; background: var(--teal); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--navy); font-size: 0.85rem;
+}
+.msdr-brand-name em { color: var(--teal); font-style: normal; }
+
+.msdr-panel-headline { margin-bottom: 3rem; }
+.msdr-panel-headline h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem; font-weight: 300; line-height: 1.1;
+    color: var(--white); margin-bottom: 1rem;
+}
+.msdr-panel-headline h2 em { color: var(--teal); font-style: italic; }
+.msdr-panel-headline p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+
+.msdr-panel-features {
+    list-style: none; display: flex; flex-direction: column; gap: 1.25rem;
+    margin-bottom: 3rem; flex: 1;
+}
+.msdr-panel-features li {
+    display: flex; align-items: flex-start; gap: 0.875rem;
+}
+.msdr-pf-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    background: var(--teal-dim);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal); font-size: 0.875rem;
+}
+.msdr-panel-features strong { display: block; font-size: 0.875rem; font-weight: 500; color: var(--white); margin-bottom: 0.15rem; }
+.msdr-panel-features span { font-size: 0.78rem; color: var(--muted); }
+
+.msdr-panel-trust { display: flex; flex-direction: column; gap: 0.75rem; margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--border); }
+.msdr-trust-row {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.78rem; color: var(--muted);
+}
+.msdr-trust-row i { color: var(--teal); font-size: 0.8rem; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RIGHT PANEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.msdr-form-panel {
+    background: var(--navy);
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+}
+
+.msdr-form-topbar {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(6,13,31,0.85);
+    backdrop-filter: blur(20px);
+}
+.msdr-back-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.84375rem; color: var(--muted);
+    padding: 0.4rem 0.875rem;
+    border: 1px solid var(--border); border-radius: 50px;
+    transition: all 0.2s; margin-right: auto;
+}
+.msdr-back-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+.msdr-topbar-hint { font-size: 0.84375rem; color: var(--muted); }
+.msdr-topbar-link {
+    font-size: 0.84375rem; font-weight: 500; color: var(--teal);
+    padding: 0.4rem 0.875rem;
+    border: 1px solid rgba(0,212,170,0.3); border-radius: 50px;
+    transition: all 0.2s;
+}
+.msdr-topbar-link:hover { background: rgba(0,212,170,0.08); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FORM WRAPPER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.msdr-form-wrapper {
+    max-width: 600px; margin: 0 auto; width: 100%;
+    padding: 3rem 2rem 4rem;
+    animation: formIn 0.6s ease-out both;
+}
+@keyframes formIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* Progress */
+.msdr-progress {
+    display: flex; align-items: center; gap: 0; margin-bottom: 3rem; position: relative;
+}
+.msdr-progress-step {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--glass); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; color: var(--muted); flex-shrink: 0;
+    z-index: 1;
+}
+.msdr-progress-step-done { background: var(--teal); border-color: var(--teal); color: var(--navy); font-size: 0.875rem; }
+.msdr-progress-step-active { background: rgba(0,212,170,0.15); border-color: var(--teal); color: var(--teal); font-weight: 600; }
+.msdr-progress-line {
+    flex: 1; height: 1px; background: var(--border);
+}
+.msdr-progress-line-done { background: var(--teal); }
+.msdr-progress-label {
+    margin-left: 1rem; font-size: 0.78rem; color: var(--muted); white-space: nowrap;
+}
+
+.msdr-form-header { margin-bottom: 2.5rem; }
+.msdr-form-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300; line-height: 1.05;
+    color: var(--white); margin-bottom: 0.75rem;
+}
+.msdr-form-header h1 em { color: var(--teal); font-style: italic; }
+.msdr-form-header p { font-size: 0.9rem; color: var(--muted); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FORM FIELDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.msdr-form { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.msdr-field { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.msdr-field-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+}
+
+.msdr-label {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.8125rem; font-weight: 500; color: var(--offwhite);
+}
+.msdr-label i { color: var(--teal); font-size: 0.875rem; }
+.msdr-label-required {
+    margin-left: auto;
+    font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--teal); background: rgba(0,212,170,0.08);
+    border: 1px solid rgba(0,212,170,0.2);
+    padding: 0.15rem 0.5rem; border-radius: 50px;
+}
+
+.msdr-input-wrap { position: relative; }
+.msdr-input-wrap-toggle .msdr-input { padding-right: 3rem; }
+
+.msdr-input {
     width: 100%;
-}
-
-.form-header {
-    margin-bottom: var(--space-6);
-}
-
-.form-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto var(--space-4);
-    background: linear-gradient(135deg, var(--color-teal-50) 0%, var(--color-teal-100) 100%);
-    border-radius: var(--radius-xl);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.75rem;
-    color: var(--color-teal-primary);
-}
-
-.form-title {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--text-primary);
-    margin-bottom: var(--space-2);
-}
-
-.form-subtitle {
-    font-size: var(--font-size-base);
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-.form-group {
-    margin-bottom: var(--space-4);
-}
-
-.form-label {
-    display: flex;
-    align-items: center;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-primary);
-    margin-bottom: var(--space-2);
-}
-
-.form-label i {
-    color: var(--color-teal-primary);
-    font-size: var(--font-size-base);
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: var(--font-size-base);
-    font-family: var(--font-family-sans);
-    color: var(--text-primary);
-    background-color: var(--color-white);
-    border: 2px solid var(--color-gray-200);
-    border-radius: var(--radius-md);
-    transition: var(--transition-normal);
-    -webkit-appearance: menulist;
-    appearance: menulist;
-}
-
-.form-control:focus {
+    padding: 0.8rem 1rem;
+    background: var(--navy-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--offwhite);
+    font-size: 0.9rem; font-family: var(--font-body);
+    transition: all 0.2s;
     outline: none;
-    border-color: var(--color-teal-primary);
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
-    background: var(--color-white);
+    -webkit-appearance: none; appearance: none;
+}
+.msdr-input::placeholder { color: rgba(232,237,245,0.25); }
+.msdr-input:focus {
+    border-color: var(--border-focus);
+    background: rgba(0,212,170,0.03);
+    box-shadow: 0 0 0 3px rgba(0,212,170,0.08), inset 0 0 0 1px rgba(0,212,170,0.1);
+}
+.msdr-input-error { border-color: rgba(248,113,113,0.5) !important; }
+.msdr-input-error:focus { box-shadow: 0 0 0 3px rgba(248,113,113,0.08) !important; }
+
+.msdr-select { cursor: pointer; }
+.msdr-select option, .msdr-select optgroup { background: #0c1633; color: var(--offwhite); }
+.msdr-select-wrap { position: relative; }
+.msdr-select-wrap .msdr-select { padding-right: 2.5rem; }
+.msdr-select-arrow {
+    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+    color: var(--muted); pointer-events: none; font-size: 0.75rem;
 }
 
-.form-control::placeholder {
-    color: var(--color-gray-400);
+.msdr-eye-btn {
+    position: absolute; right: 0.875rem; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 0.9rem; padding: 0.2rem;
+    transition: color 0.2s;
+}
+.msdr-eye-btn:hover { color: var(--teal); }
+
+.msdr-error-msg {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.78rem; color: var(--error);
 }
 
-.form-control.is-invalid {
-    border-color: var(--color-error);
+.msdr-field-hint {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.75rem; color: var(--muted);
 }
+.msdr-field-hint i { color: var(--teal); }
 
-.invalid-feedback {
-    font-size: var(--font-size-sm);
-    color: var(--color-error);
-    margin-top: var(--space-1);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TERMS + SUBMIT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.msdr-terms {
+    display: flex; align-items: flex-start; gap: 0.6rem;
 }
-
-.form-text {
-    margin-top: var(--space-1);
+.msdr-checkbox {
+    width: 16px; height: 16px; margin-top: 2px;
+    accent-color: var(--teal); cursor: pointer; flex-shrink: 0;
 }
+.msdr-terms label { font-size: 0.84375rem; color: var(--muted); cursor: pointer; line-height: 1.5; }
+.msdr-link { color: var(--teal); font-weight: 400; transition: opacity 0.2s; }
+.msdr-link:hover { opacity: 0.8; }
 
-.text-muted {
-    color: var(--text-muted);
-    font-size: var(--font-size-xs);
+.msdr-submit {
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    width: 100%; padding: 1rem;
+    background: var(--teal); color: var(--navy);
+    font-size: 1rem; font-weight: 600; font-family: var(--font-body);
+    border: none; border-radius: 12px; cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 0 30px rgba(0,212,170,0.25);
 }
-
-/* Password Input */
-.password-input-wrapper {
-    position: relative;
+.msdr-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(0,212,170,0.4);
 }
+.msdr-submit:active { transform: translateY(0); }
 
-.password-input-wrapper .form-control {
-    padding-right: 3rem;
+.msdr-bottom-hint {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    font-size: 0.75rem; color: var(--muted); text-align: center;
 }
+.msdr-bottom-hint i { color: var(--teal); }
 
-.password-toggle {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--color-gray-400);
-    cursor: pointer;
-    padding: 0.25rem;
-    font-size: var(--font-size-lg);
-    transition: var(--transition-fast);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 900px) {
+    .msdr-root { grid-template-columns: 1fr; }
+    .msdr-panel { display: none; }
+    .msdr-form-topbar { padding: 1rem 1.5rem; }
+    .msdr-form-wrapper { padding: 2rem 1.5rem 3rem; }
+    .msdr-field-row { grid-template-columns: 1fr; }
 }
-
-.password-toggle:hover {
-    color: var(--color-teal-primary);
-}
-
-/* Form Check */
-.form-check {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-2);
-}
-
-.form-check-input {
-    width: 1.125rem;
-    height: 1.125rem;
-    margin-top: 0.125rem;
-    accent-color: var(--color-teal-primary);
-    cursor: pointer;
-}
-
-.form-check-label {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
-    cursor: pointer;
-}
-
-.auth-link {
-    color: var(--color-teal-primary);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    transition: var(--transition-fast);
-}
-
-.auth-link:hover {
-    color: var(--color-teal-primary-dark);
-    text-decoration: underline;
-}
-
-/* Primary Button */
-.btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.875rem 1.5rem;
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-white);
-    background: linear-gradient(135deg, var(--color-teal-primary) 0%, var(--color-teal-primary-dark) 100%);
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: var(--transition-normal);
-    box-shadow: var(--shadow-teal);
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, var(--color-teal-primary-light) 0%, var(--color-teal-primary) 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-/* Divider */
-.auth-divider {
-    display: flex;
-    align-items: center;
-    margin: var(--space-6) 0;
-    color: var(--text-muted);
-    font-size: var(--font-size-sm);
-}
-
-.auth-divider::before,
-.auth-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--color-gray-200);
-}
-
-.auth-divider span {
-    padding: 0 var(--space-4);
-}
-
-/* Login Link */
-.auth-link-primary {
-    display: inline-flex;
-    align-items: center;
-    color: var(--color-teal-primary);
-    font-weight: var(--font-weight-semibold);
-    text-decoration: none;
-    transition: var(--transition-fast);
-}
-
-.auth-link-primary:hover {
-    color: var(--color-teal-primary-dark);
-}
-
-.auth-link-primary i {
-    transition: var(--transition-fast);
-}
-
-.auth-link-primary:hover i {
-    transform: translateX(4px);
-}
-
-/* Text Danger */
-.text-danger {
-    color: var(--color-error);
+@media (max-width: 480px) {
+    .msdr-topbar-hint { display: none; }
+    .msdr-progress-label { display: none; }
 }
 </style>
 
+@push('scripts')
 <script>
-function togglePassword(inputId) {
+function msdrToggle(inputId, eyeId) {
     const input = document.getElementById(inputId);
-    const eye = document.getElementById(inputId + '-eye');
-
+    const eye = document.getElementById(eyeId);
     if (input.type === 'password') {
         input.type = 'text';
         eye.className = 'bi bi-eye-slash';
@@ -510,76 +666,73 @@ function togglePassword(inputId) {
     }
 }
 
-function toggleCustomSpecialty() {
+function msdrToggleSpecialty() {
     const select = document.getElementById('specialty_select');
-    const customContainer = document.getElementById('custom_specialty_container');
+    const container = document.getElementById('msdr-custom-specialty');
     const customInput = document.getElementById('custom_specialty');
-    const hiddenInput = document.getElementById('specialty');
+    const hidden = document.getElementById('specialty');
 
     if (select.value === 'other') {
-        customContainer.style.display = 'block';
+        container.style.display = 'block';
         customInput.required = true;
         customInput.focus();
-        hiddenInput.value = '';
+        hidden.value = '';
     } else {
-        customContainer.style.display = 'none';
+        container.style.display = 'none';
         customInput.required = false;
         customInput.value = '';
-        hiddenInput.value = select.value;
+        hidden.value = select.value;
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const customInput = document.getElementById('custom_specialty');
-    const hiddenInput = document.getElementById('specialty');
+    const hidden = document.getElementById('specialty');
     const select = document.getElementById('specialty_select');
 
-    customInput.addEventListener('input', function() {
-        if (select.value === 'other') {
-            hiddenInput.value = this.value;
-        }
+    customInput.addEventListener('input', function () {
+        if (select.value === 'other') hidden.value = this.value;
     });
 
-    const form = document.querySelector('.register-form');
-    form.addEventListener('submit', function(e) {
-        const select = document.getElementById('specialty_select');
-        const customInput = document.getElementById('custom_specialty');
-        const hiddenInput = document.getElementById('specialty');
+    // Form submit guard
+    document.querySelector('.msdr-form').addEventListener('submit', function (e) {
+        const sel = document.getElementById('specialty_select');
+        const ci = document.getElementById('custom_specialty');
+        const hi = document.getElementById('specialty');
 
-        if (select.value === 'other') {
-            if (!customInput.value.trim()) {
+        if (sel.value === 'other') {
+            if (!ci.value.trim()) {
                 e.preventDefault();
-                customInput.focus();
-                customInput.classList.add('is-invalid');
+                ci.focus();
+                ci.classList.add('msdr-input-error');
                 return false;
             }
-            hiddenInput.value = customInput.value.trim();
+            hi.value = ci.value.trim();
         } else {
-            hiddenInput.value = select.value;
+            hi.value = sel.value;
         }
     });
 
     // Restore old values
     const oldSpecialty = '{{ old("specialty") }}';
-    const oldCustomSpecialty = '{{ old("custom_specialty") }}';
+    const oldCustom = '{{ old("custom_specialty") }}';
 
-    if (oldCustomSpecialty) {
-        document.getElementById('specialty_select').value = 'other';
-        toggleCustomSpecialty();
-        document.getElementById('custom_specialty').value = oldCustomSpecialty;
-        document.getElementById('specialty').value = oldCustomSpecialty;
+    if (oldCustom) {
+        select.value = 'other';
+        msdrToggleSpecialty();
+        customInput.value = oldCustom;
+        hidden.value = oldCustom;
     } else if (oldSpecialty) {
-        const selectOptions = Array.from(document.getElementById('specialty_select').options);
-        const optionExists = selectOptions.some(option => option.value === oldSpecialty);
-
-        if (optionExists) {
-            document.getElementById('specialty_select').value = oldSpecialty;
+        const exists = Array.from(select.options).some(o => o.value === oldSpecialty);
+        if (exists) {
+            select.value = oldSpecialty;
         } else {
-            document.getElementById('specialty_select').value = 'other';
-            toggleCustomSpecialty();
-            document.getElementById('custom_specialty').value = oldSpecialty;
+            select.value = 'other';
+            msdrToggleSpecialty();
+            customInput.value = oldSpecialty;
         }
-        document.getElementById('specialty').value = oldSpecialty;
+        hidden.value = oldSpecialty;
     }
 });
 </script>
+@endpush

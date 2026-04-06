@@ -364,8 +364,8 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
+    color: #060d1f;
     display: flex;
     align-items: center;
     justify-content: center;

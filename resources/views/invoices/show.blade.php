@@ -28,7 +28,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
 
     /* Page Header */
@@ -49,11 +49,11 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
     
     .page-header h1 {
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -80,7 +80,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, #2c3e50 0%, #DE6262 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
     }
 </style>
 @endpush
@@ -133,7 +133,7 @@
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    <a href="{{ route('invoices.index') }}" class="btn-custom-danger" style="background: #DE6262">
+                    <a href="{{ route('invoices.index') }}" class="btn-custom-danger" style="background: #00d4aa">
                         <i class="fas fa-arrow-left"></i> Back to Invoices
                     </a>
                     @if(!$invoice->isPaid())

@@ -80,7 +80,7 @@
         word-break: break-all;
         font-family: 'Courier New', monospace;
         font-size: 12px;
-        color: #DE6262;
+        color: #00d4aa;
         text-align: center;
     }
     
@@ -221,7 +221,7 @@
 @section('footer-content')
     <p style="margin-top: 15px; font-size: 13px; color: #6c757d;">
         <strong>Security Concerns?</strong> Contact our security team at 
-        <a href="mailto:security@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #DE6262;">
+        <a href="mailto:security@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #00d4aa;">
             security@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com
         </a>
     </p>

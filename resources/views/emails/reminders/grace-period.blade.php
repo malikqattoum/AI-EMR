@@ -285,7 +285,7 @@
 @section('footer-content')
     <p style="margin-top: 15px; font-size: 13px; color: #6c757d;">
         <strong>Payment Questions?</strong> Contact our billing team at
-        <a href="mailto:billing@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #DE6262;">
+        <a href="mailto:billing@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com" style="color: #00d4aa;">
             billing@{{ strtolower(str_replace(' ', '', config('app.name'))) }}.com
         </a>
     </p>

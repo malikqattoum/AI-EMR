@@ -1,628 +1,854 @@
 @extends('master')
 
-@section('title', 'MedSuite AI - Modern EMR System for Healthcare Practices')
+@section('title', 'MedSuite AI — Intelligent Healthcare Platform')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 @endpush
 
 @section('content')
+<div class="ms-root">
 
-<!-- Hero Section -->
-<x-hero-section
-    headline="AI-Powered Healthcare for Modern Medical Practices"
-    subhead="Complete patient management, appointment scheduling, voice transcription, and billing in one secure, intelligent platform."
-    eyebrow="AI-Powered EMR"
-    cta-primary="Start Free Trial"
-    cta-primary-url="{{ route('register.doctor') }}"
-    cta-secondary="See Features"
-    cta-secondary-url="#features"
->
-    <div class="hero-visual-content">
-        <div class="hero-icon-wrapper">
-            <i class="fas fa-file-medical"></i>
+    <!-- ═══════════ NAV ═══════════ -->
+    <nav class="ms-nav">
+        <div class="ms-nav-inner">
+            <a href="/" class="ms-nav-brand">
+                <span class="ms-brand-icon"><i class="bi bi-heart-pulse-fill"></i></span>
+                <span class="ms-brand-text">MedSuite<em>AI</em></span>
+            </a>
+            <div class="ms-nav-links">
+                <a href="#features">Features</a>
+                <a href="#ai-section">Intelligence</a>
+                <a href="#how">Process</a>
+            </div>
+            <div class="ms-nav-actions">
+                <a href="{{ route('login') }}" class="ms-btn-ghost">Sign In</a>
+                <a href="{{ route('register.doctor') }}" class="ms-btn-primary">Get Started</a>
+            </div>
         </div>
-    </div>
-</x-hero-section>
+    </nav>
 
-<!-- Features Section -->
-<section id="features" class="section section-teal">
-    <div class="container">
-        <div class="text-center mb-12">
-            <span class="eyebrow">Core Features</span>
-            <h2>Everything You Need to Run a Modern Medical Practice</h2>
-            <p class="text-muted" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-                Complete tools for patient management, scheduling, billing, and AI-powered clinical decision support.
-            </p>
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="ms-hero">
+        <div class="ms-hero-bg">
+            <div class="ms-orb ms-orb-1"></div>
+            <div class="ms-orb ms-orb-2"></div>
+            <div class="ms-orb ms-orb-3"></div>
+            <div class="ms-grid-overlay"></div>
         </div>
-        <div class="row g-4" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
-            <x-feature-card
-                icon="fas fa-users"
-                title="Patient Management"
-                description="Complete patient records, medical history, and treatment tracking in one secure place."
-            />
-            <x-feature-card
-                icon="fas fa-calendar-check"
-                title="Smart Scheduling"
-                description="Automated appointment booking with reminders and calendar integration."
-            />
-            <x-feature-card
-                icon="fas fa-microphone"
-                title="Voice Transcription"
-                description="Real-time speech-to-text for clinical notes and documentation."
-            />
-            <x-feature-card
-                icon="fas fa-file-prescription"
-                title="Digital Prescriptions"
-                description="Create and manage prescriptions digitally with patient history."
-            />
-            <x-feature-card
-                icon="fas fa-file-invoice-dollar"
-                title="Billing & Invoicing"
-                description="Automated billing, payment tracking, and financial reporting."
-            />
-            <x-feature-card
-                icon="fas fa-chart-line"
-                title="Analytics Dashboard"
-                description="Track appointments, revenue, and practice performance metrics."
-            />
-        </div>
-    </div>
-</section>
 
-<!-- AI Features Spotlight Section -->
-<section id="ai-features" class="section bg-white">
-    <div class="container">
-        <div class="text-center mb-12">
-            <span class="eyebrow">AI-Powered Features</span>
-            <h2>Intelligent Healthcare Technology</h2>
-            <p class="text-muted" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-                Advanced AI features that transform your practice with intelligent automation.
-            </p>
-        </div>
-        <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center;">
-            <!-- Left Column - AI Features List -->
-            <div class="ai-features-list">
-                <div class="ai-feature-item">
-                    <div class="ai-feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="ai-feature-content">
-                        <h4>AI Medical Copilot</h4>
-                        <p>Intelligent assistant that helps with diagnosis suggestions, treatment recommendations, and clinical decision support based on patient data.</p>
-                    </div>
+        <div class="ms-hero-inner">
+            <div class="ms-hero-text">
+                <div class="ms-eyebrow">
+                    <span class="ms-eyebrow-dot"></span>
+                    AI-Powered EMR Platform
                 </div>
-                <div class="ai-feature-item">
-                    <div class="ai-feature-icon">
-                        <i class="fas fa-microphone-alt"></i>
-                    </div>
-                    <div class="ai-feature-content">
-                        <h4>Voice Assistant</h4>
-                        <p>Hands-free clinical documentation with real-time voice transcription and automatic note generation powered by advanced AI.</p>
-                    </div>
+                <h1 class="ms-hero-title">
+                    Medicine<br>
+                    <em>reimagined</em><br>
+                    <span class="ms-hero-title-accent">intelligently.</span>
+                </h1>
+                <p class="ms-hero-sub">
+                    Complete patient management, voice transcription, and AI clinical decision support — unified in one elegant platform built for modern medical practices.
+                </p>
+                <div class="ms-hero-cta">
+                    <a href="{{ route('register.doctor') }}" class="ms-btn-hero">
+                        <span>Begin Free Trial</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="#features" class="ms-btn-text">
+                        Explore features <i class="bi bi-chevron-down"></i>
+                    </a>
                 </div>
-                <div class="ai-feature-item">
-                    <div class="ai-feature-icon">
-                        <i class="fas fa-pills"></i>
-                    </div>
-                    <div class="ai-feature-content">
-                        <h4>Smart Prescription Suggestions</h4>
-                        <p>AI-powered medication recommendations based on diagnosis, patient history, and drug interactions analysis.</p>
-                    </div>
-                </div>
-                <div class="ai-feature-item">
-                    <div class="ai-feature-icon">
-                        <i class="fas fa-chart-network"></i>
-                    </div>
-                    <div class="ai-feature-content">
-                        <h4>Predictive Analytics</h4>
-                        <p>Advanced analytics for risk assessment, patient outcome predictions, and practice performance optimization.</p>
-                    </div>
+                <div class="ms-hero-trust">
+                    <div class="ms-trust-item"><strong>500+</strong><span>Clinicians</span></div>
+                    <div class="ms-trust-divider"></div>
+                    <div class="ms-trust-item"><strong>25K+</strong><span>Patients Served</span></div>
+                    <div class="ms-trust-divider"></div>
+                    <div class="ms-trust-item"><strong>4.9★</strong><span>Rated</span></div>
                 </div>
             </div>
-            <!-- Right Column - AI Visual -->
-            <div class="ai-visual-card">
-                <div class="ai-visual-inner">
-                    <i class="fas fa-brain"></i>
-                    <h3>AI-Powered Healthcare</h3>
-                    <p>Experience the future of medical practice management with cutting-edge artificial intelligence.</p>
-                    <div class="ai-stats">
-                        <div class="ai-stat">
-                            <span class="ai-stat-number">24/7</span>
-                            <span class="ai-stat-label">AI Availability</span>
+
+            <div class="ms-hero-visual">
+                <div class="ms-dashboard-card">
+                    <div class="ms-dash-header">
+                        <div class="ms-dash-dot red"></div>
+                        <div class="ms-dash-dot amber"></div>
+                        <div class="ms-dash-dot green"></div>
+                        <span class="ms-dash-label">Patient Overview</span>
+                    </div>
+                    <div class="ms-dash-body">
+                        <div class="ms-dash-avatar">
+                            <i class="bi bi-person-circle"></i>
                         </div>
-                        <div class="ai-stat">
-                            <span class="ai-stat-number">95%</span>
-                            <span class="ai-stat-label">Accuracy Rate</span>
+                        <div class="ms-dash-info">
+                            <div class="ms-dash-name">Sarah Mitchell</div>
+                            <div class="ms-dash-detail">Cardiology • Follow-up</div>
                         </div>
-                        <div class="ai-stat">
-                            <span class="ai-stat-number">50%</span>
-                            <span class="ai-stat-label">Time Saved</span>
+                        <div class="ms-dash-badge">Active</div>
+                    </div>
+                    <div class="ms-dash-vitals">
+                        <div class="ms-vital"><span class="ms-vital-val">72</span><span class="ms-vital-key">BPM</span></div>
+                        <div class="ms-vital"><span class="ms-vital-val">118/76</span><span class="ms-vital-key">BP</span></div>
+                        <div class="ms-vital"><span class="ms-vital-val">98%</span><span class="ms-vital-key">SpO₂</span></div>
+                    </div>
+                    <div class="ms-ai-chip">
+                        <i class="bi bi-robot"></i>
+                        <span>AI Copilot: No drug interactions detected</span>
+                    </div>
+                </div>
+
+                <div class="ms-float-card ms-float-1">
+                    <i class="bi bi-mic-fill"></i>
+                    <span>Voice note recorded</span>
+                </div>
+                <div class="ms-float-card ms-float-2">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Prescription sent</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ FEATURES ═══════════ -->
+    <section id="features" class="ms-section ms-features-section">
+        <div class="ms-container">
+            <div class="ms-section-header">
+                <div class="ms-eyebrow ms-eyebrow-light">Core Capabilities</div>
+                <h2 class="ms-section-title">Everything your<br><em>practice needs</em></h2>
+                <p class="ms-section-sub">A complete suite of tools built around the way modern clinicians work — not legacy systems designed decades ago.</p>
+            </div>
+
+            <div class="ms-features-grid">
+                <div class="ms-feat-card ms-feat-large">
+                    <div class="ms-feat-icon"><i class="bi bi-people-fill"></i></div>
+                    <h3>Patient Management</h3>
+                    <p>Complete longitudinal health records, visit history, and smart patient timelines accessible in seconds.</p>
+                    <div class="ms-feat-glow"></div>
+                </div>
+                <div class="ms-feat-card">
+                    <div class="ms-feat-icon"><i class="bi bi-mic-fill"></i></div>
+                    <h3>Voice Transcription</h3>
+                    <p>Real-time AI-powered speech-to-text for clinical notes — hands-free documentation.</p>
+                    <div class="ms-feat-glow"></div>
+                </div>
+                <div class="ms-feat-card">
+                    <div class="ms-feat-icon"><i class="bi bi-calendar-check"></i></div>
+                    <h3>Smart Scheduling</h3>
+                    <p>Intelligent appointment booking with automated reminders and calendar sync.</p>
+                    <div class="ms-feat-glow"></div>
+                </div>
+                <div class="ms-feat-card ms-feat-large ms-feat-large-right">
+                    <div class="ms-feat-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
+                    <h3>Digital Prescriptions</h3>
+                    <p>Create, manage, and send prescriptions with drug interaction checking and patient history context baked in.</p>
+                    <div class="ms-feat-glow"></div>
+                </div>
+                <div class="ms-feat-card">
+                    <div class="ms-feat-icon"><i class="bi bi-receipt-cutoff"></i></div>
+                    <h3>Billing & Invoicing</h3>
+                    <p>Automated invoicing, payment tracking, and detailed financial reporting.</p>
+                    <div class="ms-feat-glow"></div>
+                </div>
+                <div class="ms-feat-card">
+                    <div class="ms-feat-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h3>Analytics</h3>
+                    <p>Practice performance dashboards with revenue, appointment, and patient outcome metrics.</p>
+                    <div class="ms-feat-glow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ AI INTELLIGENCE ═══════════ -->
+    <section id="ai-section" class="ms-section ms-ai-section">
+        <div class="ms-container">
+            <div class="ms-ai-inner">
+                <div class="ms-ai-left">
+                    <div class="ms-eyebrow">AI Intelligence</div>
+                    <h2 class="ms-section-title">Clinical decisions,<br><em>augmented.</em></h2>
+                    <p class="ms-section-sub">Our AI doesn't replace clinical judgment — it enhances it with evidence-based context right when you need it.</p>
+
+                    <div class="ms-ai-list">
+                        <div class="ms-ai-item">
+                            <div class="ms-ai-item-icon"><i class="bi bi-robot"></i></div>
+                            <div>
+                                <h4>Medical Copilot</h4>
+                                <p>Diagnosis suggestions and treatment recommendations anchored in patient data and clinical literature.</p>
+                            </div>
+                        </div>
+                        <div class="ms-ai-item">
+                            <div class="ms-ai-item-icon"><i class="bi bi-capsule"></i></div>
+                            <div>
+                                <h4>Prescription Intelligence</h4>
+                                <p>AI-powered drug interaction checking and dosage recommendations based on patient history.</p>
+                            </div>
+                        </div>
+                        <div class="ms-ai-item">
+                            <div class="ms-ai-item-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
+                            <div>
+                                <h4>Predictive Analytics</h4>
+                                <p>Risk stratification and patient outcome modeling to support proactive care decisions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ms-ai-right">
+                    <div class="ms-ai-terminal">
+                        <div class="ms-terminal-header">
+                            <span>AI Copilot</span>
+                            <div class="ms-terminal-status"><span class="ms-pulse"></span> Live</div>
+                        </div>
+                        <div class="ms-terminal-body">
+                            <div class="ms-terminal-msg ms-msg-system">
+                                <i class="bi bi-robot"></i>
+                                <div>
+                                    <strong>MedSuite AI</strong>
+                                    <p>Analyzing patient history for James R., 54M — Hypertension, T2DM follow-up.</p>
+                                </div>
+                            </div>
+                            <div class="ms-terminal-msg ms-msg-alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                <div>
+                                    <strong>Interaction Alert</strong>
+                                    <p>Metformin + current Lisinopril dosage — consider renal function review.</p>
+                                </div>
+                            </div>
+                            <div class="ms-terminal-msg ms-msg-suggest">
+                                <i class="bi bi-lightbulb-fill"></i>
+                                <div>
+                                    <strong>Suggestion</strong>
+                                    <p>HbA1c last checked 8 months ago — recommend ordering today.</p>
+                                </div>
+                            </div>
+                            <div class="ms-terminal-cursor">
+                                <span>Awaiting your input</span><span class="ms-blink">_</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- How It Works Section -->
-<section id="how-it-works" class="section section-teal">
-    <div class="container">
-        <div class="text-center mb-12">
-            <span class="eyebrow">Simple Process</span>
-            <h2>How It Works</h2>
-            <p class="text-muted" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-                Get started in three simple steps
-            </p>
+    <!-- ═══════════ HOW IT WORKS ═══════════ -->
+    <section id="how" class="ms-section ms-how-section">
+        <div class="ms-container">
+            <div class="ms-section-header">
+                <div class="ms-eyebrow ms-eyebrow-light">Simple Onboarding</div>
+                <h2 class="ms-section-title">Up and running<br><em>in minutes.</em></h2>
+            </div>
+            <div class="ms-steps">
+                <div class="ms-step">
+                    <div class="ms-step-num">01</div>
+                    <div class="ms-step-content">
+                        <i class="bi bi-person-plus-fill"></i>
+                        <h4>Create Your Account</h4>
+                        <p>Sign up and build your professional profile — specialty, credentials, and availability.</p>
+                    </div>
+                </div>
+                <div class="ms-step-arrow"><i class="bi bi-arrow-right"></i></div>
+                <div class="ms-step">
+                    <div class="ms-step-num">02</div>
+                    <div class="ms-step-content">
+                        <i class="bi bi-sliders"></i>
+                        <h4>Configure Your Practice</h4>
+                        <p>Set appointment types, billing rates, scheduling preferences, and team permissions.</p>
+                    </div>
+                </div>
+                <div class="ms-step-arrow"><i class="bi bi-arrow-right"></i></div>
+                <div class="ms-step">
+                    <div class="ms-step-num">03</div>
+                    <div class="ms-step-content">
+                        <i class="bi bi-rocket-takeoff-fill"></i>
+                        <h4>Start Seeing Patients</h4>
+                        <p>Accept bookings, document visits with AI assistance, and manage your practice effortlessly.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row g-4" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <i class="fas fa-user-doctor"></i>
-                    <h4>Create Account</h4>
-                    <p>Sign up and set up your practice profile in minutes.</p>
-                </div>
-            </div>
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <i class="fas fa-cog"></i>
-                    <h4>Configure Settings</h4>
-                    <p>Set your availability, appointment types, and preferences.</p>
-                </div>
-            </div>
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <i class="fas fa-rocket"></i>
-                    <h4>Start Managing</h4>
-                    <p>Begin accepting appointments and managing patients.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- Stats Section -->
-<x-stats-section
-    :stats="[
-        ['number' => '500+', 'label' => 'Active Doctors'],
-        ['number' => '10K+', 'label' => 'Appointments Booked'],
-        ['number' => '25K+', 'label' => 'Patients Served'],
-        ['number' => '4.8★', 'label' => 'Average Rating']
-    ]"
-/>
+    <!-- ═══════════ CTA ═══════════ -->
+    <section class="ms-cta-section">
+        <div class="ms-cta-bg">
+            <div class="ms-orb ms-orb-cta-1"></div>
+            <div class="ms-orb ms-orb-cta-2"></div>
+        </div>
+        <div class="ms-container">
+            <div class="ms-cta-inner">
+                <h2>Ready to transform<br><em>your practice?</em></h2>
+                <p>Join hundreds of clinicians who've modernized their workflow with MedSuite AI. No contracts, cancel anytime.</p>
+                <a href="{{ route('register.doctor') }}" class="ms-btn-hero">
+                    <span>Start Free Trial</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
-<!-- Why Choose Us Section -->
-<section class="section bg-white">
-    <div class="container">
-        <div class="text-center mb-12">
-            <span class="eyebrow">Benefits</span>
-            <h2>Why Choose MedSuite AI</h2>
-            <p class="text-muted" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-                Built for modern healthcare professionals
-            </p>
-        </div>
-        <div class="row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6);">
-            <div class="why-card">
-                <div class="why-icon">
-                    <i class="fas fa-clock"></i>
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="ms-footer">
+        <div class="ms-container">
+            <div class="ms-footer-inner">
+                <div class="ms-footer-brand">
+                    <span class="ms-brand-icon"><i class="bi bi-heart-pulse-fill"></i></span>
+                    <span class="ms-brand-text">MedSuite<em>AI</em></span>
+                    <p>Intelligent healthcare for modern practices.</p>
                 </div>
-                <h4>Save Time</h4>
-                <p>Reduce documentation time with voice transcription and automated workflows.</p>
+                <div class="ms-footer-cols">
+                    <div>
+                        <h5>Product</h5>
+                        <a href="#features">Features</a>
+                        <a href="#ai-section">AI Tools</a>
+                        <a href="#how">How It Works</a>
+                    </div>
+                    <div>
+                        <h5>Company</h5>
+                        <a href="#">About</a>
+                        <a href="#">Careers</a>
+                        <a href="{{ route('contact') }}">Contact</a>
+                    </div>
+                    <div>
+                        <h5>Legal</h5>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">HIPAA Compliance</a>
+                    </div>
+                </div>
             </div>
-            <div class="why-card">
-                <div class="why-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h4>Secure & Reliable</h4>
-                <p>Enterprise-grade security with encrypted data storage and backups.</p>
-            </div>
-            <div class="why-card">
-                <div class="why-icon">
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                <h4>Access Anywhere</h4>
-                <p>Cloud-based platform accessible from any device, anytime.</p>
-            </div>
-            <div class="why-card">
-                <div class="why-icon">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h4>Expert Support</h4>
-                <p>Dedicated support team to help you get the most from the platform.</p>
+            <div class="ms-footer-bottom">
+                <p>&copy; {{ date('Y') }} MedSuite AI. All rights reserved.</p>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<x-cta-section
-    headline="Ready to Transform Your Practice?"
-    subtext="Join healthcare professionals using modern EMR technology. Start your free trial today."
-    button-text="Start Free Trial"
-    :button-url="route('register.doctor')"
-/>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <x-medsuite-logo />
-                <p>AI-powered EMR system for modern healthcare practices.</p>
-            </div>
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h5>Product</h5>
-                    <ul>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#ai-features">AI Features</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h5>Company</h5>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">HIPAA Compliance</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} MedSuite AI. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
+    </footer>
+</div>
 
 <style>
-/* Hero Visual Content */
-.hero-visual-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+    --navy:       #060d1f;
+    --navy-mid:   #0c1633;
+    --navy-card:  #0f1c3a;
+    --teal:       #00d4aa;
+    --teal-dim:   rgba(0,212,170,0.12);
+    --teal-glow:  rgba(0,212,170,0.35);
+    --amber:      #f59e0b;
+    --red:        #ef4444;
+    --white:      #ffffff;
+    --offwhite:   #e8edf5;
+    --muted:      rgba(232,237,245,0.5);
+    --border:     rgba(255,255,255,0.07);
+    --glass:      rgba(255,255,255,0.04);
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body:    'DM Sans', sans-serif;
 }
 
-.hero-icon-wrapper {
-    width: 280px;
-    height: 280px;
-    border-radius: var(--radius-2xl);
-    background: linear-gradient(135deg, var(--color-teal-50) 0%, var(--color-white) 100%);
-    box-shadow: var(--shadow-xl);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--navy); color: var(--offwhite); font-family: var(--font-body); font-size: 16px; line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+.ms-root { min-height: 100vh; overflow-x: hidden; }
+.ms-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
-.hero-icon-wrapper i {
-    font-size: 80px;
-    color: var(--color-teal-primary);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 2rem;
+    background: rgba(6,13,31,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
 }
-
-/* AI Features Section */
-.ai-features-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+.ms-nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
 }
-
-.ai-feature-item {
-    display: flex;
-    gap: var(--space-4);
-    align-items: flex-start;
+.ms-nav-brand {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-display); font-size: 1.4rem; font-weight: 600;
+    color: var(--white);
 }
-
-.ai-feature-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, var(--color-teal-primary) 0%, var(--color-teal-primary-light) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: var(--shadow-teal);
+.ms-nav-brand em { color: var(--teal); font-style: normal; }
+.ms-brand-icon {
+    width: 34px; height: 34px;
+    background: var(--teal); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--navy); font-size: 0.9rem;
 }
-
-.ai-feature-icon i {
-    font-size: var(--font-size-xl);
-    color: var(--color-white);
+.ms-brand-text em { color: var(--teal); font-style: normal; }
+.ms-nav-links { display: flex; gap: 2rem; }
+.ms-nav-links a {
+    font-size: 0.875rem; font-weight: 400; color: var(--muted);
+    transition: color 0.2s;
 }
-
-.ai-feature-content h4 {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    margin-bottom: var(--space-2);
+.ms-nav-links a:hover { color: var(--white); }
+.ms-nav-actions { display: flex; align-items: center; gap: 1rem; }
+.ms-btn-ghost {
+    font-size: 0.875rem; color: var(--offwhite); padding: 0.5rem 1.25rem;
+    border: 1px solid var(--border); border-radius: 50px;
+    transition: all 0.2s;
 }
-
-.ai-feature-content p {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
-    line-height: var(--line-height-relaxed);
-    margin-bottom: 0;
+.ms-btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+.ms-btn-primary {
+    font-size: 0.875rem; font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    background: var(--teal); color: var(--navy);
+    border-radius: 50px; transition: all 0.2s;
 }
+.ms-btn-primary:hover { box-shadow: 0 0 20px var(--teal-glow); transform: translateY(-1px); }
 
-.ai-visual-card {
-    border-radius: var(--radius-2xl);
-    background: linear-gradient(135deg, var(--color-gray-800) 0%, var(--color-gray-900) 100%);
-    box-shadow: var(--shadow-xl);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 2rem 4rem;
     overflow: hidden;
 }
-
-.ai-visual-inner {
-    padding: var(--space-12);
-    text-align: center;
+.ms-hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+}
+.ms-orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); opacity: 0.5;
+}
+.ms-orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,170,0.25) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    animation: orbFloat 8s ease-in-out infinite;
+}
+.ms-orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%);
+    bottom: 0; left: -100px;
+    animation: orbFloat 10s ease-in-out infinite reverse;
+}
+.ms-orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,212,170,0.15) 0%, transparent 70%);
+    top: 40%; left: 40%;
+    animation: orbFloat 12s ease-in-out infinite;
+}
+.ms-grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+@keyframes orbFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
 }
 
-.ai-visual-inner i {
-    font-size: 80px;
-    color: var(--color-teal-primary);
-    margin-bottom: var(--space-4);
+.ms-hero-inner {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
 }
 
-.ai-visual-inner h3 {
-    color: var(--color-white);
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--space-3);
+/* Eyebrow */
+.ms-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--teal);
+    margin-bottom: 1.5rem;
+}
+.ms-eyebrow-dot {
+    width: 6px; height: 6px;
+    background: var(--teal); border-radius: 50%;
+    box-shadow: 0 0 8px var(--teal);
+}
+.ms-eyebrow-light { color: var(--teal); }
+
+/* Hero title */
+.ms-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 300; line-height: 1.05;
+    color: var(--teal); margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+.ms-hero-title em { color: var(--teal); font-style: italic; }
+.ms-hero-title-accent {
+    color: var(--white);
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    color: transparent;
 }
 
-.ai-visual-inner p {
-    color: var(--color-gray-400);
-    margin-bottom: var(--space-6);
+.ms-hero-sub {
+    font-size: 1.0625rem; color: var(--muted); line-height: 1.75;
+    max-width: 480px; margin-bottom: 2.5rem;
 }
 
-.ai-stats {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-8);
+.ms-hero-cta { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem; }
+.ms-btn-hero {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.875rem 2rem;
+    background: var(--teal); color: var(--navy);
+    font-weight: 600; font-size: 0.9375rem;
+    border-radius: 50px;
+    transition: all 0.25s;
+    box-shadow: 0 0 30px rgba(0,212,170,0.3);
+}
+.ms-btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(0,212,170,0.5);
+}
+.ms-btn-text {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.875rem; color: var(--muted);
+    transition: color 0.2s;
+}
+.ms-btn-text:hover { color: var(--white); }
+
+.ms-hero-trust { display: flex; align-items: center; gap: 1.5rem; }
+.ms-trust-item { display: flex; flex-direction: column; }
+.ms-trust-item strong { font-size: 1.25rem; font-weight: 600; color: var(--white); }
+.ms-trust-item span { font-size: 0.75rem; color: var(--muted); }
+.ms-trust-divider { width: 1px; height: 30px; background: var(--border); }
+
+/* Hero Visual */
+.ms-hero-visual { position: relative; animation: heroIn 1s ease-out 0.3s both; }
+@keyframes heroIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: none; } }
+
+.ms-dashboard-card {
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,212,170,0.08);
+    backdrop-filter: blur(20px);
+}
+.ms-dash-header {
+    display: flex; align-items: center; gap: 0.4rem;
+    margin-bottom: 1.5rem;
+}
+.ms-dash-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+}
+.ms-dash-dot.red { background: #ef4444; }
+.ms-dash-dot.amber { background: #f59e0b; }
+.ms-dash-dot.green { background: #22c55e; }
+.ms-dash-label {
+    margin-left: auto; font-size: 0.75rem; color: var(--muted);
+}
+.ms-dash-body {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 1rem;
+}
+.ms-dash-avatar { font-size: 2rem; color: var(--teal); }
+.ms-dash-name { font-weight: 500; font-size: 0.9375rem; color: var(--white); }
+.ms-dash-detail { font-size: 0.75rem; color: var(--muted); }
+.ms-dash-badge {
+    margin-left: auto;
+    font-size: 0.7rem; font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    background: rgba(34,197,94,0.15);
+    color: #22c55e; border-radius: 50px;
+    border: 1px solid rgba(34,197,94,0.3);
+}
+.ms-dash-vitals {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 0.5rem; margin-bottom: 1rem;
+}
+.ms-vital {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+}
+.ms-vital-val { font-size: 1.1rem; font-weight: 600; color: var(--white); }
+.ms-vital-key { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.05em; }
+.ms-ai-chip {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    background: rgba(0,212,170,0.08);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 8px;
+    font-size: 0.78rem; color: var(--teal);
 }
 
-.ai-stat {
-    text-align: center;
-}
-
-.ai-stat-number {
-    display: block;
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-teal-primary);
-    margin-bottom: var(--space-1);
-}
-
-.ai-stat-label {
-    font-size: var(--font-size-xs);
-    color: var(--color-gray-400);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-wide);
-}
-
-/* Step Cards */
-.step-card {
-    background: var(--color-white);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-card);
-    padding: var(--space-8) var(--space-6);
-    text-align: center;
-    position: relative;
-    transition: all var(--transition-normal);
-}
-
-.step-card:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-4px);
-}
-
-.step-number {
+.ms-float-card {
     position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--color-teal-primary) 0%, var(--color-teal-primary-light) 100%);
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-white);
-    font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-xl);
-    box-shadow: var(--shadow-teal);
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 0.78rem; color: var(--offwhite);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    white-space: nowrap;
+}
+.ms-float-1 { bottom: -20px; left: -40px; animation: floatAnim 4s ease-in-out infinite; }
+.ms-float-1 i { color: var(--teal); }
+.ms-float-2 { top: 30px; right: -40px; animation: floatAnim 4s ease-in-out infinite 2s; }
+.ms-float-2 i { color: #22c55e; }
+@keyframes floatAnim {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
 }
 
-.step-content {
-    padding-top: var(--space-4);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTIONS COMMON
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-section { padding: 8rem 2rem; }
+.ms-section-header { text-align: center; margin-bottom: 5rem; }
+.ms-section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--white); margin-bottom: 1.25rem;
 }
+.ms-section-title em { color: var(--teal); font-style: italic; }
+.ms-section-sub { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto; line-height: 1.75; }
 
-.step-content i {
-    font-size: var(--font-size-4xl);
-    color: var(--color-teal-primary);
-    margin-bottom: var(--space-4);
-}
-
-.step-content h4 {
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--space-2);
-}
-
-.step-content p {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
-    margin-bottom: 0;
-}
-
-/* Why Choose Us Cards */
-.why-card {
-    text-align: center;
-    padding: var(--space-6);
-    border-radius: var(--radius-xl);
-    background: var(--color-gray-50);
-    transition: all var(--transition-normal);
-}
-
-.why-card:hover {
-    background: var(--color-white);
-    box-shadow: var(--shadow-card);
-    transform: translateY(-4px);
-}
-
-.why-icon {
-    width: 72px;
-    height: 72px;
-    border-radius: var(--radius-full);
-    background: linear-gradient(135deg, var(--color-teal-primary) 0%, var(--color-teal-primary-light) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto var(--space-4);
-    box-shadow: var(--shadow-teal);
-}
-
-.why-icon i {
-    font-size: var(--font-size-2xl);
-    color: var(--color-white);
-}
-
-.why-card h4 {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--space-2);
-}
-
-.why-card p {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
-    margin-bottom: 0;
-    line-height: var(--line-height-relaxed);
-}
-
-/* Footer */
-.footer {
-    background: var(--color-gray-900);
-    color: var(--color-gray-300);
-    padding: var(--space-16) 0 var(--space-8);
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: var(--space-12);
-    margin-bottom: var(--space-12);
-}
-
-.footer-brand p {
-    margin-top: var(--space-4);
-    color: var(--color-gray-400);
-    font-size: var(--font-size-sm);
-}
-
-.footer-links {
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FEATURES GRID
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-features-section { background: var(--navy-mid); }
+.ms-features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-8);
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+}
+.ms-feat-card {
+    position: relative; overflow: hidden;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 18px; padding: 2rem;
+    transition: all 0.3s;
+}
+.ms-feat-card:hover { border-color: rgba(0,212,170,0.3); transform: translateY(-3px); }
+.ms-feat-card:hover .ms-feat-glow { opacity: 1; }
+.ms-feat-large { grid-column: span 2; }
+.ms-feat-large-right { grid-column: span 2; }
+.ms-feat-icon {
+    width: 46px; height: 46px;
+    background: var(--teal-dim);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal); font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+}
+.ms-feat-card h3 {
+    font-size: 1.1rem; font-weight: 500; color: var(--white); margin-bottom: 0.5rem;
+}
+.ms-feat-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+.ms-feat-glow {
+    position: absolute; bottom: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
 }
 
-.footer-column h5 {
-    color: var(--color-white);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--space-4);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI SECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-ai-section { background: var(--navy); }
+.ms-ai-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
 }
-
-.footer-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.ms-ai-list { display: flex; flex-direction: column; gap: 2rem; margin-top: 2.5rem; }
+.ms-ai-item { display: flex; gap: 1rem; align-items: flex-start; }
+.ms-ai-item-icon {
+    width: 42px; height: 42px; flex-shrink: 0;
+    background: var(--teal-dim);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal);
 }
+.ms-ai-item h4 { font-size: 0.9375rem; font-weight: 500; color: var(--white); margin-bottom: 0.3rem; }
+.ms-ai-item p { font-size: 0.84375rem; color: var(--muted); line-height: 1.65; }
 
-.footer-column li {
-    margin-bottom: var(--space-2);
+/* AI Terminal */
+.ms-ai-terminal {
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,212,170,0.06);
 }
-
-.footer-column a {
-    color: var(--color-gray-400);
-    font-size: var(--font-size-sm);
-    transition: color var(--transition-fast);
+.ms-terminal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8125rem; font-weight: 500; color: var(--offwhite);
 }
-
-.footer-column a:hover {
-    color: var(--color-teal-primary);
+.ms-terminal-status {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.72rem; color: var(--teal);
 }
+.ms-pulse {
+    width: 6px; height: 6px; background: var(--teal); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.ms-terminal-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+.ms-terminal-msg {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    padding: 0.875rem; border-radius: 10px;
+    font-size: 0.8125rem;
+}
+.ms-msg-system { background: rgba(255,255,255,0.04); border: 1px solid var(--border); }
+.ms-msg-system i { color: var(--teal); font-size: 1rem; margin-top: 1px; }
+.ms-msg-alert { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+.ms-msg-alert i { color: var(--amber); font-size: 1rem; margin-top: 1px; }
+.ms-msg-suggest { background: rgba(0,212,170,0.06); border: 1px solid rgba(0,212,170,0.15); }
+.ms-msg-suggest i { color: var(--teal); font-size: 1rem; margin-top: 1px; }
+.ms-terminal-msg strong { display: block; color: var(--white); margin-bottom: 0.25rem; font-weight: 500; }
+.ms-terminal-msg p { color: var(--muted); margin: 0; line-height: 1.5; }
+.ms-terminal-cursor {
+    font-size: 0.78rem; color: var(--muted);
+    padding: 0 0.25rem;
+    display: flex; align-items: center; gap: 0.25rem;
+}
+.ms-blink { animation: blink 1s step-end infinite; color: var(--teal); }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-.footer-bottom {
-    border-top: 1px solid var(--color-gray-700);
-    padding-top: var(--space-6);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HOW IT WORKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-how-section { background: var(--navy-mid); }
+.ms-steps {
+    display: flex; align-items: center; gap: 1.5rem;
+    justify-content: center;
+}
+.ms-step {
+    flex: 1; max-width: 300px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 18px; padding: 2.5rem 2rem;
+    position: relative; text-align: center;
+    transition: all 0.3s;
+}
+.ms-step:hover { border-color: rgba(0,212,170,0.3); transform: translateY(-4px); }
+.ms-step-num {
+    position: absolute; top: -1px; left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-display); font-size: 3.5rem; font-weight: 300;
+    color: rgba(0,212,170,0.08); line-height: 1;
+    pointer-events: none;
+}
+.ms-step-content i { font-size: 2rem; color: var(--teal); display: block; margin-bottom: 1rem; padding-top: 1.5rem; }
+.ms-step-content h4 { font-size: 1rem; font-weight: 500; color: var(--white); margin-bottom: 0.6rem; }
+.ms-step-content p { font-size: 0.84375rem; color: var(--muted); line-height: 1.7; }
+.ms-step-arrow { color: var(--border); font-size: 1.5rem; flex-shrink: 0; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-cta-section {
+    position: relative; padding: 8rem 2rem; overflow: hidden;
+    background: var(--navy);
+}
+.ms-cta-bg { position: absolute; inset: 0; pointer-events: none; }
+.ms-orb-cta-1 {
+    position: absolute; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,212,170,0.2) 0%, transparent 70%);
+    top: -200px; left: 50%; transform: translateX(-50%);
+    filter: blur(80px);
+}
+.ms-orb-cta-2 {
+    position: absolute; width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    bottom: -100px; right: 10%;
+    filter: blur(60px);
+}
+.ms-cta-inner {
+    position: relative; z-index: 2;
+    max-width: 600px; margin: 0 auto; text-align: center;
+}
+.ms-cta-inner h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--white); margin-bottom: 1.25rem;
+}
+.ms-cta-inner h2 em { color: var(--teal); font-style: italic; }
+.ms-cta-inner p { font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.7; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-footer {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--border);
+    padding: 4rem 2rem 2rem;
+}
+.ms-footer-inner {
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 4rem; max-width: 1200px; margin: 0 auto;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+}
+.ms-footer-brand {
+    display: flex; flex-direction: column; gap: 0.5rem;
+}
+.ms-footer-brand .ms-brand-icon { background: transparent; border: 1px solid var(--border); color: var(--teal); }
+.ms-footer-brand .ms-brand-text { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--white); }
+.ms-footer-brand p { font-size: 0.84375rem; color: var(--muted); margin-top: 0.5rem; }
+.ms-footer-cols {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem;
+}
+.ms-footer-cols h5 { font-size: 0.8125rem; font-weight: 500; color: var(--white); margin-bottom: 1rem; letter-spacing: 0.05em; }
+.ms-footer-cols a {
+    display: block; font-size: 0.84375rem; color: var(--muted);
+    margin-bottom: 0.6rem; transition: color 0.2s;
+}
+.ms-footer-cols a:hover { color: var(--teal); }
+.ms-footer-bottom {
+    max-width: 1200px; margin: 0 auto; padding-top: 2rem;
     text-align: center;
 }
+.ms-footer-bottom p { font-size: 0.8125rem; color: var(--muted); }
 
-.footer-bottom p {
-    color: var(--color-gray-500);
-    font-size: var(--font-size-sm);
-    margin-bottom: 0;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO ANIMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ms-hero-text {
+    animation: heroTextIn 0.9s ease-out both;
+}
+@keyframes heroTextIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
 }
 
-/* Responsive Grid Adjustments */
-@media (max-width: 1023px) {
-    .ai-features-list {
-        grid-template-columns: 1fr;
-    }
-
-    [style*="grid-template-columns: repeat(3, 1fr)"] {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    [style*="grid-template-columns: repeat(4, 1fr)"] {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .footer-content {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-links {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 1024px) {
+    .ms-hero-inner { grid-template-columns: 1fr; }
+    .ms-hero-visual { display: none; }
+    .ms-ai-inner { grid-template-columns: 1fr; }
+    .ms-features-grid { grid-template-columns: 1fr 1fr; }
+    .ms-feat-large, .ms-feat-large-right { grid-column: span 2; }
+    .ms-footer-inner { grid-template-columns: 1fr; gap: 2rem; }
 }
-
-@media (max-width: 639px) {
-    .hero-icon-wrapper {
-        width: 200px;
-        height: 200px;
-    }
-
-    .hero-icon-wrapper i {
-        font-size: 50px;
-    }
-
-    [style*="grid-template-columns: 1fr 1fr"] {
-        grid-template-columns: 1fr !important;
-    }
-
-    [style*="grid-template-columns: repeat(2, 1fr)"] {
-        grid-template-columns: 1fr !important;
-    }
-
-    .ai-stats {
-        flex-direction: column;
-        gap: var(--space-4);
-    }
-
-    .footer-links {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 768px) {
+    .ms-nav-links { display: none; }
+    .ms-features-grid { grid-template-columns: 1fr; }
+    .ms-feat-large, .ms-feat-large-right { grid-column: span 1; }
+    .ms-steps { flex-direction: column; }
+    .ms-step-arrow { transform: rotate(90deg); }
+    .ms-footer-cols { grid-template-columns: 1fr 1fr; }
 }
 </style>
 @endsection

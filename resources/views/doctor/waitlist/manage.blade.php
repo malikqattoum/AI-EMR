@@ -5,7 +5,8 @@
 @section('styles')
 <style>
 .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
+    border: 1px solid rgba(0,212,170,0.15);
     color: white;
     padding: 2rem 0;
     margin-bottom: 2rem;
@@ -13,8 +14,8 @@
 }
 
 .filter-card {
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
     border-radius: 0.5rem;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -33,7 +34,7 @@
     left: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #6b7280;
+    color: rgba(232,237,231,0.55);
 }
 
 .filter-row {
@@ -44,31 +45,37 @@
 }
 
 .waitlist-table {
-    background: white;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
     border-radius: 0.75rem;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .table {
     margin-bottom: 0;
+    color: #e8edf5;
 }
 
-.table th {
-    background-color: #f8fafc;
-    border-bottom: 2px solid #e5e7eb;
+.table thead th {
+    background-color: rgba(0,212,170,0.05);
+    border-bottom: 2px solid rgba(0,212,170,0.12);
     font-weight: 600;
-    color: #374151;
+    color: #e8edf5;
     font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: 1rem 0.75rem;
 }
 
-.table td {
+.table tbody td {
     padding: 1rem 0.75rem;
     vertical-align: middle;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid rgba(0,212,170,0.08);
+    color: #e8edf5;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0,212,170,0.03);
 }
 
 .patient-cell {
@@ -80,11 +87,12 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
+    border: 2px solid rgba(0,212,170,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--teal);
     font-weight: 600;
     margin-right: 0.75rem;
 }
@@ -92,10 +100,11 @@
 .patient-info h6 {
     margin-bottom: 0.25rem;
     font-size: 0.875rem;
+    color: #e8edf5 !important;
 }
 
 .patient-info small {
-    color: #6b7280;
+    color: rgba(232,237,231,0.55);
     font-size: 0.75rem;
 }
 
@@ -109,27 +118,27 @@
 }
 
 .priority-urgent {
-    background-color: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
+    background-color: rgba(248,113,113,0.15);
+    color: #f87171;
+    border: 1px solid rgba(248,113,113,0.2);
 }
 
 .priority-high {
-    background-color: #fffbeb;
-    color: #d97706;
-    border: 1px solid #fed7aa;
+    background-color: rgba(251,191,36,0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251,191,36,0.2);
 }
 
 .priority-medium {
-    background-color: #eff6ff;
-    color: #2563eb;
-    border: 1px solid #bfdbfe;
+    background-color: rgba(59,130,246,0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59,130,246,0.2);
 }
 
 .priority-low {
-    background-color: #f0fdf4;
-    color: #16a34a;
-    border: 1px solid #bbf7d0;
+    background-color: rgba(0,212,170,0.15);
+    color: #00d4aa;
+    border: 1px solid rgba(0,212,170,0.2);
 }
 
 .status-badge {
@@ -140,18 +149,18 @@
 }
 
 .status-active {
-    background-color: #dcfce7;
-    color: #166534;
+    background-color: rgba(0,212,170,0.15);
+    color: #00d4aa;
 }
 
 .status-paused {
-    background-color: #fef3c7;
-    color: #92400e;
+    background-color: rgba(251,191,36,0.15);
+    color: #fbbf24;
 }
 
 .status-cancelled {
-    background-color: #fee2e2;
-    color: #991b1b;
+    background-color: rgba(248,113,113,0.15);
+    color: #f87171;
 }
 
 .action-buttons {
@@ -166,12 +175,13 @@
 }
 
 .bulk-actions {
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
     border-radius: 0.5rem;
     padding: 1rem;
     margin-bottom: 1rem;
     display: none;
+    color: #e8edf5;
 }
 
 .bulk-actions.active {
@@ -181,13 +191,13 @@
 .select-checkbox {
     width: 18px;
     height: 18px;
-    accent-color: #3b82f6;
+    accent-color: #00d4aa;
 }
 
 .available-slots {
     max-height: 200px;
     overflow-y: auto;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(0,212,170,0.12);
     border-radius: 0.5rem;
     padding: 0.5rem;
 }
@@ -198,16 +208,17 @@
     cursor: pointer;
     transition: all 0.2s;
     margin-bottom: 0.25rem;
+    border: 1px solid transparent;
 }
 
 .slot-item:hover {
-    background-color: #eff6ff;
-    border-color: #3b82f6;
+    background-color: rgba(0,212,170,0.05);
+    border-color: rgba(0,212,170,0.2);
 }
 
 .slot-item.selected {
-    background-color: #eff6ff;
-    border: 1px solid #3b82f6;
+    background-color: rgba(0,212,170,0.08);
+    border: 1px solid rgba(0,212,170,0.3);
 }
 
 .pagination-container {
@@ -216,28 +227,29 @@
     align-items: center;
     margin-top: 1.5rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid rgba(0,212,170,0.12);
 }
 
 .results-info {
-    color: #6b7280;
+    color: rgba(232,237,231,0.55);
     font-size: 0.875rem;
 }
 
 .empty-state {
     text-align: center;
     padding: 3rem;
-    color: #6b7280;
+    color: rgba(232,237,231,0.55);
 }
 
 .empty-state i {
     font-size: 4rem;
     margin-bottom: 1rem;
-    color: #d1d5db;
+    color: rgba(232,237,231,0.25);
 }
 
 .quick-stats {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
+    border: 1px solid rgba(0,212,170,0.15);
     color: white;
     border-radius: 0.75rem;
     padding: 1rem;
@@ -253,11 +265,13 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.25rem;
+    color: #00d4aa;
 }
 
 .quick-stat-label {
     font-size: 0.75rem;
     opacity: 0.9;
+    color: rgba(232,237,231,0.7);
 }
 
 .sortable-header {
@@ -266,7 +280,7 @@
 }
 
 .sortable-header:hover {
-    background-color: #f1f5f9;
+    background-color: rgba(0,212,170,0.05);
 }
 
 .sort-icon {
@@ -276,7 +290,11 @@
 
 .sort-icon.active {
     opacity: 1;
-    color: #3b82f6;
+    color: #00d4aa;
+}
+
+.text-muted {
+    color: rgba(232,237,231,0.55) !important;
 }
 </style>
 @endsection
@@ -291,7 +309,7 @@
                 <p class="mb-0 opacity-75">Comprehensive patient waitlist management and slot assignment</p>
             </div>
             <div class="col-auto">
-                <a href="{{ route('doctor.waitlist.dashboard') }}" class="btn btn-light">
+                <a href="{{ route('doctor.waitlist.dashboard') }}" class="btn btn-outline-light">
                     <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                 </a>
             </div>
@@ -529,9 +547,9 @@
     @if(count($availableSlots) > 0)
         <div class="mt-4">
             <div class="card">
-                <div class="card-header bg-white border-0 py-3">
+                <div class="card-header" style="background: rgba(0,212,170,0.05); border-bottom: 1px solid rgba(0,212,170,0.12); color: #e8edf5;">
                     <h5 class="mb-0">
-                        <i class="fas fa-calendar text-primary me-2"></i>Available Slots (Next 14 Days)
+                        <i class="fas fa-calendar me-2" style="color: #00d4aa;"></i>Available Slots (Next 14 Days)
                     </h5>
                 </div>
                 <div class="card-body">
@@ -540,11 +558,11 @@
                             <div class="slot-item" onclick="selectSlot('{{ $slot['date'] }}', '{{ $slot['time'] }}', {{ $index }})">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <strong>{{ \Carbon\Carbon::parse($slot['date'])->format('M j, Y') }}</strong>
+                                        <strong style="color: #e8edf5;">{{ \Carbon\Carbon::parse($slot['date'])->format('M j, Y') }}</strong>
                                         <br>
                                         <small class="text-muted">{{ \Carbon\Carbon::parse($slot['time'])->format('g:i A') }}</small>
                                     </div>
-                                    <span class="badge bg-success">Available</span>
+                                    <span class="badge" style="background: rgba(0,212,170,0.15); color: #00d4aa;">Available</span>
                                 </div>
                             </div>
                         @endforeach
@@ -558,34 +576,34 @@
 <!-- Offer Slot Modal -->
 <div class="modal fade" id="offerSlotModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content" style="background: rgba(10,22,40,0.98); border: 1px solid rgba(0,212,170,0.15); color: #e8edf5;">
+            <div class="modal-header" style="background: rgba(0,212,170,0.05); border-bottom: 1px solid rgba(0,212,170,0.12); color: #e8edf5;">
                 <h5 class="modal-title">Offer Appointment Slot</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form id="offerSlotForm">
                     @csrf
                     <input type="hidden" id="offerWaitlistId" name="waitlist_id">
                     <div class="mb-3">
-                        <label for="offerPatient" class="form-label">Patient</label>
-                        <input type="text" class="form-control" id="offerPatient" readonly>
+                        <label for="offerPatient" class="form-label" style="color: #e8edf5;">Patient</label>
+                        <input type="text" class="form-control" id="offerPatient" readonly style="background: rgba(10,20,40,0.8); border-color: rgba(0,212,170,0.2); color: #e8edf5;">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="offerDate" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="offerDate" name="slot_date" required>
+                            <label for="offerDate" class="form-label" style="color: #e8edf5;">Date</label>
+                            <input type="date" class="form-control" id="offerDate" name="slot_date" required style="background: rgba(10,20,40,0.8); border-color: rgba(0,212,170,0.2); color: #e8edf5;">
                         </div>
                         <div class="col-md-6">
-                            <label for="offerTime" class="form-label">Time</label>
-                            <input type="time" class="form-control" id="offerTime" name="slot_time" required>
+                            <label for="offerTime" class="form-label" style="color: #e8edf5;">Time</label>
+                            <input type="time" class="form-control" id="offerTime" name="slot_time" required style="background: rgba(10,20,40,0.8); border-color: rgba(0,212,170,0.2); color: #e8edf5;">
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="sendOffer()">Send Offer</button>
+            <div class="modal-footer" style="border-top: 1px solid rgba(0,212,170,0.12);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); color: #e8edf5;">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="sendOffer()" style="background: #00d4aa; border-color: #00d4aa; color: #060d1f;">Send Offer</button>
             </div>
         </div>
     </div>

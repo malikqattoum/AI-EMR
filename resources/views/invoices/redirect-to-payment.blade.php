@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -42,7 +42,7 @@
             display: inline-block;
             padding: 12px 24px;
             background: white;
-            color: #667eea;
+            color: #0a1628;
             text-decoration: none;
             border-radius: 25px;
             font-weight: 600;

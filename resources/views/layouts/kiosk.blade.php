@@ -31,7 +31,7 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
             position: relative;
             overflow: hidden;
         }
@@ -89,14 +89,14 @@
         }
 
         .kiosk-btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
             color: white;
         }
 
         .kiosk-btn-secondary {
             background: rgba(255, 255, 255, 0.9);
-            color: #667eea;
-            border: 2px solid #667eea;
+            color: #00d4aa;
+            border: 2px solid #00d4aa;
         }
 
         .kiosk-btn-success {
@@ -162,7 +162,7 @@
 
         .kiosk-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #00d4aa;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
         }
 
@@ -182,7 +182,7 @@
             width: 40px;
             height: 40px;
             border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #667eea;
+            border-top: 4px solid #00d4aa;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 2rem auto;
@@ -238,7 +238,7 @@
 
         .progress-step.active {
             background: #fff;
-            color: #667eea;
+            color: #00d4aa;
         }
 
         .progress-step.completed {
