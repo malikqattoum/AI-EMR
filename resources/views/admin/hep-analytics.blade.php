@@ -10,7 +10,7 @@
                 <div class="card-header">
                     <h3 class="card-title">HEP Analytics & Reporting Dashboard</h3>
                     <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <button type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#analyticsCollapse">
                             <i class="fas fa-minus"></i>
                         </button>
                     </div>
@@ -56,7 +56,7 @@
                     <!-- Loading indicator -->
                     <div id="loading-indicator" class="text-center" style="display: none;">
                         <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                         <p>Loading analytics data...</p>
                     </div>
@@ -145,47 +145,47 @@
                         </div>
 
                         <!-- Key Metrics Summary -->
-                        <div class="row">
+                        <div class="row mb-4">
                             <div class="col-md-3">
-                                <div class="small-box bg-info">
-                                    <div class="inner">
-                                        <h3 id="total-programs">0</h3>
-                                        <p>Total Programs</p>
+                                <div class="card bg-primary text-white h-100">
+                                    <div class="card-body">
+                                        <h3 id="total-programs" class="mb-0">0</h3>
+                                        <p class="mb-0">Total Programs</p>
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-footer">
                                         <i class="fas fa-clipboard-list"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="small-box bg-success">
-                                    <div class="inner">
-                                        <h3 id="overall-success-rate">0%</h3>
-                                        <p>Success Rate</p>
+                                <div class="card bg-success text-white h-100">
+                                    <div class="card-body">
+                                        <h3 id="overall-success-rate" class="mb-0">0%</h3>
+                                        <p class="mb-0">Success Rate</p>
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-footer">
                                         <i class="fas fa-check-circle"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="small-box bg-warning">
-                                    <div class="inner">
-                                        <h3 id="avg-adherence">0%</h3>
-                                        <p>Avg Adherence</p>
+                                <div class="card bg-warning text-white h-100">
+                                    <div class="card-body">
+                                        <h3 id="avg-adherence" class="mb-0">0%</h3>
+                                        <p class="mb-0">Avg Adherence</p>
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-footer">
                                         <i class="fas fa-clock"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="small-box bg-danger">
-                                    <div class="inner">
-                                        <h3 id="avg-pain-reduction">0</h3>
-                                        <p>Avg Pain Reduction</p>
+                                <div class="card bg-danger text-white h-100">
+                                    <div class="card-body">
+                                        <h3 id="avg-pain-reduction" class="mb-0">0</h3>
+                                        <p class="mb-0">Avg Pain Reduction</p>
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-footer">
                                         <i class="fas fa-chart-line"></i>
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Export HEP Data</h4>
-                <button type="button" class="close" data-dismiss="modal">
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>

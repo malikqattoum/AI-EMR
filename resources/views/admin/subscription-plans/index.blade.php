@@ -5,18 +5,18 @@
 @push('styles')
 <style>
     .admin-page {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        background: linear-gradient(135deg, #060d1f 0%, #0f1c3a 100%);
         min-height: 100vh;
         padding: 2rem 0;
     }
 
     .admin-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-        color: white;
+        background: linear-gradient(135deg, #060d1f 0%, #0f1c3a 100%);
+        color: #e8edf5;
         padding: 2rem;
-        border-radius: 20px;
+        border-radius: 16px;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .plan-card {
@@ -34,7 +34,7 @@
     }
 
     .plan-card.featured {
-        border: 2px solid #28a745;
+        border: 2px solid #00d4aa;
         position: relative;
     }
 
@@ -42,7 +42,7 @@
         position: absolute;
         top: -10px;
         right: 20px;
-        background: #28a745;
+        background: #00d4aa;
         color: white;
         padding: 5px 15px;
         border-radius: 15px;
@@ -119,7 +119,7 @@
         </div>
 
         <!-- Deprecation Warning -->
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 15px; padding: 1.5rem;">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="border-radius: 16px;">
             <div class="d-flex align-items-center">
                 <i class="fas fa-exclamation-triangle text-warning me-3" style="font-size: 1.5rem;"></i>
                 <div>

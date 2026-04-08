@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content response-modal-content">
             <div class="modal-header response-modal-header">
-                <h5 class="modal-title" id="responseModalLabel" style="color: #fff">
+                <h5 class="modal-title text-white" id="responseModalLabel">
                     <i class="fas fa-stethoscope me-2"></i>Diagnosis
                 </h5>
                 <div>
@@ -57,7 +57,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content summary-modal-content">
             <div class="modal-header response-modal-header">
-                <h5 class="modal-title" id="summaryModalLabel" style="color: #fff">
+                <h5 class="modal-title text-white" id="summaryModalLabel">
                     <i class="fas fa-user-doctor me-2"></i><span id="patientSummaryTitle">Patient Summary</span>
                 </h5>
                 <div>
@@ -128,7 +128,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content response-modal-content">
             <div class="modal-header response-modal-header">
-                <h5 class="modal-title" id="appointmentModalLabel" style="color: #fff">
+                <h5 class="modal-title text-white" id="appointmentModalLabel">
                     <i class="fas fa-calendar-check me-2"></i>Appointment Details
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>

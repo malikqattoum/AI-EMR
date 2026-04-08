@@ -59,7 +59,7 @@
                                         <option value="">All Statuses</option>
                                         <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
                                         <option value="acknowledged" {{ request('status') === 'acknowledged' ? 'selected' : '' }}>Acknowledged</option>
-                                        <option value="resolved" {{ request('resolved') === 'resolved' ? 'selected' : '' }}>Resolved</option>
+                                        <option value="resolved" {{ request('status') === 'resolved' ? 'selected' : '' }}>Resolved</option>
                                         <option value="escalated" {{ request('status') === 'escalated' ? 'selected' : '' }}>Escalated</option>
                                     </select>
                                 </div>

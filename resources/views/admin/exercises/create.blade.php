@@ -13,10 +13,10 @@
     }
 
     .form-section h4 {
-        color: #2c3e50;
+        color: #060d1f;
         margin-bottom: 1.5rem;
         padding-bottom: 0.5rem;
-        border-bottom: 2px solid #ecf0f1;
+        border-bottom: 2px solid #00d4aa;
     }
 
     .tag-input {
@@ -31,8 +31,8 @@
     }
 
     .tag {
-        background: #e3f2fd;
-        color: #1976d2;
+        background: rgba(0, 212, 170, 0.1);
+        color: #00d4aa;
         padding: 0.25rem 0.5rem;
         border-radius: 0.25rem;
         font-size: 0.875rem;

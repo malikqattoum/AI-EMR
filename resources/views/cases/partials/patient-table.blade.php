@@ -61,7 +61,7 @@
                     </td>
                     <td>{{ $patient->age ?? 'N/A' }}</td>
                     <td>
-                        <span class="badge" style="background-color: {{ $patient->gender == 'male' ? '#3498db' : '#e74c3c' }}; color: white; border-radius: 15px; padding: 0.4rem 0.8rem;">
+                        <span class="badge {{ $patient->gender == 'male' ? 'gender-badge-male' : 'gender-badge-female' }}">
                             {{ ucfirst($patient->gender ?? 'N/A') }}
                         </span>
                     </td>

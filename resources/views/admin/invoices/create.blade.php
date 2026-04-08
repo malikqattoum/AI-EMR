@@ -5,16 +5,16 @@
 @push('styles')
 <style>
     .dashboard-container {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        background: linear-gradient(135deg, #060d1f 0%, #0f1c3a 100%);
         min-height: 100vh;
         padding: 2rem 0;
     }
-    
+
     .invoice-card {
         background: white;
-        border-radius: 20px;
+        border-radius: 16px;
         padding: 2rem;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         border: none;
         margin-bottom: 2rem;
     }
