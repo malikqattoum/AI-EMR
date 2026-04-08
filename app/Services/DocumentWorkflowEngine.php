@@ -404,9 +404,34 @@ class DocumentWorkflowEngine
      */
     protected function getDefaultReviewer(Document $document): ?int
     {
-        // This would integrate with user roles/permissions system
-        // For now, return null - would be set by calling code
-        return null;
+        // Get default reviewer based on document hierarchy and type
+        // Priority: Document's doctor -> Hospital admin -> System admin
+        
+        // Try document's doctor first
+        if ($document->doctor_id) {
+            $doctor = User::find($document->doctor_id);
+            if ($doctor && $doctor->is_active) {
+                return $doctor->id;
+            }
+        }
+        
+        // Try hospital admin if document has hospital association
+        if ($document->hospital_id) {
+            $hospitalAdmin = User::where('hospital_id', $document->hospital_id)
+                ->where('role', 'hospital_admin')
+                ->where('is_active', true)
+                ->first();
+            if ($hospitalAdmin) {
+                return $hospitalAdmin->id;
+            }
+        }
+        
+        // Fall back to system admin
+        $admin = User::where('role', 'admin')
+            ->where('is_active', true)
+            ->first();
+        
+        return $admin?->id;
     }
 
     /**
@@ -414,8 +439,63 @@ class DocumentWorkflowEngine
      */
     protected function getEscalationAssignee(Document $document): ?int
     {
-        // This would determine who to escalate to based on document type and escalation rules
-        // For now, return null - would be set by calling code
-        return null;
+        // Determine escalation assignee based on document type and escalation level
+        // For critical documents or high-priority escalations, assign to senior staff
+        
+        $metadata = $document->metadata ?? [];
+        $escalationLevel = $metadata['escalation_level'] ?? 'standard';
+        
+        switch ($escalationLevel) {
+            case 'critical':
+                // Assign to system admin for critical escalations
+                $admin = User::where('role', 'admin')
+                    ->where('is_active', true)
+                    ->first();
+                return $admin?->id;
+                
+            case 'high':
+                // Assign to hospital admin for high-level escalations
+                if ($document->hospital_id) {
+                    $hospitalAdmin = User::where('hospital_id', $document->hospital_id)
+                        ->where('role', 'hospital_admin')
+                        ->where('is_active', true)
+                        ->first();
+                    if ($hospitalAdmin) {
+                        return $hospitalAdmin->id;
+                    }
+                }
+                // Fall back to admin
+                $admin = User::where('role', 'admin')
+                    ->where('is_active', true)
+                    ->first();
+                return $admin?->id;
+                
+            case 'standard':
+            default:
+                // For standard escalations, assign to document owner or their supervisor
+                if ($document->doctor_id) {
+                    $doctor = User::find($document->doctor_id);
+                    if ($doctor && $doctor->is_active) {
+                        return $doctor->id;
+                    }
+                }
+                
+                // If document owner not available, assign to hospital admin
+                if ($document->hospital_id) {
+                    $hospitalAdmin = User::where('hospital_id', $document->hospital_id)
+                        ->where('role', 'hospital_admin')
+                        ->where('is_active', true)
+                        ->first();
+                    if ($hospitalAdmin) {
+                        return $hospitalAdmin->id;
+                    }
+                }
+                
+                // Final fallback to system admin
+                $admin = User::where('role', 'admin')
+                    ->where('is_active', true)
+                    ->first();
+                return $admin?->id;
+        }
     }
 }

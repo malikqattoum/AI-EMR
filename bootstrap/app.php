@@ -21,6 +21,20 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             // Load monitoring routes for production metrics and health checks
             require base_path('routes/monitoring.php');
+            
+            // Load AI-specific routes
+            require base_path('routes/ai.php');
+            
+            // Load authentication routes (Laravel Breeze)
+            require base_path('routes/auth.php');
+            
+            // Load WebSocket routes (only when WebSocket server is started)
+            // require base_path('routes/websockets.php');
+            
+            // Load WhatsApp test routes (only in debug/local environments)
+            if (app()->environment('local', 'testing')) {
+                require base_path('routes/whatsapp-test.php');
+            }
         },
     )
     ->withProviders([

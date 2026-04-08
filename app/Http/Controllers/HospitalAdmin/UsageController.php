@@ -4,6 +4,8 @@ namespace App\Http\Controllers\HospitalAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Diagnosis;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +19,7 @@ class UsageController extends Controller
     {
         $user = Auth::user();
         $hospital = $user->hospital;
-        
+
         if (!$hospital) {
             return redirect()->route('hospital-admin.dashboard')
                 ->with('error', 'No hospital associated with your account.');
@@ -28,20 +30,34 @@ class UsageController extends Controller
             ->where('role', 'doctor')
             ->get();
 
+        $doctorIds = $doctors->pluck('id')->toArray();
+
         // Get usage statistics
         $usageStats = [
             'total_doctors' => $doctors->count(),
             'active_doctors' => $doctors->where('is_active', true)->count(),
-            'total_diagnoses' => 0, // This would need to be calculated based on your diagnosis model
-            'total_appointments' => 0, // This would need to be calculated based on your appointment model
+            'total_diagnoses' => Diagnosis::whereIn('doctor_id', $doctorIds)->count(),
+            'total_appointments' => Appointment::whereIn('doctor_id', $doctorIds)->count(),
         ];
 
-        // Get monthly usage data (placeholder - you'd implement based on your actual data)
-        $monthlyUsage = collect(range(1, 12))->map(function ($month) {
+        // Get monthly usage data for the current year
+        $currentYear = now()->year;
+        $monthlyUsage = collect(range(1, 12))->map(function ($month) use ($doctorIds, $currentYear) {
+            $startDate = "$currentYear-$month-01";
+            $endDate = date('Y-m-t', strtotime($startDate));
+            
+            $diagnosesCount = Diagnosis::whereIn('doctor_id', $doctorIds)
+                ->whereBetween('created_at', [$startDate, $endDate . ' 23:59:59'])
+                ->count();
+            
+            $appointmentsCount = Appointment::whereIn('doctor_id', $doctorIds)
+                ->whereBetween('appointment_date', [$startDate, $endDate . ' 23:59:59'])
+                ->count();
+            
             return [
                 'month' => date('M', mktime(0, 0, 0, $month, 1)),
-                'diagnoses' => rand(10, 100), // Replace with actual data
-                'appointments' => rand(20, 200), // Replace with actual data
+                'diagnoses' => $diagnosesCount,
+                'appointments' => $appointmentsCount,
             ];
         });
 
@@ -55,7 +71,7 @@ class UsageController extends Controller
     {
         $user = Auth::user();
         $hospital = $user->hospital;
-        
+
         if (!$hospital) {
             return redirect()->route('hospital-admin.dashboard')
                 ->with('error', 'No hospital associated with your account.');
@@ -75,7 +91,7 @@ class UsageController extends Controller
 
         $callback = function() use ($doctors, $hospital) {
             $file = fopen('php://output', 'w');
-            
+
             // CSV headers
             fputcsv($file, [
                 'Hospital',
@@ -89,14 +105,17 @@ class UsageController extends Controller
 
             // CSV data
             foreach ($doctors as $doctor) {
+                $diagnosesCount = Diagnosis::where('doctor_id', $doctor->id)->count();
+                $appointmentsCount = Appointment::where('doctor_id', $doctor->id)->count();
+                
                 fputcsv($file, [
                     $hospital->name,
                     $doctor->name,
                     $doctor->email,
                     $doctor->is_active ? 'Active' : 'Inactive',
                     $doctor->created_at->format('Y-m-d'),
-                    0, // Replace with actual diagnosis count
-                    0, // Replace with actual appointment count
+                    $diagnosesCount,
+                    $appointmentsCount,
                 ]);
             }
 

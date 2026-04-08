@@ -20,7 +20,7 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\ProcessWaitlistOnAppointmentCompletion::class,
         ],
         \App\Events\AppointmentBookedEvent::class => [
-            // Add any listeners for appointment booking if needed
+            \App\Listeners\SendAppointmentConfirmationNotification::class,
         ],
         \App\Events\AppointmentStatusChangedEvent::class => [
             \App\Listeners\SendAppointmentStatusChangeNotification::class,
@@ -33,6 +33,18 @@ class EventServiceProvider extends ServiceProvider
         ],
         \App\Events\DocumentSubmitted::class => [
             \App\Listeners\MonitorDocumentSubmission::class,
+        ],
+        \App\Events\ClinicalAlertTriggered::class => [
+            \App\Listeners\NotifyClinicalAlertsListener::class,
+        ],
+        \App\Events\KPIAlertTriggered::class => [
+            \App\Listeners\NotifyKPIAlertsListener::class,
+        ],
+        \App\Events\NewNotification::class => [
+            \App\Listeners\BroadcastNewNotification::class,
+        ],
+        \App\Events\NotificationRead::class => [
+            \App\Listeners\TrackNotificationRead::class,
         ],
     ];
 

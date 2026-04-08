@@ -227,7 +227,7 @@
 @endsection
 
 @push('styles')
-    @vite(['public/css/realtime-appointments.css'])
+    <link rel="stylesheet" href="{{ asset('css/realtime-appointments.css') }}">
     <style>
         .appointment-status-container {
             padding: 2rem 0;
@@ -409,7 +409,7 @@
         }
 
         .appointment-details-card {
-            background: #f8f9fa;
+            background: rgba(10, 22, 40, 0.6);
             border-radius: 12px;
             padding: 1.5rem;
             margin: 2rem 0;
@@ -417,7 +417,7 @@
         }
 
         .appointment-details-card h6 {
-            color: #2c3e50;
+            color: rgba(232, 237, 231, 0.9);
             margin-bottom: 1rem;
             font-weight: 600;
         }

@@ -482,12 +482,32 @@ class HEPAnalyticsService
     }
 
     /**
-     * Get clinician patient satisfaction (placeholder - would integrate with actual feedback system)
+     * Get clinician patient satisfaction (based on patient feedback/reviews)
      */
     private function getClinicianPatientSatisfaction(int $doctorId, string $startDate = null, string $endDate = null): float
     {
-        // Placeholder - in real implementation, this would pull from patient feedback/reviews
-        return rand(75, 95); // Random score for now
+        // Try to get satisfaction score from actual patient reviews/feedback
+        $query = \App\Models\Review::where('doctor_id', $doctorId)
+            ->whereNotNull('rating');
+        
+        if ($startDate) {
+            $query->where('created_at', '>=', $startDate);
+        }
+        
+        if ($endDate) {
+            $query->where('created_at', '<=', $endDate);
+        }
+        
+        $reviews = $query->get();
+        
+        if ($reviews->isEmpty()) {
+            // If no reviews exist, return a neutral score
+            return 0;
+        }
+        
+        // Calculate average rating as satisfaction percentage (assuming 5-star rating)
+        $averageRating = $reviews->avg('rating');
+        return round(($averageRating / 5) * 100, 2);
     }
 
     /**

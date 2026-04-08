@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import ClinicalMonitoringService from './ClinicalMonitoringService';
 import TreatmentOptimization from './TreatmentOptimization';
 import { Activity, Zap, Brain, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';

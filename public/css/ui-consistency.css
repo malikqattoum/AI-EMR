@@ -1,0 +1,284 @@
+/* UI Consistency Styles for MedCura AI EMR */
+/* This file ensures consistent styling across all layouts and components */
+
+/* Global Variables */
+:root {
+    --primary-color: #DE6262;
+    --primary-hover: #d14545;
+    --accent-color: #3a9a3a;
+    --accent-hover: #2d7d2d;
+    --navy: #0a1428;
+    --teal: #2dd4bf;
+    --offwhite: #e8ede7;
+    --muted: #9ca3af;
+    --card-bg: #1a2744;
+    --card-border: #2a3f6e;
+}
+
+/* Dashboard Container Text Visibility Fix */
+.dashboard-container * {
+    color: #e8ede7 !important;
+}
+
+.dashboard-container {
+    background-color: #0a1428 !important;
+}
+
+/* Card Consistency */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: rgba(42, 63, 110, 0.5);
+    border-bottom: 1px solid var(--card-border);
+    padding: 1rem 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Button Consistency */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.btn:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-success {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Form Input Consistency */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--offwhite);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(222, 98, 98, 0.25);
+}
+
+/* Table Consistency */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--card-bg);
+}
+
+.table thead th {
+    background-color: rgba(42, 63, 110, 0.5);
+    color: var(--offwhite);
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid var(--card-border);
+}
+
+.table tbody td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--offwhite);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(42, 63, 110, 0.3);
+}
+
+/* Badge Consistency */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.badge-danger {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.badge-warning {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.badge-info {
+    background-color: var(--teal);
+    color: var(--navy);
+}
+
+/* Modal Consistency */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 0.5rem;
+}
+
+.modal-header {
+    background-color: rgba(42, 63, 110, 0.5);
+    border-bottom: 1px solid var(--card-border);
+    padding: 1rem 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Alert Consistency */
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background-color: rgba(58, 154, 58, 0.1);
+    border-left-color: var(--accent-color);
+    color: var(--offwhite);
+}
+
+.alert-danger {
+    background-color: rgba(222, 98, 98, 0.1);
+    border-left-color: var(--primary-color);
+    color: var(--offwhite);
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border-left-color: #f59e0b;
+    color: var(--offwhite);
+}
+
+.alert-info {
+    background-color: rgba(45, 212, 191, 0.1);
+    border-left-color: var(--teal);
+    color: var(--offwhite);
+}
+
+/* Navigation Consistency */
+.nav-link {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.nav-link:hover {
+    color: var(--offwhite);
+    background-color: rgba(42, 63, 110, 0.5);
+}
+
+.nav-link.active {
+    color: var(--offwhite);
+    background-color: var(--primary-color);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid rgba(222, 98, 98, 0.2);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table {
+        font-size: 0.875rem;
+    }
+    
+    .table thead th,
+    .table tbody td {
+        padding: 0.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .dashboard-container {
+        background-color: white !important;
+    }
+    
+    .dashboard-container * {
+        color: black !important;
+    }
+    
+    .card {
+        background-color: white !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+}

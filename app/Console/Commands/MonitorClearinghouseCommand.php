@@ -8,6 +8,7 @@ use App\Services\ClaimSubmissionService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class MonitorClearinghouseCommand extends Command
 {
@@ -415,29 +416,60 @@ class MonitorClearinghouseCommand extends Command
 
     protected function getDatabaseConnections(): int
     {
-        // This would need to be implemented based on your database setup
-        // For MySQL, you could check SHOW PROCESSLIST
-        return 0; // Placeholder
+        try {
+            // For MySQL, check SHOW PROCESSLIST
+            $result = DB::select('SHOW PROCESSLIST');
+            return count($result);
+        } catch (\Exception $e) {
+            $this->warn("Failed to check database connections: {$e->getMessage()}");
+            return 0;
+        }
     }
 
     protected function checkForSlowQueries(): array
     {
-        // Check for slow queries in the last monitoring period
-        // This would need to be implemented based on your logging setup
-        return []; // Placeholder
+        try {
+            // Check MySQL slow query log if available
+            // This is a simplified check - in production, you might use tools like New Relic, etc.
+            $slowQueries = DB::table('information_schema.processlist')
+                ->where('Time', '>', 5) // Queries running for more than 5 seconds
+                ->get(['Id', 'User', 'Host', 'db', 'Command', 'Time', 'State', 'Info'])
+                ->toArray();
+            
+            return array_map(function($query) {
+                return [
+                    'time' => $query->Time,
+                    'query' => $query->Info,
+                    'user' => $query->User,
+                    'database' => $query->db,
+                ];
+            }, $slowQueries);
+        } catch (\Exception $e) {
+            // If information_schema is not accessible, return empty array
+            return [];
+        }
     }
 
     protected function getQueueSize(): int
     {
-        // Get the number of jobs in the queue
-        // This depends on your queue driver (database, redis, etc.)
-        return 0; // Placeholder
+        try {
+            // Check database queue for pending jobs
+            return DB::table('jobs')->count();
+        } catch (\Exception $e) {
+            $this->warn("Failed to check queue size: {$e->getMessage()}");
+            return 0;
+        }
     }
 
     protected function getFailedJobsCount(): int
     {
-        // Get the number of failed jobs
-        return 0; // Placeholder
+        try {
+            // Check failed jobs table
+            return DB::table('failed_jobs')->count();
+        } catch (\Exception $e) {
+            $this->warn("Failed to check failed jobs count: {$e->getMessage()}");
+            return 0;
+        }
     }
 
     protected function areQueueWorkersRunning(): bool

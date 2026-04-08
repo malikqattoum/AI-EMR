@@ -156,7 +156,7 @@
 </div>
 
 @push('styles')
-    @vite(['public/css/realtime-appointments.css'])
+    <link rel="stylesheet" href="{{ asset('css/realtime-appointments.css') }}">
 @endpush
 
 @push('scripts')

@@ -266,7 +266,7 @@
 </div>
 
 @push('styles')
-    @vite(['public/css/realtime-appointments.css'])
+    <link rel="stylesheet" href="{{ asset('css/realtime-appointments.css') }}">
     <style>
         .realtime-stats-card {
             position: relative;
@@ -339,9 +339,9 @@
         }
 
         #realtime-notifications-panel {
-            border: 1px solid #e9ecef;
+            border: 1px solid rgba(0, 212, 170, 0.2);
             border-radius: 8px;
-            background: #f8f9fa;
+            background: rgba(10, 22, 40, 0.6);
         }
 
         .notification-item {

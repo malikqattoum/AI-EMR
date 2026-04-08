@@ -398,13 +398,17 @@ class AutomatedReviewService
     }
 
     /**
-     * Get user by role (placeholder - integrate with actual role system)
+     * Get user by role (integrates with actual role system)
      */
     protected function getUserByRole(string $role): ?int
     {
-        // This should integrate with your role/permission system
-        // For now, return null
-        return null;
+        // Get the first active user with the specified role
+        $user = User::where('role', $role)
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return $user?->id;
     }
 
     /**
@@ -412,9 +416,48 @@ class AutomatedReviewService
      */
     protected function applyAssignmentRule(WorkflowTask $task, string $rule): ?int
     {
-        // Implement rule-based assignment logic
-        // For now, return null
-        return null;
+        // Implement rule-based assignment logic based on task type and document
+        $document = $task->document;
+        
+        switch ($rule) {
+            case 'document_owner':
+                // Assign to the document owner/creator
+                return $document?->doctor_id ?? $document?->created_by;
+                
+            case 'department_head':
+                // Assign to department head if available
+                if ($document && $document->department_id) {
+                    $departmentHead = User::whereHas('doctor', function($q) use ($document) {
+                        $q->where('department_id', $document->department_id);
+                    })
+                    ->where('role', 'doctor')
+                    ->where('is_active', true)
+                    ->first();
+                    return $departmentHead?->id;
+                }
+                return null;
+                
+            case 'senior_reviewer':
+                // Assign to a senior reviewer (admin or hospital_admin role)
+                $seniorReviewer = User::whereIn('role', ['admin', 'hospital_admin'])
+                    ->where('is_active', true)
+                    ->orderBy('created_at')
+                    ->first();
+                return $seniorReviewer?->id;
+                
+            case 'round_robin':
+                // Assign to the next available reviewer in rotation
+                $availableReviewers = User::whereIn('role', ['admin', 'hospital_admin', 'doctor'])
+                    ->where('is_active', true)
+                    ->orderByRaw('RAND()')
+                    ->limit(5)
+                    ->get();
+                return $availableReviewers->isNotEmpty() ? $availableReviewers->first()->id : null;
+                
+            default:
+                // Fall back to default reviewer
+                return $this->getDefaultReviewer($document);
+        }
     }
 
     /**
@@ -422,8 +465,34 @@ class AutomatedReviewService
      */
     protected function getDefaultReviewer(Document $document): ?int
     {
-        // This should integrate with workflow engine's default reviewer logic
-        return null;
+        // Get default reviewer based on document type and hierarchy
+        // Priority: Document's doctor -> Hospital admin -> System admin
+        
+        // Try document's doctor first
+        if ($document->doctor_id) {
+            $doctor = User::find($document->doctor_id);
+            if ($doctor && $doctor->is_active) {
+                return $doctor->id;
+            }
+        }
+        
+        // Try hospital admin if document has hospital association
+        if ($document->hospital_id) {
+            $hospitalAdmin = User::where('hospital_id', $document->hospital_id)
+                ->where('role', 'hospital_admin')
+                ->where('is_active', true)
+                ->first();
+            if ($hospitalAdmin) {
+                return $hospitalAdmin->id;
+            }
+        }
+        
+        // Fall back to system admin
+        $admin = User::where('role', 'admin')
+            ->where('is_active', true)
+            ->first();
+        
+        return $admin?->id;
     }
 
     /**

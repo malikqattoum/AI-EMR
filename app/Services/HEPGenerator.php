@@ -129,17 +129,14 @@ class HEPGenerator
             return $appointment->id;
         }
 
-        // If still no appointment found, log warning and return null
-        Log::warning('No appointment found for HEP program creation', [
+        // No appointment found - this is OK, appointment_id is nullable
+        Log::info('No appointment found for HEP program creation, proceeding without appointment reference', [
             'diagnosis_id' => $diagnosis->id,
             'patient_id' => $patient->id,
             'doctor_id' => $doctor->id,
             'diagnosis_date' => $diagnosis->created_at,
         ]);
 
-        // Since hep_programs table requires appointment_id to be NOT NULL,
-        // we need to create a placeholder appointment or handle this differently
-        // For now, return null and handle in the calling method
         return null;
     }
 
@@ -152,39 +149,17 @@ class HEPGenerator
         User $patient,
         User $doctor
     ): HepProgram {
-        // Find appropriate appointment_id
+        // Find appropriate appointment_id (now optional)
         $appointmentId = $this->findAppointmentForDiagnosis($diagnosis, $patient, $doctor);
 
-        // If no appointment found, we need to create a placeholder appointment
-        if (!$appointmentId) {
-            Log::info('Creating placeholder appointment for HEP program', [
-                'diagnosis_id' => $diagnosis->id,
-                'patient_id' => $patient->id,
-                'doctor_id' => $doctor->id,
-            ]);
-
-            // Create a placeholder appointment
-            $appointment = Appointment::create([
-                'patient_id' => $patient->id,
-                'doctor_id' => $doctor->doctor->id, // Use doctor profile ID, not user ID
-                'appointment_date' => $diagnosis->created_at,
-                'appointment_end' => $diagnosis->created_at->copy()->addMinutes(30), // Add 30 minutes for appointment duration
-                'status' => 'completed', // Mark as completed since it's a placeholder
-                'appointment_type' => 'in_person',
-                'notes' => 'Placeholder appointment created for AI-generated HEP program',
-            ]);
-
-            $appointmentId = $appointment->id;
-        }
-
-        // Create the program
+        // Create the program (appointment_id is now nullable)
         $program = HepProgram::create([
             'title' => $aiRecommendations['program_title'] ?? 'AI-Generated Home Exercise Program',
             'description' => $this->generateProgramDescription($aiRecommendations),
             'doctor_id' => $doctor->id,
             'patient_id' => $patient->id,
             'diagnosis_id' => $diagnosis->id,
-            'appointment_id' => $appointmentId, // This should now always have a value
+            'appointment_id' => $appointmentId, // Can be null if no appointment found
             'duration_weeks' => $aiRecommendations['duration_weeks'] ?? 6,
             'frequency_per_week' => $aiRecommendations['frequency_per_week'] ?? 4,
             'goals' => $aiRecommendations['goals'] ?? [],

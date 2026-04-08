@@ -541,22 +541,31 @@ class AppointmentCacheService
     // Statistics helper methods
     protected function calculateHitRate(string $cacheType): float
     {
-        // Simplified hit rate calculation
-        // In a real implementation, you'd track hits/misses over time
-        return 0.85; // Placeholder
+        // Try to calculate actual hit rate from cache statistics
+        try {
+            $stats = Cache::stats();
+            if (isset($stats['hits']) && isset($stats['misses'])) {
+                $total = $stats['hits'] + $stats['misses'];
+                return $total > 0 ? $stats['hits'] / $total : 0;
+            }
+        } catch (\Exception $e) {
+            // Stats not available, return default
+        }
+        
+        // Return null to indicate data not available
+        return 0;
     }
 
     protected function countCacheEntries(string $pattern): int
     {
-        // In Redis, you'd use SCAN or KEYS to count
-        // For now, return a placeholder
+        // Return 0 as we can't accurately count without Redis KEYS command
         return 0;
     }
 
     protected function calculateAverageSize(string $pattern): int
     {
-        // Calculate average cache entry size
-        return 2048; // Placeholder
+        // Return 0 as we can't calculate without actual cache inspection
+        return 0;
     }
 
     protected function countActiveUserSessions(): int

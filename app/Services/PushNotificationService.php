@@ -270,14 +270,34 @@ class PushNotificationService
      */
     protected function sendToAPNS(string $token, array $payload): bool
     {
-        // APNS implementation would go here
-        // This requires specific APNS certificates and configuration
-        Log::info('APNS push notification (not implemented)', [
-            'token' => substr($token, 0, 10) . '...',
-            'title' => $payload['title'],
-        ]);
+        // Check if APNS is configured
+        $apnsKey = config('services.apns.key');
+        if (!$apnsKey) {
+            Log::warning('APNS not configured - skipping push notification', [
+                'token' => substr($token, 0, 10) . '...',
+                'title' => $payload['title'],
+            ]);
+            return false;
+        }
 
-        return true; // Placeholder
+        try {
+            // APNS implementation using a library like edamov/pushok
+            // This requires APNS certificates and configuration
+            Log::info('Sending APNS push notification', [
+                'token' => substr($token, 0, 10) . '...',
+                'title' => $payload['title'],
+            ]);
+
+            // TODO: Implement actual APNS integration
+            // For now, return false to indicate not fully implemented
+            return false;
+        } catch (\Exception $e) {
+            Log::error('APNS push notification failed', [
+                'token' => substr($token, 0, 10) . '...',
+                'error' => $e->getMessage(),
+            ]);
+            return false;
+        }
     }
 
     /**
@@ -285,13 +305,33 @@ class PushNotificationService
      */
     protected function sendToWebPush(string $subscription, array $payload): bool
     {
-        // Web Push implementation would go here
-        Log::info('Web Push notification (not implemented)', [
-            'subscription' => substr($subscription, 0, 50) . '...',
-            'title' => $payload['title'],
-        ]);
+        // Check if Web Push VAPID keys are configured
+        $vapidPublicKey = config('services.webpush.vapid_public_key');
+        if (!$vapidPublicKey) {
+            Log::warning('Web Push not configured - skipping push notification', [
+                'subscription' => substr($subscription, 0, 50) . '...',
+                'title' => $payload['title'],
+            ]);
+            return false;
+        }
 
-        return true; // Placeholder
+        try {
+            // Web Push implementation using minishlink/web-push or similar library
+            Log::info('Sending Web Push notification', [
+                'subscription' => substr($subscription, 0, 50) . '...',
+                'title' => $payload['title'],
+            ]);
+
+            // TODO: Implement actual Web Push integration
+            // For now, return false to indicate not fully implemented
+            return false;
+        } catch (\Exception $e) {
+            Log::error('Web Push notification failed', [
+                'subscription' => substr($subscription, 0, 50) . '...',
+                'error' => $e->getMessage(),
+            ]);
+            return false;
+        }
     }
 
     /**

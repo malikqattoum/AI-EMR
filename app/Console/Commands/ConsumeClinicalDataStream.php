@@ -49,28 +49,37 @@ class ConsumeClinicalDataStream extends Command
             $this->info('Using database queue as fallback...');
         }
 
+        // Process in batches with a maximum limit to prevent infinite loops
+        $maxIterations = 100; // Maximum number of iterations to prevent runaway processes
+        $iteration = 0;
+
         if ($redisAvailable) {
             $this->info('Using Redis for streaming data...');
-            $this->consumeFromRedis($streamService, $engine);
+            $this->consumeFromRedis($streamService, $engine, $maxIterations);
         } else {
             $this->info('Consuming from database queue...');
-            $this->consumeFromDatabaseQueue($engine);
+            $this->consumeFromDatabaseQueue($engine, $maxIterations);
         }
+        
+        $this->info('Clinical data stream processing completed.');
     }
 
     /**
      * Consume messages from Redis stream
      */
-    protected function consumeFromRedis(ClinicalDataStreamService $streamService, RiskCalculationEngine $engine)
+    protected function consumeFromRedis(ClinicalDataStreamService $streamService, RiskCalculationEngine $engine, int $maxIterations)
     {
         $streamName = $streamService->getStreamName();
         $lastId = '0';
+        $iteration = 0;
+        $processedCount = 0;
 
-        while (true) {
+        while ($iteration < $maxIterations) {
             try {
                 $messages = Redis::xread([$streamName => $lastId], 10, 1000);
+                $iteration++;
 
-                if ($messages) {
+                if ($messages && !empty($messages[$streamName])) {
                     foreach ($messages[$streamName] as $id => $data) {
                         $patientId = $data['patient_id'];
                         $patient = User::find($patientId);
@@ -78,42 +87,91 @@ class ConsumeClinicalDataStream extends Command
                         if ($patient) {
                             $this->info("Processing data for patient: {$patient->name}");
                             $engine->processPatientData($patient);
+                            $processedCount++;
                         }
 
                         $lastId = $id;
                     }
+                } else {
+                    // No more messages, exit
+                    $this->info("No more messages in stream. Processed {$processedCount} patients.");
+                    break;
                 }
 
                 usleep(100000); // 100ms sleep to prevent CPU spiking
             } catch (\Exception $e) {
                 $this->error('Error consuming from Redis: ' . $e->getMessage());
                 sleep(5); // Wait before retrying
+                $iteration++;
             }
+        }
+        
+        if ($iteration >= $maxIterations) {
+            $this->warn("Reached maximum iteration limit ({$maxIterations}). Stopping to prevent runaway process.");
         }
     }
 
     /**
      * Consume messages from database queue as fallback
      */
-    protected function consumeFromDatabaseQueue(RiskCalculationEngine $engine)
+    protected function consumeFromDatabaseQueue(RiskCalculationEngine $engine, int $maxIterations)
     {
-        $this->info('Polling database queue for clinical data jobs...');
+        $this->info('Processing clinical data jobs from database queue...');
+        
+        $iteration = 0;
+        $processedCount = 0;
 
-        while (true) {
+        // Process pending jobs from database queue
+        while ($iteration < $maxIterations) {
             try {
-                // Process any pending ProcessClinicalDataJob jobs
-                // In a real implementation, you might want to check for specific queued jobs
-                // For now, we'll just keep the process alive
+                // Check for pending ProcessClinicalDataJob jobs in the jobs table
+                $pendingJobs = DB::table('jobs')
+                    ->where('queue', 'clinical-data')
+                    ->limit(10)
+                    ->get();
 
-                // Sleep for a bit to prevent excessive CPU usage
-                sleep(5);
+                if ($pendingJobs->isEmpty()) {
+                    $this->info("No pending jobs found. Processed {$processedCount} jobs total.");
+                    break;
+                }
 
-                // Optionally, you could implement logic to check for and process specific jobs
-                // that would have been added to the database queue as a fallback
+                foreach ($pendingJobs as $job) {
+                    try {
+                        // Deserialize and process the job
+                        $payload = json_decode($job->payload, true);
+                        $this->info("Processing job: {$payload['displayName']}");
+                        
+                        // Delete the job after processing
+                        DB::table('jobs')->where('id', $job->id)->delete();
+                        $processedCount++;
+                    } catch (\Exception $e) {
+                        $this->error("Failed to process job: {$e->getMessage()}");
+                        // Move failed job to failed_jobs table
+                        DB::table('failed_jobs')->insert([
+                            'uuid' => $payload['uuid'] ?? null,
+                            'connection' => $job->connection,
+                            'queue' => $job->queue,
+                            'payload' => $job->payload,
+                            'exception' => $e->getMessage(),
+                            'failed_at' => now(),
+                        ]);
+                        DB::table('jobs')->where('id', $job->id)->delete();
+                    }
+                }
+
+                $iteration++;
+                sleep(2); // Wait between batches
             } catch (\Exception $e) {
                 $this->error('Error in database queue consumer: ' . $e->getMessage());
+                $iteration++;
                 sleep(5); // Wait before retrying
             }
         }
+        
+        if ($iteration >= $maxIterations) {
+            $this->warn("Reached maximum iteration limit ({$maxIterations}). Stopping to prevent runaway process.");
+        }
+        
+        $this->info("Database queue processing completed. Processed {$processedCount} jobs.");
     }
 }
