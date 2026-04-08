@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             SpecialtySeeder::class,
             PatientCasesTestSeeder::class,
             AnalyticsSeeder::class,
+            ChatbotSeeder::class,
         ]);
     }
 }

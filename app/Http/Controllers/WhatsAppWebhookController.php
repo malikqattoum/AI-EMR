@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Chatbot\ChatbotService;
+use App\Services\Chatbot\Platforms\WhatsAppPlatform;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -9,11 +11,27 @@ use Illuminate\Support\Facades\DB;
 
 class WhatsAppWebhookController extends Controller
 {
+    protected WhatsAppPlatform $platform;
+    protected ChatbotService $chatbotService;
+
+    public function __construct()
+    {
+        $this->platform = new WhatsAppPlatform();
+        $this->chatbotService = app(ChatbotService::class);
+    }
+
     /**
      * Handle WhatsApp webhook verification (required by Meta/Twilio)
      */
     public function verify(Request $request)
     {
+        // Try Meta/WhatsApp Business API verification first
+        $challenge = $this->platform->verifyWebhook($request->query());
+        if ($challenge) {
+            return response($challenge, 200)->header('Content-Type', 'text/plain');
+        }
+
+        // Fallback to legacy verification
         $mode = $request->query('hub_mode');
         $token = $request->query('hub_verify_token');
         $challenge = $request->query('hub_challenge');
@@ -124,13 +142,20 @@ class WhatsAppWebhookController extends Controller
                 // Handle incoming messages
                 if (isset($value['messages'])) {
                     foreach ($value['messages'] as $message) {
-                        $this->handleIncomingMessage([
+                        $messageData = [
                             'message_id' => $message['id'] ?? null,
                             'from' => $message['from'] ?? null,
                             'to' => $value['metadata']['phone_number_id'] ?? null,
                             'body' => $message['text']['body'] ?? $message['content'] ?? null,
                             'provider' => 'meta',
-                        ]);
+                        ];
+
+                        // Handle button replies (interactive messages)
+                        if (isset($message['interactive']['button_reply'])) {
+                            $messageData['quick_reply_payload'] = $message['interactive']['button_reply']['id'] ?? null;
+                        }
+
+                        $this->handleIncomingMessage($messageData);
                     }
                 }
             }
@@ -184,11 +209,33 @@ class WhatsAppWebhookController extends Controller
     {
         Log::info('WhatsApp incoming message', $data);
 
-        // In production, you would:
-        // 1. Save the message to a messages table
-        // 2. Potentially trigger automated responses
-        // 3. Notify the appropriate user/doctor
+        // Extract message details
+        $from = $data['from'] ?? null;
+        $body = $data['body'] ?? null;
+        $messageId = $data['message_id'] ?? null;
+        $quickReplyPayload = $data['quick_reply_payload'] ?? null;
 
-        return response('OK', 200);
+        if (!$from || !$body) {
+            return response('OK', 200);
+        }
+
+        try {
+            // Process through chatbot service
+            $this->chatbotService->processMessage(
+                'whatsapp',
+                $from,
+                $body,
+                $quickReplyPayload
+            );
+
+            return response('OK', 200);
+        } catch (\Exception $e) {
+            Log::error('Chatbot message processing failed: ' . $e->getMessage(), [
+                'from' => $from,
+                'message' => $body,
+            ]);
+
+            return response('OK', 200); // Still return 200 to prevent webhook retries
+        }
     }
 }

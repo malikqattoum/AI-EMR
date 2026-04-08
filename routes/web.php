@@ -31,6 +31,8 @@ use App\Http\Controllers\PublicChatController;
 use App\Http\Controllers\Admin\MonthlyInvoiceController;
 use App\Http\Controllers\Admin\SubscriptionPlanController;
 use App\Http\Controllers\Admin\AdminWaitlistController;
+use App\Http\Controllers\WhatsAppWebhookController;
+use App\Http\Controllers\MessengerWebhookController;
 use App\Models\SystemSetting;
 use App\Models\User;
 use App\Models\Appointment;
@@ -1077,6 +1079,12 @@ Route::middleware(['web'])->get('/offline', function () {
     return view('offline');
 })->name('offline');
 
+// Webhook routes (no CSRF, no auth - required by WhatsApp and Messenger)
+Route::get('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'verify'])->name('webhooks.whatsapp.verify');
+Route::post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'webhook'])->name('webhooks.whatsapp');
+Route::get('/webhooks/messenger', [MessengerWebhookController::class, 'verify'])->name('webhooks.messenger.verify');
+Route::post('/webhooks/messenger', [MessengerWebhookController::class, 'webhook'])->name('webhooks.messenger');
+
 // Admin routes
 Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -1126,9 +1134,15 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::post('/whatsapp-settings/update', [AdminController::class, 'updateWhatsAppSettings'])->name('whatsapp-settings.update');
     Route::post('/whatsapp-settings/test', [AdminController::class, 'sendTestWhatsApp'])->name('whatsapp-settings.test');
 
-    // WhatsApp Webhook routes (no CSRF, no auth)
-    Route::get('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'verify'])->name('webhooks.whatsapp.verify');
-    Route::post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'webhook'])->name('webhooks.whatsapp');
+    // Chatbot Management routes
+    Route::get('/chatbot/settings', [App\Http\Controllers\Admin\ChatbotController::class, 'settings'])->name('chatbot.settings');
+    Route::post('/chatbot/settings', [App\Http\Controllers\Admin\ChatbotController::class, 'updateSettings'])->name('chatbot.settings.update');
+    Route::get('/chatbot/conversations', [App\Http\Controllers\Admin\ChatbotController::class, 'conversations'])->name('chatbot.conversations');
+    Route::get('/chatbot/conversations/{conversation}', [App\Http\Controllers\Admin\ChatbotController::class, 'showConversation'])->name('chatbot.conversation.show');
+    Route::delete('/chatbot/conversations/{conversation}', [App\Http\Controllers\Admin\ChatbotController::class, 'deleteConversation'])->name('chatbot.conversation.delete');
+    Route::post('/chatbot/intents/{intent}/toggle', [App\Http\Controllers\Admin\ChatbotController::class, 'toggleIntent'])->name('chatbot.intent.toggle');
+    Route::post('/chatbot/test-message', [App\Http\Controllers\Admin\ChatbotController::class, 'sendTestMessage'])->name('chatbot.test-message');
+    Route::post('/chatbot/test-whatsapp', [App\Http\Controllers\Admin\ChatbotController::class, 'testWhatsApp'])->name('chatbot.test-whatsapp');
 
     // Invoice management for admin
     Route::get('/invoices', [AdminInvoiceController::class, 'index'])->name('invoices.index');
