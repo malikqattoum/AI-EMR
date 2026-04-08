@@ -233,54 +233,6 @@ Route::get('/notifications/test', function () {
     ]);
 })->middleware(['auth']);
 
-// Temporary test endpoint without auth for debugging - COMMENTED OUT FOR PRODUCTION
-/*
-Route::get('/notifications/test-debug', function () {
-    try {
-        // Use the first user from the database for testing
-        $testUser = User::first();
-
-        if (!$testUser) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No users found in database for testing',
-                'timestamp' => now()->toISOString()
-            ], 404);
-        }
-
-        // Send a test notification
-        $testUser->notify(new \App\Notifications\TestNotification([
-            'type' => 'debug-test',
-            'title' => 'Debug Test Notification',
-            'message' => 'This is a debug test notification sent without authentication',
-            'icon' => 'bug',
-            'link' => '/notification-debug',
-            'link_text' => 'View Debug Page'
-        ]));
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Debug test notification sent successfully',
-            'timestamp' => now()->toISOString(),
-            'user_id' => $testUser->id,
-            'user_name' => $testUser->name,
-            'notification_data' => [
-                'type' => 'debug-test',
-                'title' => 'Debug Test Notification',
-                'message' => 'This is a debug test notification sent without authentication'
-            ]
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to send debug test notification',
-            'error' => $e->getMessage(),
-            'timestamp' => now()->toISOString()
-        ], 500);
-    }
-});
-*/
-
 // Public appointment booking (for guests)
 Route::get('/appointments/{doctor}/create', [AppointmentController::class, 'create'])->name('appointments.create');
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');

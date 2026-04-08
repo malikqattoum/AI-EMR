@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\Hospital;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CreateHospitalAdminDemo extends Command
 {
@@ -68,11 +69,12 @@ class CreateHospitalAdminDemo extends Command
         $this->info("✅ Created new hospital: {$newHospital->name}");
 
         // Create hospital admin
+        $generatedPassword = Str::random(16);
         $hospitalAdmin = User::create([
             'name' => 'Dr. Emily Wilson',
             'email' => 'emily.wilson@metromedical.com',
             'phone' => '+1-555-0188',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make($generatedPassword),
             'role' => 'hospital_admin',
             'hospital_id' => $newHospital->id,
             'email_verified_at' => now(),
@@ -86,7 +88,8 @@ class CreateHospitalAdminDemo extends Command
 
         $this->info("✅ Created hospital admin: {$hospitalAdmin->name}");
         $this->info("   - Email: {$hospitalAdmin->email}");
-        $this->info("   - Password: password123");
+        $this->info("   - Password: {$generatedPassword}");
+        $this->warn("   ⚠️  Please change this password immediately!");
         $this->info("   - Role: {$hospitalAdmin->role}");
         $this->info("   - Hospital: {$hospitalAdmin->hospital->name}");
         $this->newLine();
@@ -150,9 +153,10 @@ class CreateHospitalAdminDemo extends Command
 
         $this->info("🎉 Demo completed successfully!");
         $this->newLine();
-        
+
         $this->info("Login Credentials:");
         $this->info("System Admin: admin@medical.com / admin123");
-        $this->info("Hospital Admin: emily.wilson@metromedical.com / password123");
+        $this->info("Hospital Admin: emily.wilson@metromedical.com / {$generatedPassword}");
+        $this->warn("⚠️  Change hospital admin password immediately after login!");
     }
 }

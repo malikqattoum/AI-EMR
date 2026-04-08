@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Permission;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CreateTestSubUser extends Command
 {
@@ -60,10 +61,11 @@ class CreateTestSubUser extends Command
         }
 
         // Create the sub-user
+        $generatedPassword = Str::random(16);
         $subUser = User::create([
             'name' => $name,
             'email' => $email,
-            'password' => Hash::make('password123'),
+            'password' => Hash::make($generatedPassword),
             'role' => 'doctor', // Sub-users inherit parent's role for system compatibility
             'parent_user_id' => $parentUser->id,
             'sub_user_role' => $role,
@@ -92,13 +94,14 @@ class CreateTestSubUser extends Command
                 ['Role', $subUser->sub_user_role],
                 ['Parent', $parentUser->name . ' (' . $parentUser->email . ')'],
                 ['Permissions', $subUser->permissions->pluck('display_name')->join(', ')],
-                ['Password', 'password123'],
+                ['Password', $generatedPassword . ' (save this securely)'],
             ]
         );
 
         $this->info("You can now test the sub-user by logging in with:");
         $this->info("Email: {$email}");
-        $this->info("Password: password123");
+        $this->info("Password: {$generatedPassword}");
+        $this->warn("⚠️  Please change this password immediately after first login!");
 
         return 0;
     }

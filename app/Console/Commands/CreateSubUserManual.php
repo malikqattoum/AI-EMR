@@ -7,6 +7,7 @@ use App\Models\Permission;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CreateSubUserManual extends Command
 {
@@ -82,14 +83,17 @@ class CreateSubUserManual extends Command
 
         // Create the sub-user using DB transaction
         DB::beginTransaction();
-        
+
         try {
             $this->info("Creating sub-user...");
-            
+
+            // Generate a secure random password
+            $generatedPassword = Str::random(16);
+
             $subUser = new User();
             $subUser->name = $name;
             $subUser->email = $email;
-            $subUser->password = Hash::make('password123');
+            $subUser->password = Hash::make($generatedPassword);
             $subUser->role = 'doctor'; // Sub-users inherit parent's role for system compatibility
             $subUser->parent_user_id = $parentUser->id;
             $subUser->sub_user_role = $role;
@@ -132,7 +136,7 @@ class CreateSubUserManual extends Command
                     ['Role', $subUser->sub_user_role],
                     ['Parent', $parentUser->name . ' (' . $parentUser->email . ')'],
                     ['Permissions', $subUser->permissions->pluck('display_name')->join(', ')],
-                    ['Password', 'password123'],
+                    ['Password', $generatedPassword . ' (save this securely)'],
                 ]
             );
 

@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\Hospital;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class TestHospitalAdminLogin extends Command
 {
@@ -53,15 +55,17 @@ class TestHospitalAdminLogin extends Command
             }
 
             // Create hospital admin
+            $generatedPassword = Str::random(16);
             $hospitalAdmin = User::create([
                 'name' => 'Test Hospital Admin',
                 'email' => 'test.hospital.admin@example.com',
-                'password' => bcrypt('password123'),
+                'password' => Hash::make($generatedPassword),
                 'role' => 'hospital_admin',
                 'hospital_id' => $hospital->id,
                 'phone' => '+1234567890',
             ]);
             $this->info("✅ Created test hospital admin: {$hospitalAdmin->email}");
+            $this->warn("⚠️  Generated password: {$generatedPassword} (change immediately)");
         }
 
         $this->info("Hospital Admin Details:");
@@ -97,8 +101,8 @@ class TestHospitalAdminLogin extends Command
         $this->info("🎯 Login Instructions:");
         $this->info("1. Go to: " . url('/login'));
         $this->info("2. Email: {$hospitalAdmin->email}");
-        $this->info("3. Password: password123");
-        $this->info("4. You should be redirected to the hospital admin dashboard");
+        $this->info("3. Password: {$generatedPassword}");
+        $this->warn("4. ⚠️  Change password immediately after first login!");
         
         $this->newLine();
         $this->info("🔗 Direct Links:");

@@ -251,7 +251,11 @@ class AiWaitlistMatcher
 
             if ($settings->auto_send_offers) {
                 $offer->markAsSent();
-                // TODO: Trigger notification to patient
+                
+                // Trigger notification to patient
+                if ($offer->patient) {
+                    $offer->patient->notify(new \App\Notifications\WaitlistOfferNotification($offer));
+                }
             }
 
             $offers[] = $offer;
