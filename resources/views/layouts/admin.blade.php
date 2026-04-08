@@ -35,6 +35,10 @@
     <link rel="stylesheet" href="{{ asset('css/responsive-modals.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin-enhancements.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin-tables.css') }}">
+    <!-- Global Light Theme -->
+    <link rel="stylesheet" href="{{ asset('css/global-light-theme.css') }}">
+    <!-- Global Dark Theme - Light text on dark backgrounds -->
+    <link rel="stylesheet" href="{{ asset('css/global-dark-theme.css') }}">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     @stack('styles')
@@ -545,6 +549,9 @@
                         <h1 class="h4 mb-0">@yield('title', 'Admin Panel')</h1>
                     </div>
                     <div class="d-flex align-items-center gap-3">
+                        <button data-theme-toggle class="btn btn-outline-secondary btn-sm" type="button" aria-label="Switch to light theme" title="Toggle theme">
+                            <i data-theme-icon class="fas fa-sun" aria-hidden="true"></i>
+                        </button>
                         <div class="text-muted small">
                             <i class="fas fa-clock me-1"></i>
                             {{ now()->format('M d, Y - g:i A') }}
@@ -618,5 +625,6 @@
 
     @stack('scripts')
     @yield('scripts')
+    <script src="{{ asset('js/theme-switcher.js') }}"></script>
 </body>
 </html>

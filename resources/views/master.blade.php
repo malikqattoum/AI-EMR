@@ -39,6 +39,9 @@
     <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('demos/medical/css/medical-icons.css') }}">
+    <!-- Global Themes - Light and Dark -->
+    <link rel="stylesheet" href="{{ asset('css/global-light-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/global-dark-theme.css') }}">
     <link rel="stylesheet" href="{{ asset('css/swiper.css') }}">
     <link rel="stylesheet" href="{{ asset('demos/medical/medical.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
@@ -52,9 +55,11 @@
     <!-- ─── Design System Tokens ─── -->
     <style>
     /* ════════════════════════════════════════════
-       DESIGN TOKENS
+       DESIGN TOKENS - Theme-aware
     ════════════════════════════════════════════ */
-    :root {
+    
+    /* Dark theme tokens */
+    [data-theme="dark"] {
         --navy:          #060d1f;
         --navy-mid:      #0c1633;
         --navy-card:     #0f1c3a;
@@ -72,6 +77,31 @@
         --border-hover:  rgba(255,255,255,0.14);
         --glass:         rgba(255,255,255,0.035);
         --shadow-nav:    0 1px 0 rgba(255,255,255,0.05), 0 4px 24px rgba(0,0,0,0.35);
+    }
+    
+    /* Light theme tokens */
+    [data-theme="light"] {
+        --navy:          #1e293b;
+        --navy-mid:      #f8fafc;
+        --navy-card:     #ffffff;
+        --teal:          #0d9488;
+        --teal-dim:      rgba(13,148,136,0.10);
+        --teal-glow:     rgba(13,148,136,0.25);
+        --teal-border:   rgba(13,148,136,0.25);
+        --amber:         #d97706;
+        --red:           #dc2626;
+        --green:         #16a34a;
+        --white:         #ffffff;
+        --offwhite:      #1e293b;
+        --muted:         rgba(30,41,59,0.6);
+        --border:        rgba(0,0,0,0.1);
+        --border-hover:  rgba(0,0,0,0.2);
+        --glass:         rgba(0,0,0,0.02);
+        --shadow-nav:    0 1px 0 rgba(0,0,0,0.05), 0 4px 24px rgba(0,0,0,0.1);
+    }
+    
+    /* Common tokens */
+    :root {
         --font-display:  'Cormorant Garamond', Georgia, serif;
         --font-body:     'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         --radius-sm:     8px;
@@ -568,6 +598,11 @@
             </div>
         </div>
 
+        <!-- Theme Toggle -->
+        <button data-theme-toggle class="ms-icon-btn" type="button" aria-label="Switch to light theme" title="Toggle theme">
+            <i data-theme-icon class="fas fa-sun" aria-hidden="true"></i>
+        </button>
+
         <!-- User menu -->
         <div class="ms-dropdown">
             <button class="ms-user-chip" id="ms-user-toggle" type="button" aria-expanded="false" aria-haspopup="true">
@@ -1029,6 +1064,9 @@
     });
 })();
 </script>
+
+<!-- Theme Switcher -->
+<script src="{{ asset('js/theme-switcher.js') }}"></script>
 
 @stack('scripts')
 </body>

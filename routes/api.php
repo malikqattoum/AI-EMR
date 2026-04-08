@@ -35,6 +35,8 @@ Route::middleware('auth')->post('/predictions', [App\Http\Controllers\Api\Predic
 Route::middleware(['auth', 'web'])->group(function () {
     // User settings
     Route::get('/user/settings', [UserSettingsController::class, 'getSettings']);
+    Route::get('/user/settings/theme', [UserSettingsController::class, 'getTheme']);
+    Route::post('/user/settings/theme', [UserSettingsController::class, 'updateTheme']);
 
     // Get notifications
     Route::get('/notifications', [NotificationController::class, 'index']);

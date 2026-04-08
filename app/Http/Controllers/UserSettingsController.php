@@ -53,8 +53,67 @@ class UserSettingsController extends Controller
         return response()->json([
             'criterion' => $setting->criterion ?? 'CDC',
             'specialty' => $setting->specialty ?? null,
-            'notification_volume' => $setting->notification_volume ?? 0.3
+            'notification_volume' => $setting->notification_volume ?? 0.3,
+            'theme' => $setting->theme ?? 'dark'
         ]);
+    }
+
+    /**
+     * Update user's theme preference
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateTheme(Request $request)
+    {
+        $request->validate([
+            'theme' => ['required', 'string', 'in:light,dark']
+        ]);
+
+        try {
+            $setting = auth()->user()->setting()->updateOrCreate(
+                ['user_id' => auth()->id()],
+                ['theme' => $request->theme]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Theme preference updated successfully',
+                'theme' => $setting->theme
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to update theme preference: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update theme preference'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get user's theme preference
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTheme()
+    {
+        try {
+            $setting = auth()->user()->setting;
+            $theme = $setting->theme ?? 'dark';
+
+            return response()->json([
+                'success' => true,
+                'theme' => $theme
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get theme preference: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get theme preference'
+            ], 500);
+        }
     }
 
 

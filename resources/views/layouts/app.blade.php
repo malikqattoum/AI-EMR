@@ -31,6 +31,9 @@
     <link rel="stylesheet" href="{{ asset('css/admin-enhancements.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin-tables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ui-consistency.css') }}">
+    <!-- Global Themes - Light and Dark -->
+    <link rel="stylesheet" href="{{ asset('css/global-light-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/global-dark-theme.css') }}">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     @stack('styles')
@@ -73,7 +76,7 @@
         .admin-content {
             flex: 1;
             margin-left: 280px;
-            background: #f8f9fa;
+            background: #060d1f;
             min-height: 100vh;
         }
 
@@ -514,7 +517,12 @@
                         @if(Auth::user()->hospital)
                             <span class="badge bg-primary me-3">{{ Auth::user()->hospital->name }}</span>
                         @endif
-                        <span class="text-muted">{{ now()->format('M d, Y') }}</span>
+                        <span class="text-muted me-3">{{ now()->format('M d, Y') }}</span>
+                        
+                        <!-- Theme Toggle -->
+                        <button data-theme-toggle class="btn btn-outline-secondary btn-sm me-2" type="button" aria-label="Switch to light theme" title="Toggle theme">
+                            <i data-theme-icon class="fas fa-sun" aria-hidden="true"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -926,5 +934,8 @@
         });
     })();
     </script>
+    
+    <!-- Theme Switcher -->
+    <script src="{{ asset('js/theme-switcher.js') }}"></script>
 </body>
 </html>

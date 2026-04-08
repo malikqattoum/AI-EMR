@@ -1,5 +1,150 @@
-@extends('master')
+@extends('layouts.doctor')
 
+@section('title', 'Doctor Dashboard')
+
+@push('styles')
+<style>
+/* ================================================
+   DASHBOARD-SPECIFIC STYLES
+   Note: Theme colors are now handled by global theme CSS files
+   ================================================ */
+
+/* Dashboard-specific layout styles */
+.dashboard-container,
+.container-fluid {
+    /* Remove hardcoded background - let theme CSS handle it */
+}
+
+/* Card elements - theme-aware */
+.card {
+    border-radius: 16px !important;
+}
+
+/* Forms - theme-aware */
+.form-control, .form-select {
+    border-radius: 10px !important;
+}
+
+/* Dashboard-specific component styles */
+.alert {
+    border-radius: 14px !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Pagination styling */
+.pagination .page-link {
+    border-radius: 8px !important;
+    margin: 0 2px;
+}
+
+/* Card hover effects */
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
+/* Table hover */
+.table-hover tbody tr:hover {
+    background-color: rgba(0,212,170,0.05) !important;
+}
+
+/* Modal styling */
+.modal-content {
+    border-radius: 16px !important;
+}
+
+/* Badge styling */
+.badge {
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+}
+
+/* Dashboard grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Stat cards */
+.stat-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Quick actions */
+.quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* Activity timeline */
+.activity-timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(0,212,170,0.2);
+}
+
+.activity-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.activity-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 0.25rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #00d4aa;
+    border: 2px solid #fff;
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    min-height: 300px;
+}
+
+/* Loading states */
+.loading-skeleton {
+    background: linear-gradient(90deg, rgba(0,212,170,0.05) 25%, rgba(0,212,170,0.08) 50%, rgba(0,212,170,0.05) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.6s ease-in-out infinite;
+    border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+</style>
+@endpush
 
 @push('styles')
 @vite(['resources/css/dashboard-enhancements.css'])
@@ -7,308 +152,1248 @@
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('css/custom-dashboard.css') }}">
 <style>
-/* Modern Dashboard Header Styling */
-.dashboard-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
-    border-radius: 16px;
-    padding: 2.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
+/* ================================================
+   CSS VARIABLES - DESIGN TOKENS
+   ================================================ */
+:root {
+    --navy: #0a1428;
+    --navy-light: #111d35;
+    --teal: #00d4aa;
+    --teal-dark: #00b894;
+    --offwhite: #e8ede7;
+    --muted: rgba(232, 237, 231, 0.5);
+    --card-bg: rgba(10, 20, 40, 0.6);
+    --card-border: rgba(0, 212, 170, 0.12);
 }
 
+/* ================================================
+   CLINICAL COMMAND CENTER — DASHBOARD THEME
+   Deep navy base with teal glow accents
+   ================================================ */
+
+/* --- Global Text Override - Force all text to be visible --- */
+.dashboard-container,
+.dashboard-container * {
+    color: #e8ede7 !important;
+}
+
+/* Specific element colors */
+.dashboard-container strong,
+.dashboard-container b,
+.dashboard-container .fw-bold {
+    color: #ffffff !important;
+}
+
+.dashboard-container .text-muted {
+    color: rgba(232, 237, 231, 0.5) !important;
+}
+
+.dashboard-container .text-success {
+    color: #00d4aa !important;
+}
+
+.dashboard-container .text-warning {
+    color: #fbbf24 !important;
+}
+
+.dashboard-container .text-danger {
+    color: #f87171 !important;
+}
+
+.dashboard-container .text-info {
+    color: #60a5fa !important;
+}
+
+.dashboard-container .text-primary {
+    color: #00d4aa !important;
+}
+
+/* Alert headings */
+.alert h1, .alert h2, .alert h3, .alert h4, .alert h5, .alert h6,
+.alert .alert-heading {
+    color: inherit !important;
+}
+
+/* Alert text */
+.alert p, .alert span, .alert div {
+    color: inherit !important;
+}
+
+/* --- Force Colors on Specific Problem Elements --- */
+.doctor-section-header h3,
+.doctor-section-header p,
+.quick-actions-card h4,
+.quick-actions-title,
+.dashboard-header h1,
+.dashboard-header p {
+    color: #e8ede7 !important;
+}
+
+/* Force all heading elements to light color */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: #e8ede7 !important;
+}
+
+/* Force all card content to light color */
+.card *,
+.card-body *,
+.card-header *,
+.table-card *,
+.stats-card *,
+.quick-actions-card *,
+.doctor-section-header * {
+    color: #e8ede7 !important;
+}
+
+/* Except for specific colored elements */
+.card .text-muted,
+.card-body .text-muted,
+.table-card .text-muted,
+.stats-card .text-muted {
+    color: rgba(232, 237, 231, 0.5) !important;
+}
+
+/* --- Atmospheric Background Grid --- */
+.dashboard-container {
+    position: relative;
+    background: #060d1f !important;
+}
+.dashboard-container::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* --- Hero Dashboard Header --- */
+.dashboard-header {
+    position: relative;
+    background: linear-gradient(135deg, var(--navy) 0%, rgba(0,212,170,0.08) 50%, var(--navy) 100%) !important;
+    border: 1px solid rgba(0,212,170,0.15) !important;
+    border-radius: 20px !important;
+    padding: 3rem 3rem 2.5rem !important;
+    margin-bottom: 2.5rem !important;
+    overflow: hidden;
+}
 .dashboard-header::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #00d4aa, #00a88a);
-    background-size: 400% 400%;
-    animation: gradient 3s ease infinite;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    animation: headerGlow 3s ease-in-out infinite;
 }
-
-@keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.dashboard-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(0,212,170,0.06) 0%, transparent 60%);
+    pointer-events: none;
 }
-
+@keyframes headerGlow {
+    0%, 100% { opacity: 0.4; transform: scaleX(0.8); }
+    50% { opacity: 1; transform: scaleX(1); }
+}
+.dashboard-header .header-content { position: relative; z-index: 1; }
 .dashboard-header h1 {
-    color: #e8edf5;
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    font-size: clamp(2rem, 4vw, 3rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--offwhite) 30%, var(--teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeSlideUp 0.6s ease-out both;
+}
+.dashboard-header p {
+    color: var(--muted) !important;
+    font-size: 1.1rem;
+    animation: fadeSlideUp 0.6s ease-out 0.1s both;
+}
+
+/* --- Header Avatar --- */
+.header-avatar {
+    flex-shrink: 0;
+}
+.avatar-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal) 0%, rgba(0,212,170,0.7) 100%);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--navy);
+    box-shadow: 0 8px 24px rgba(0,212,170,0.3);
+    border: 3px solid rgba(255,255,255,0.1);
+    animation: fadeSlideUp 0.6s ease-out both;
 }
 
-.dashboard-header p {
-    color: rgba(232, 237, 231, 0.55);
-    font-size: 1.1rem;
-    font-weight: 400;
-    margin-bottom: 0;
+/* --- Header Badges --- */
+.header-actions {
+    animation: fadeSlideUp 0.6s ease-out 0.2s both;
+}
+.header-badge {
+    background: rgba(10, 20, 40, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,212,170,0.15);
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--offwhite);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+.header-badge:hover {
+    border-color: rgba(0,212,170,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,212,170,0.15);
+}
+.header-badge.success {
+    border-color: rgba(0,212,170,0.3);
+    background: rgba(0,212,170,0.1);
+}
+.header-badge i {
+    color: var(--teal);
+}
+.header-badge.success i {
+    color: #10b981;
 }
 
-/* Enhanced Stats Cards */
+/* --- Staggered Entrance Animations --- */
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes tealPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,170,0); }
+    50%       { box-shadow: 0 0 20px 2px rgba(0,212,170,0.15); }
+}
+.animate-in { animation: fadeSlideUp 0.5s ease-out both; }
+.animate-in-1 { animation-delay: 0.05s; }
+.animate-in-2 { animation-delay: 0.10s; }
+.animate-in-3 { animation-delay: 0.15s; }
+.animate-in-4 { animation-delay: 0.20s; }
+.animate-in-5 { animation-delay: 0.25s; }
+.animate-in-6 { animation-delay: 0.30s; }
+
+/* --- Glassmorphic Stats Cards --- */
 .stats-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 1.5rem;
+    background: rgba(10, 20, 40, 0.6) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,212,170,0.12) !important;
+    border-radius: 20px !important;
+    padding: 2rem 1.75rem !important;
     margin-bottom: 1.5rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+.stats-card::after {
+    content: '';
+    position: absolute;
+    top: -50%; right: -30%;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(0,212,170,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+.stats-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(0,212,170,0.35) !important;
+    box-shadow: 0 12px 48px rgba(0,212,170,0.15), 0 0 0 1px rgba(0,212,170,0.08) !important;
+    background: rgba(10, 20, 40, 0.75) !important;
+}
+.stats-card:hover::before {
+    opacity: 1;
+}
+.stats-card:hover::after {
+    opacity: 1;
+}
+.stats-icon {
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, rgba(0,212,170,0.2) 0%, rgba(0,212,170,0.08) 100%) !important;
+    border: 2px solid rgba(0,212,170,0.25) !important;
+    color: var(--teal) !important;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 20px rgba(0,212,170,0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
-
-.stats-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-}
-
-.stats-card::before {
+.stats-icon::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #0a1628, #00d4aa);
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.stats-card:hover .stats-icon {
+    box-shadow: 0 8px 32px rgba(0,212,170,0.3);
+    transform: scale(1.1) rotate(-5deg);
+    border-color: rgba(0,212,170,0.4) !important;
+}
+.stats-card:hover .stats-icon::before {
+    opacity: 1;
+}
+.stats-number {
+    font-size: 2.8rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--offwhite) 0%, var(--teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+.stats-card:hover .stats-number {
+    transform: scale(1.05);
+}
+.stats-label {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted) !important;
+    margin-bottom: 0.75rem;
 }
 
-.stats-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
+/* --- Trend Indicators --- */
+.trend-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}
+.trend-indicator.up {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+.trend-indicator.down {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+.trend-indicator.neutral {
+    background: rgba(107, 114, 128, 0.15);
+    color: #9ca3af;
+}
+
+/* --- Quick Actions Card --- */
+.quick-actions-card {
+    background: rgba(10, 20, 40, 0.5) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,212,170,0.12) !important;
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.quick-actions-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(251,191,36,0.5), transparent);
+}
+.quick-actions-card:hover {
+    border-color: rgba(0,212,170,0.2) !important;
+    box-shadow: 0 8px 32px rgba(0,212,170,0.08) !important;
+}
+.quick-actions-title {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: var(--offwhite) !important;
+    margin-bottom: 1.5rem !important;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: white;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
+    gap: 0.75rem;
+}
+.quick-actions-title i {
+    color: #fbbf24;
+    animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
-.stats-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin: 0.5rem 0;
+/* --- Quick Action Buttons --- */
+.quick-action-btn {
+    background: rgba(10, 20, 40, 0.6) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,212,170,0.15) !important;
+    border-radius: 14px !important;
+    padding: 1rem 1.5rem !important;
+    font-weight: 600;
+    color: var(--offwhite) !important;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-width: 200px;
 }
-
-.stats-label {
-    font-size: 0.9rem;
-    color: #7f8c8d;
-    font-weight: 500;
-    margin: 0;
+.quick-action-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,212,170,0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
-
-/* Enhanced Table Cards */
-.table-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+.quick-action-btn i {
+    font-size: 1.2rem;
+    color: var(--teal);
     transition: all 0.3s ease;
 }
+.quick-action-btn:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,212,170,0.3) !important;
+    box-shadow: 0 8px 24px rgba(0,212,170,0.15) !important;
+    color: var(--offwhite) !important;
+    text-decoration: none;
+    background: rgba(10, 20, 40, 0.8) !important;
+}
+.quick-action-btn:hover::before {
+    opacity: 1;
+}
+.quick-action-btn:hover i {
+    transform: scale(1.2) rotate(-5deg);
+    color: var(--teal);
+}
+.quick-action-btn:active {
+    transform: translateY(-2px);
+}
+.quick-action-btn.primary {
+    background: linear-gradient(135deg, rgba(0,212,170,0.2) 0%, rgba(0,212,170,0.1) 100%) !important;
+    border-color: rgba(0,212,170,0.3) !important;
+}
+.quick-action-btn.primary:hover {
+    background: linear-gradient(135deg, rgba(0,212,170,0.3) 0%, rgba(0,212,170,0.15) 100%) !important;
+}
 
+/* --- Glassmorphic Table Cards --- */
+.table-card {
+    background: rgba(10, 20, 40, 0.5) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,212,170,0.1) !important;
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    margin-bottom: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    color: var(--offwhite) !important;
+}
+.table-card h1, .table-card h2, .table-card h3, .table-card h4, .table-card h5, .table-card h6,
+.table-card p, .table-card span, .table-card label { color: var(--offwhite) !important; }
+.table-card .text-muted { color: var(--muted) !important; }
+.table-pagination { color: var(--muted) !important; }
+.table-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,170,0.3), transparent);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
 .table-card:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0,212,170,0.25) !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25), 0 0 30px rgba(0,212,170,0.08) !important;
+    transform: translateY(-4px);
 }
-
+.table-card:hover::before {
+    opacity: 1;
+}
 .table-title {
-    color: #2c3e50;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em;
+    color: var(--offwhite) !important;
+    margin-bottom: 1.5rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0,212,170,0.1);
+}
+.table-title i { 
+    color: var(--teal) !important;
+    font-size: 1.2rem;
+}
+.table-title .badge {
+    margin-left: auto;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 10px;
+    background: rgba(0,212,170,0.15);
+    color: var(--teal);
+    border: 1px solid rgba(0,212,170,0.2);
 }
 
-/* Modern Table Styles */
-.custom-table {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
+/* --- Enhanced Custom Table --- */
+.custom-table { 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    width: 100%; 
+    overflow: hidden;
+    border-radius: 12px;
 }
-
 .custom-table thead th {
-    background: #f8f9fa;
-    border-bottom: 2px solid #e9ecef;
-    font-weight: 600;
-    color: #2c3e50;
-    padding: 1rem;
+    background: linear-gradient(180deg, rgba(0,212,170,0.08) 0%, rgba(0,212,170,0.04) 100%) !important;
+    border-bottom: 2px solid rgba(0,212,170,0.15) !important;
+    font-weight: 700 !important;
     text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.1em;
+    color: var(--muted) !important;
+    padding: 1rem 1.25rem !important;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
-
 .custom-table tbody tr {
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+.custom-table tbody tr::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--teal);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+.custom-table tbody tr:hover {
+    background: linear-gradient(90deg, rgba(0,212,170,0.08) 0%, transparent 100%) !important;
+    transform: translateX(4px);
+}
+.custom-table tbody tr:hover::before {
+    transform: scaleY(1);
+}
+.custom-table tbody tr:last-child { border-bottom: none !important; }
+.custom-table td {
+    padding: 1.125rem 1.25rem !important;
+    vertical-align: middle;
+    color: var(--offwhite) !important;
     transition: all 0.2s ease;
 }
-
-.custom-table tbody tr:hover {
-    background: #f8f9fa;
+.custom-table tbody tr:hover td:first-child {
+    padding-left: calc(1.25rem + 3px);
 }
 
-.custom-table tbody tr:last-child {
-    border-bottom: none;
-}
-
-.custom-table td {
-    padding: 1rem;
-    vertical-align: middle;
-}
-
-/* Enhanced Buttons */
-.btn-primary-custom {
-    background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);
-    border: none;
-    border-radius: 12px;
+/* --- Custom Buttons --- */
+.btn-custom-secondary {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 12px !important;
+    color: var(--muted) !important;
     padding: 0.5rem 1.2rem;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
 }
-
+.btn-custom-secondary:hover {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: rgba(0,212,170,0.2) !important;
+    color: var(--teal) !important;
+    transform: translateY(-1px);
+}
+.btn-primary-custom {
+    background: linear-gradient(135deg, var(--teal) 0%, rgba(0,212,170,0.7) 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    color: var(--navy) !important;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+.btn-primary-custom::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
 .btn-primary-custom:hover {
-    background: linear-gradient(135deg, #00d4aa 0%, #2c3e50 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.3);
+    box-shadow: 0 8px 25px rgba(0,212,170,0.3) !important;
+    color: var(--navy) !important;
 }
+.btn-primary-custom:hover::before { opacity: 1; }
 
 .btn-secondary-custom {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
-    color: #495057;
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 12px !important;
+    color: var(--muted) !important;
     padding: 0.5rem 1.2rem;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
 }
-
 .btn-secondary-custom:hover {
-    background: #e9ecef;
-    border-color: #dee2e6;
+    background: rgba(255,255,255,0.08) !important;
+    border-color: rgba(0,212,170,0.2) !important;
+    color: var(--teal) !important;
+    transform: translateY(-1px);
 }
 
-/* Empty State */
+/* --- Empty State --- */
 .empty-state {
     text-align: center;
-    padding: 3rem 1rem;
-    color: #7f8c8d;
+    padding: 4rem 2rem;
 }
-
 .empty-state i {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin-bottom: 1rem;
-    opacity: 0.3;
+    color: rgba(0,212,170,0.2);
 }
-
 .empty-state h5 {
-    color: #2c3e50;
-    font-weight: 600;
+    color: var(--offwhite) !important;
+    font-weight: 700;
     margin-bottom: 0.5rem;
 }
+.empty-state p { color: var(--muted) !important; }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .dashboard-header {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
+/* --- Appointment & Review Items (override external CSS) --- */
+.appointment-card {
+    background: linear-gradient(135deg, rgba(10, 20, 40, 0.5) 0%, rgba(10, 20, 40, 0.4) 100%) !important;
+    border: 1px solid rgba(0,212,170,0.12) !important;
+    border-radius: 16px !important;
+    color: var(--offwhite) !important;
+    padding: 1.25rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+.appointment-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--teal) 0%, rgba(0,212,170,0.5) 100%);
+    border-radius: 4px 0 0 4px;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+.appointment-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: rgba(0,212,170,0.25) !important;
+    box-shadow: 0 8px 32px rgba(0,212,170,0.12), 0 0 0 1px rgba(0,212,170,0.08) !important;
+    background: linear-gradient(135deg, rgba(10, 20, 40, 0.7) 0%, rgba(10, 20, 40, 0.6) 100%) !important;
+}
+.appointment-card:hover::before {
+    transform: scaleY(1);
+}
+.appointment-item {
+    background: rgba(10, 20, 40, 0.5) !important;
+    border: 1px solid rgba(0,212,170,0.12) !important;
+    border-radius: 14px !important;
+    color: var(--offwhite) !important;
+    padding: 1rem !important;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+.appointment-item:hover {
+    background: rgba(10, 20, 40, 0.7) !important;
+    border-color: rgba(0,212,170,0.2) !important;
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,212,170,0.08);
+}
+.review-item {
+    background: rgba(10, 20, 40, 0.5) !important;
+    border: 1px solid rgba(0,212,170,0.12) !important;
+    border-radius: 14px !important;
+    color: var(--offwhite) !important;
+    padding: 1.25rem !important;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+.review-item:hover {
+    background: rgba(10, 20, 40, 0.7) !important;
+    border-color: rgba(0,212,170,0.2) !important;
+    box-shadow: 0 6px 20px rgba(0,212,170,0.1);
+}
+.review-item strong, .review-item .text-warning { color: var(--offwhite) !important; }
 
-    .dashboard-header h1 {
-        font-size: 2rem;
-    }
-
-    .dashboard-header p {
-        font-size: 1rem;
-    }
-
-    .stats-number {
-        font-size: 2rem;
-    }
-
-    .stats-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-    }
+/* --- Time Circle Enhancement --- */
+.time-circle {
+    background: linear-gradient(135deg, var(--teal) 0%, rgba(0,212,170,0.8) 100%) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 16px rgba(0,212,170,0.3) !important;
+    transition: all 0.3s ease;
+}
+.appointment-card:hover .time-circle {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(0,212,170,0.4) !important;
 }
 
-/* Sort Links */
+/* --- Doctor Dashboard Content Cards --- */
+.card {
+    background: rgba(10, 20, 40, 0.4) !important;
+    border: 1px solid rgba(0,212,170,0.12) !important;
+}
+.card-header { color: var(--offwhite) !important; }
+.card-body { color: var(--offwhite) !important; }
+.card-body strong { color: var(--offwhite) !important; }
+.card-body .badge { background: rgba(0,212,170,0.15) !important; color: var(--offwhite) !important; }
+.patient-info-card h6 { color: var(--muted) !important; }
+.patient-info-card .fs-5 { color: var(--offwhite) !important; }
+.response-text { color: var(--offwhite) !important; }
+.modal-body { color: var(--offwhite) !important; }
+.modal-body .text-muted { color: var(--muted) !important; }
+.list-group-item {
+    background: rgba(10, 20, 40, 0.3) !important;
+    border-color: rgba(0,212,170,0.08) !important;
+    color: var(--offwhite) !important;
+}
+.list-group-item strong { color: var(--offwhite) !important; }
+
+/* --- Sort Links --- */
 .sort-link {
-    color: #2c3e50;
+    color: var(--teal) !important;
     text-decoration: none;
     font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.2s ease;
 }
+.sort-link:hover { color: var(--offwhite) !important; }
 
-.sort-link:hover {
-    color: #00d4aa;
-}
-
-/* Modal Styling */
-.modal-content {
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.modal-header {
-    border-radius: 16px 16px 0 0;
-    border: none;
-}
-
-.modal-footer {
-    border-radius: 0 0 16px 16px;
-    border: none;
-}
-
-/* Progress bars */
+/* --- Progress bars --- */
 .progress {
-    height: 8px;
-    border-radius: 4px;
-    background: #f8f9fa;
-    overflow: visible;
+    height: 6px !important;
+    border-radius: 3px !important;
+    background: rgba(255,255,255,0.05) !important;
+    overflow: hidden;
 }
-
 .progress-bar {
+    border-radius: 3px;
     position: relative;
     overflow: visible;
 }
-
 .progress-bar::after {
     content: '';
     position: absolute;
-    top: -2px;
-    right: 0;
-    width: 4px;
-    height: 4px;
+    top: -2px; right: -1px;
+    width: 6px; height: 6px;
     border-radius: 50%;
     background: currentColor;
+    opacity: 0.6;
+}
+
+/* --- Doctor Dashboard Section Header --- */
+.doctor-section-header {
+    background: linear-gradient(135deg, rgba(0,212,170,0.06) 0%, rgba(0,212,170,0.02) 100%) !important;
+    border: 1px solid rgba(0,212,170,0.12) !important;
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.doctor-section-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,170,0.3), transparent);
+}
+.doctor-section-header h3 {
+    background: linear-gradient(135deg, var(--offwhite) 40%, var(--teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* --- Badges in tables --- */
+.custom-table .badge {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.03em;
+}
+
+/* --- Alerts / subscription banners --- */
+.alert {
+    border-radius: 14px !important;
+    border: none !important;
+    backdrop-filter: blur(10px);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 1200px) {
+    .stats-card {
+        padding: 1.75rem !important;
+    }
+    .stats-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.4rem;
+    }
+    .stats-number {
+        font-size: 2.4rem !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .dashboard-header {
+        padding: 2rem 1.5rem !important;
+    }
+    .avatar-circle {
+        width: 56px;
+        height: 56px;
+        font-size: 1.5rem;
+    }
+    .dashboard-header h1 {
+        font-size: 1.75rem !important;
+    }
+    .stats-card {
+        padding: 1.5rem !important;
+    }
+    .stats-number {
+        font-size: 2.2rem !important;
+    }
+    .table-card {
+        padding: 1.5rem !important;
+    }
+    .quick-action-btn {
+        min-width: 180px;
+        padding: 0.875rem 1.25rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 1.5rem 1.25rem !important;
+    }
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .avatar-circle {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+    .dashboard-header h1 {
+        font-size: 1.5rem !important;
+    }
+    .dashboard-header p {
+        font-size: 0.95rem !important;
+    }
+    .header-badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+    }
+    .stats-card {
+        padding: 1.25rem !important;
+        margin-bottom: 1rem;
+    }
+    .stats-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    .stats-number {
+        font-size: 2rem !important;
+    }
+    .stats-label {
+        font-size: 0.7rem !important;
+    }
+    .table-card {
+        padding: 1.25rem !important;
+    }
+    .table-title {
+        font-size: 1rem !important;
+    }
+    .quick-actions-card {
+        padding: 1.5rem !important;
+    }
+    .quick-action-btn {
+        min-width: 100%;
+        padding: 0.875rem 1rem !important;
+    }
+    .custom-table td {
+        padding: 0.875rem 1rem !important;
+        font-size: 0.9rem;
+    }
+    .custom-table thead th {
+        padding: 0.875rem 1rem !important;
+        font-size: 0.65rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-container {
+        padding: 0.75rem !important;
+    }
+    .dashboard-header {
+        padding: 1.25rem 1rem !important;
+        border-radius: 16px !important;
+    }
+    .dashboard-header h1 {
+        font-size: 1.35rem !important;
+    }
+    .d-flex.gap-3 {
+        gap: 0.75rem !important;
+    }
+    .stats-card {
+        padding: 1rem !important;
+        border-radius: 16px !important;
+    }
+    .stats-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+    .stats-number {
+        font-size: 1.75rem !important;
+    }
+    .stats-label {
+        font-size: 0.65rem !important;
+        letter-spacing: 0.05em;
+    }
+    .table-card {
+        padding: 1rem !important;
+        border-radius: 16px !important;
+    }
+    .quick-actions-card {
+        padding: 1.25rem !important;
+        border-radius: 16px !important;
+    }
+    .trend-indicator {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+/* --- Scrollbar Styling --- */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(10, 20, 40, 0.3);
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--teal) 0%, rgba(0,212,170,0.6) 100%);
+    border-radius: 5px;
+    border: 2px solid rgba(10, 20, 40, 0.5);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(0,212,170,0.9) 0%, var(--teal) 100%);
+}
+
+/* --- Loading Skeleton Animation --- */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+.skeleton {
+    background: linear-gradient(90deg, 
+        rgba(10, 20, 40, 0.4) 25%, 
+        rgba(0,212,170,0.08) 50%, 
+        rgba(10, 20, 40, 0.4) 75%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 8px;
+}
+
+/* --- Floating Action Button Pulse --- */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* ================================================
+   FINAL COMPREHENSIVE TEXT COLOR OVERRIDES
+   This section ensures ALL text is visible
+   ================================================ */
+
+/* Universal text override - highest priority */
+[class*="card"] *,
+[class*="header"] *,
+[class*="title"] *,
+[class*="heading"] *,
+[class*="label"] *,
+[class*="text"] * {
+    color: #e8ede7 !important;
+}
+
+/* Specific component text colors */
+.dashboard-header h1,
+.dashboard-header .h1,
+.dashboard-header p,
+.dashboard-header span,
+.dashboard-header div {
+    color: #e8ede7 !important;
+}
+
+.doctor-section-header h3,
+.doctor-section-header .h3,
+.doctor-section-header p,
+.doctor-section-header span {
+    color: #e8ede7 !important;
+}
+
+.quick-actions-card h4,
+.quick-actions-card .h4,
+.quick-actions-title,
+.quick-actions-title span {
+    color: #e8ede7 !important;
+}
+
+.table-card h1,
+.table-card h2,
+.table-card h3,
+.table-card h4,
+.table-card h5,
+.table-card h6,
+.table-card p,
+.table-card span,
+.table-card div,
+.table-card label {
+    color: #e8ede7 !important;
+}
+
+.stats-card .stats-number,
+.stats-card .stats-label,
+.stats-card p,
+.stats-card span,
+.stats-card div {
+    color: #e8ede7 !important;
+}
+
+.stats-card .stats-label {
+    color: rgba(232, 237, 231, 0.5) !important;
+}
+
+/* Table content */
+.custom-table td,
+.custom-table th,
+.custom-table tbody tr td,
+.custom-table thead tr th {
+    color: #e8ede7 !important;
+}
+
+/* Card content */
+.card-body p,
+.card-body span,
+.card-body div,
+.card-body strong,
+.card-body b {
+    color: #e8ede7 !important;
+}
+
+/* Appointment cards */
+.appointment-card p,
+.appointment-card span,
+.appointment-card div,
+.appointment-card strong {
+    color: #e8ede7 !important;
+}
+
+/* Review items */
+.review-item p,
+.review-item span,
+.review-item div,
+.review-item strong {
+    color: #e8ede7 !important;
+}
+
+/* Muted text exception */
+.text-muted {
+    color: rgba(232, 237, 231, 0.5) !important;
+}
+
+/* Icon colors in headers */
+.dashboard-header i,
+.doctor-section-header i,
+.table-title i {
+    color: #00d4aa !important;
+}
+
+/* Button text */
+.btn span,
+.btn i {
+    color: inherit !important;
+}
+
+/* Badge text */
+.badge span,
+.badge {
+    color: #0a1428 !important;
+}
+
+/* Alert content */
+.alert p,
+.alert span,
+.alert strong,
+.alert div {
+    color: inherit !important;
+}
+</style>
+
+<!-- Dashboard-Specific Styles (Theme-Aware) -->
+<style>
+/* Dashboard container spacing - colors handled by global theme CSS */
+.dashboard-container {
+    /* Theme colors applied automatically */
+}
+
+/* Stats text - inherits from theme */
+.dashboard-container .stats-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.dashboard-container .stats-label {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Quick actions text */
+.quick-actions-title {
+    font-weight: 600;
+}
+
+/* Header text */
+.dashboard-header h1,
+.dashboard-header p {
+    /* Inherits theme colors */
+}
+
+/* Doctor section header */
+.doctor-section-header h3,
+.doctor-section-header p {
+    /* Inherits theme colors */
+}
+
+/* Table card text */
+.table-title {
+    font-weight: 600;
+}
+
+/* Icon sizes */
+.dashboard-container i {
+    font-size: inherit;
+}
+
+/* Card transitions */
+.dashboard-container .card {
+    transition: all 0.3s ease;
 }
 </style>
 @endpush
 
 @section('content')
-
-
-<section class="dashboard-container">
-    <div class="container">
+<div class="dashboard-container">
+    <div class="container-fluid px-3 px-md-4">
         <!-- Enhanced Page Header -->
-        <header class="dashboard-header py-2 border-bottom">
-            <h1 class="h1 mb-1" style="font-weight: 700;">Dashboard</h1>
-            <p>Overview of your activities</p>
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <div class="header-avatar">
+                                @auth
+                                    <div class="avatar-circle">
+                                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                    </div>
+                                @endauth
+                            </div>
+                            <div>
+                                <h1 class="h1 mb-0" style="color: #e8ede7 !important;">
+                                    @auth
+                                        <span style="color: #e8ede7 !important;">Welcome back, {{ Auth::user()->first_name ?? Auth::user()->name }}</span>
+                                    @else
+                                        <span style="color: #e8ede7 !important;">Dashboard</span>
+                                    @endauth
+                                </h1>
+                                <p class="mb-0 mt-1" style="color: #e8ede7 !important;">
+                                    <i class="fas fa-calendar-day me-1" style="color: #00d4aa !important;"></i>
+                                    <span style="color: #e8ede7 !important;">{{ now()->format('l, F j, Y') }}</span>
+                                    <span class="mx-2" style="color: rgba(232, 237, 231, 0.5) !important;">•</span>
+                                    <i class="fas fa-clock me-1" style="color: #00d4aa !important;"></i>
+                                    <span id="current-time" style="color: #e8ede7 !important;">{{ now()->format('g:i A') }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-actions d-flex gap-2 flex-wrap">
+                        @auth
+                            <div class="header-badge" style="color: #e8ede7 !important;">
+                                <i class="fas fa-bell me-1" style="color: #00d4aa !important;"></i>
+                                <span style="color: #e8ede7 !important;">3 Notifications</span>
+                            </div>
+                            <div class="header-badge success" style="color: #e8ede7 !important;">
+                                <i class="fas fa-check-circle me-1" style="color: #10b981 !important;"></i>
+                                <span style="color: #e8ede7 !important;">System Online</span>
+                            </div>
+                        @endauth
+                    </div>
+                </div>
+            </div>
         </header>
 
         @auth
@@ -495,44 +1580,52 @@
         @endauth
 
         <!-- Quick Actions Card -->
-        <div class="chart-card">
-            <h4><i class="fas fa-bolt me-2"></i>Quick Actions</h4>
-            <div class="d-flex flex-wrap gap-2 mt-3">
+        <div class="quick-actions-card animate-in" style="color: #e8ede7 !important;">
+            <h4 class="quick-actions-title" style="color: #e8ede7 !important;">
+                <i class="fas fa-bolt" style="color: #fbbf24 !important;"></i>
+                <span style="color: #e8ede7 !important;">Quick Actions</span>
+            </h4>
+            <div class="d-flex flex-wrap gap-3">
                 {{-- AI Ask temporarily disabled --}}
                 {{-- @if(auth()->user()->canAccessRoute('ai.ask-ai'))
-                    <a href="{{ route('ai.ask-ai') }}" class="btn-custom-primary">
-                        <i class="fas fa-user-plus me-2"></i> Add New Patient
+                    <a href="{{ route('ai.ask-ai') }}" class="quick-action-btn primary">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Add New Patient</span>
                     </a>
                 @endif --}}
 
                 @if(auth()->user()->canAccessRoute('diagnosis'))
-                    <a href="{{ route('diagnosis.create') }}" class="btn-custom-primary">
-                        <i class="fas fa-file-medical me-2"></i> Create Diagnosis
+                    <a href="{{ route('diagnosis.create') }}" class="quick-action-btn primary">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Create Diagnosis</span>
                     </a>
                 @endif
 
                 @if(auth()->user()->canAccessRoute('doctor.cases.overview'))
-                    <a href="{{ route('doctor.cases.overview') }}" class="btn-custom-secondary">
-                        <i class="fas fa-list me-2"></i> View All Patient Cases
+                    <a href="{{ route('doctor.cases.overview') }}" class="quick-action-btn">
+                        <i class="fas fa-list"></i>
+                        <span>View Patient Cases</span>
                     </a>
                 @endif
 
                 @if(auth()->user()->canAccessRoute('diagnosis'))
-                    <a href="{{ route('diagnosis.index') }}" class="btn-custom-secondary">
-                        <i class="fas fa-clipboard-list me-2"></i> View Diagnoses
+                    <a href="{{ route('diagnosis.index') }}" class="quick-action-btn">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>View Diagnoses</span>
                     </a>
                 @endif
 
-                <!-- Additional actions for permitted users -->
                 @if(auth()->user()->canAccessRoute('doctor.appointments.index'))
-                    <a href="{{ route('doctor.appointments.index') }}" class="btn-custom-secondary">
-                        <i class="fas fa-calendar me-2"></i> Manage Appointments
+                    <a href="{{ route('doctor.appointments.index') }}" class="quick-action-btn">
+                        <i class="fas fa-calendar"></i>
+                        <span>Appointments</span>
                     </a>
                 @endif
 
                 @if(auth()->user()->canAccessRoute('settings'))
-                    <a href="{{ route('settings') }}" class="btn-custom-secondary">
-                        <i class="fas fa-cog me-2"></i> Settings
+                    <a href="{{ route('settings') }}" class="quick-action-btn">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
                     </a>
                 @endif
             </div>
@@ -542,7 +1635,7 @@
         <section class="row mb-4 mb-md-5" aria-labelledby="statistics-heading">
             <h2 id="statistics-heading" class="visually-hidden">Patient Statistics Overview</h2>
             <div class="col-md-3 mb-4">
-                <div class="stats-card">
+                <div class="stats-card animate-in animate-in-1">
                     <div class="stats-icon">
                         <i class="fas fa-users" aria-hidden="true"></i>
                     </div>
@@ -565,25 +1658,25 @@
             </div>
 
             <div class="col-md-3 mb-4">
-                <div class="stats-card">
+                <div class="stats-card animate-in animate-in-2">
                     <div class="stats-icon">
                         <i class="fas fa-calendar-days"></i>
                     </div>
-                    <p class="stats-number">
+                    <p class="stats-number" style="color: #e8ede7 !important;">
                         @if(count($records) > 0)
                             {{ $records->first()->created_at->format('M d') }}
                         @else
                             N/A
                         @endif
                     </p>
-                    <p class="stats-label">Latest Case</p>
+                    <p class="stats-label" style="color: rgba(232, 237, 231, 0.5) !important;">Latest Case</p>
                 </div>
             </div>
 
             <div class="col-md-3 mb-4">
-                <div class="stats-card">
+                <div class="stats-card animate-in animate-in-4">
                     <div class="stats-icon">
-                        <i class="fas fa-venus-mars"></i>
+                        <i class="fas fa-venus-mars" style="color: #00d4aa !important;"></i>
                     </div>
                     <p class="stats-number">
                         @php
@@ -609,7 +1702,7 @@
             </div>
 
             <div class="col-md-3 mb-4">
-                <div class="stats-card">
+                <div class="stats-card animate-in animate-in-5">
                     <div class="stats-icon">
                         <i class="fas fa-user-doctor"></i>
                     </div>
@@ -638,13 +1731,13 @@
         <!-- Doctor-Specific Dashboard Sections -->
         <div class="row mb-5">
             <div class="col-12">
-                <div class="dashboard-header" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
-                    <h3 style="margin: 0; color: white; font-size: 1.8rem;">
-                        <i class="fas fa-stethoscope me-2"></i>
-                        Doctor Dashboard
+                <div class="doctor-section-header" style="color: #e8ede7 !important;">
+                    <h3 class="mb-2" style="color: #e8ede7 !important;">
+                        <i class="fas fa-stethoscope me-2" style="color: #00d4aa !important;"></i>
+                        <span style="color: #e8ede7 !important;">Doctor Dashboard</span>
                     </h3>
-                    <p style="margin: 0.5rem 0 0 0; opacity: 0.9; color: white;">
-                        Manage your practice and appointments
+                    <p class="mb-0 text-muted" style="color: rgba(232, 237, 231, 0.5) !important;">
+                        <span style="color: rgba(232, 237, 231, 0.5) !important;">Manage your practice and appointments</span>
                     </p>
                 </div>
             </div>
@@ -653,8 +1746,8 @@
         <!-- Doctor Statistics Cards -->
         <div class="row mb-5">
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
+                <div class="stats-card h-100 animate-in animate-in-6">
+                    <div class="stats-icon">
                         <i class="fas fa-calendar-day"></i>
                     </div>
                     <p class="stats-number">{{ $doctorData['stats']['today_appointments'] }}</p>
@@ -668,8 +1761,8 @@
             </div>
 
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
+                <div class="stats-card h-100 animate-in animate-in-7">
+                    <div class="stats-icon">
                         <i class="fas fa-clock"></i>
                     </div>
                     <p class="stats-number">{{ $doctorData['stats']['pending_appointments'] }}</p>
@@ -683,8 +1776,8 @@
             </div>
 
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
+                <div class="stats-card h-100 animate-in animate-in-8">
+                    <div class="stats-icon">
                         <i class="fas fa-star"></i>
                     </div>
                     <p class="stats-number">{{ number_format($doctorData['stats']['average_rating'], 1) }}</p>
@@ -698,8 +1791,8 @@
             </div>
 
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
+                <div class="stats-card h-100 animate-in animate-in-9">
+                    <div class="stats-icon">
                         <i class="fas fa-dollar-sign"></i>
                     </div>
                     <p class="stats-number">${{ number_format($doctorData['stats']['revenue_this_month'], 0) }}</p>
@@ -717,7 +1810,7 @@
         <div class="row mb-5">
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
+                    <div class="stats-icon">
                         <i class="fas fa-file-medical"></i>
                     </div>
                     <p class="stats-number">{{ auth()->user()->doctorDiagnoses()->count() }}</p>
@@ -727,7 +1820,7 @@
 
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
+                    <div class="stats-icon">
                         <i class="fas fa-calendar-day"></i>
                     </div>
                     <p class="stats-number">{{ auth()->user()->doctorDiagnoses()->whereDate('created_at', today())->count() }}</p>
@@ -737,18 +1830,18 @@
 
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
-                        <i class="fas fa-comments"></i>
+                    <div class="stats-icon">
+                        <i class="fas fa-comments" style="color: #00d4aa !important;"></i>
                     </div>
-                    <p class="stats-number">{{ auth()->user()->doctorDiagnoses()->withCount('followUps')->get()->sum('follow_ups_count') }}</p>
-                    <p class="stats-label">Follow-up Questions</p>
+                    <p class="stats-number" style="color: #e8ede7 !important;">{{ auth()->user()->doctorDiagnoses()->withCount('followUps')->get()->sum('follow_ups_count') }}</p>
+                    <p class="stats-label" style="color: rgba(232, 237, 231, 0.5) !important;">Follow-up Questions</p>
                 </div>
             </div>
 
             <div class="col-md-3 mb-4">
                 <div class="stats-card">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
-                        <i class="fas fa-star"></i>
+                    <div class="stats-icon">
+                        <i class="fas fa-star" style="color: #00d4aa !important;"></i>
                     </div>
                     <p class="stats-number">
                         @php
@@ -778,7 +1871,7 @@
                     @if($doctorData['todayAppointments']->count() > 0)
                         <div class="appointment-cards">
                             @foreach($doctorData['todayAppointments'] as $appointment)
-                                <div class="appointment-card mb-3 p-3 border rounded" style="background: #f8f9fa;">
+                                <div class="appointment-card mb-3 p-3 border rounded">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div class="flex-grow-1">
                                             <div class="d-flex align-items-center mb-2">
@@ -909,10 +2002,10 @@
                         </h6>
                         <div class="appointment-list">
                             @foreach($doctorData['pendingAppointments'] as $appointment)
-                                <div class="appointment-item p-3 mb-2 rounded" style="background: #fff9db; border: 1px solid #f0e498;">
+                                <div class="appointment-item p-3 mb-2 rounded" style="background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2);">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
-                                            <strong class="text-dark">{{ $appointment->patient->name ?? 'Unknown Patient' }}</strong><br>
+                                            <strong class="text-white">{{ $appointment->patient->name ?? 'Unknown Patient' }}</strong><br>
                                             <small class="text-muted">
                                                 <i class="fas fa-calendar me-1"></i>
                                                 {{ $appointment->appointment_date->format('M j, g:i A') }}
@@ -951,7 +2044,7 @@
                         </h6>
                         <div class="review-list">
                             @foreach($doctorData['recentReviews'] as $review)
-                                <div class="review-item p-3 mb-2 rounded" style="background: #f8f9fa;">
+                                <div class="review-item p-3 mb-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div class="text-warning">
                                             @for($i = 1; $i <= 5; $i++)
@@ -962,12 +2055,12 @@
                                                 @endif
                                             @endfor
                                         </div>
-                                        <span class="badge bg-light text-dark rounded-pill px-2 py-1">
+                                        <span class="badge bg-light rounded-pill px-2 py-1">
                                             {{ $review->rating }}/5
                                         </span>
                                     </div>
                                     @if($review->comment)
-                                        <p class="mb-2 small text-dark">{{ Str::limit($review->comment, 80) }}</p>
+                                        <p class="mb-2 small text-white">{{ Str::limit($review->comment, 80) }}</p>
                                     @endif
                                     <small class="text-muted d-block">
                                         <i class="fas fa-user me-1"></i>
@@ -1080,7 +2173,7 @@
         <!-- Cases Over Time Chart -->
         <div class="row mb-5">
             <div class="col-lg-8 mb-4">
-                <div class="table-card">
+                <div class="table-card animate-in">
                     <h6 class="table-title mb-0">
                         <i class="fas fa-chart-line me-2"></i>Diagnosed Cases Over Time
                     </h6>
@@ -1088,8 +2181,8 @@
                 </div>
             </div>
             <div class="col-lg-4 mb-4">
-                <div class="stats-card h-100">
-                    <div class="stats-icon" style="background: linear-gradient(135deg, #2c3e50 0%, #00d4aa 100%);">
+                <div class="stats-card h-100 animate-in animate-in-10">
+                    <div class="stats-icon">
                         <i class="fas fa-calendar-week"></i>
                     </div>
                     <p class="stats-number">{{ $weeklyCount }}</p>
@@ -1104,7 +2197,7 @@
         </div>
 
         <!-- Advanced Statistics & Filters -->
-        <div class="table-card mb-5">
+        <div class="table-card mb-5 animate-in">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="table-title mb-0">
                     <i class="fas fa-chart-pie me-2"></i>Advanced Statistics
@@ -1433,8 +2526,8 @@
                 <div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true" role="dialog">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white;">
-                                <h5 class="modal-title" id="patientModalLabel" style="color: #fff">Patient Details</h5>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="patientModalLabel">Patient Details</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close patient details modal"></button>
                             </div>
                             <div class="modal-body">
@@ -1919,18 +3012,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="row">
                     <div class="col-md-6">
                         <h6 class="text-primary mb-2"><i class="fas fa-stethoscope me-1"></i> Symptoms</h6>
-                        <p class="bg-light p-3 rounded">${visitData.symptoms || 'Not specified'}</p>
+                        <p class="bg-light p-3 rounded" style="color: var(--offwhite);">${visitData.symptoms || 'Not specified'}</p>
                     </div>
                     <div class="col-md-6">
                         <h6 class="text-primary mb-2"><i class="fas fa-file-medical me-1"></i> Diagnosis</h6>
-                        <p class="bg-light p-3 rounded">${visitData.diagnosis || 'Not specified'}</p>
+                        <p class="bg-light p-3 rounded" style="color: var(--offwhite);">${visitData.diagnosis || 'Not specified'}</p>
                     </div>
                 </div>
                 ${visitData.notes ? `
                     <div class="row mt-3">
                         <div class="col-12">
                             <h6 class="text-primary mb-2"><i class="fas fa-sticky-note me-1"></i> Notes</h6>
-                            <p class="bg-light p-3 rounded">${visitData.notes}</p>
+                            <p class="bg-light p-3 rounded" style="color: var(--offwhite);">${visitData.notes}</p>
                         </div>
                     </div>
                 ` : ''}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
+<html dir="ltr" lang="en-US" style="background: #060d1f !important;">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -23,6 +23,9 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/logo-fix.css') }}">
     <link rel="stylesheet" href="{{ asset('favicon.ico') }}">
+    <!-- Global Themes - Light and Dark -->
+    <link rel="stylesheet" href="{{ asset('css/global-light-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/global-dark-theme.css') }}">
 
     <style>
         body, * {
@@ -50,6 +53,12 @@
         }
         body {
             background: #060d1f !important;
+        }
+        .dashboard-container {
+            background: #060d1f !important;
+        }
+        .container {
+            background: transparent !important;
         }
         .sidebar-brand {
             padding: 1.25rem;
@@ -281,13 +290,16 @@
         .text-dark { color: var(--offwhite) !important; }
         .text-secondary { color: var(--muted) !important; }
         .bg-light { background: rgba(255,255,255,0.04) !important; }
+        .bg-warning.text-dark, .bg-warning { background: rgba(251,191,36,0.15) !important; color: var(--offwhite) !important; }
+        .bg-warning.text-dark { color: var(--offwhite) !important; }
+        .badge.bg-light.text-dark { background: rgba(255,255,255,0.06) !important; color: var(--offwhite) !important; }
         .bg-white { background: var(--card-bg) !important; }
         .border { border-color: var(--card-border) !important; }
         .border-top { border-color: var(--card-border) !important; }
         .text-center { color: var(--muted); }
     </style>
 
-    @yield('styles')
+    @stack('styles')
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- PWA Meta Tags -->
@@ -299,7 +311,7 @@
     <link rel="apple-touch-icon" href="{{ asset('icons/doctor-icon-192.png') }}">
     <title>@yield('title', 'Doctor Dashboard | MedCura AI')</title>
 </head>
-<body>
+<body style="background: #060d1f !important;">
     <!-- Sidebar overlay for mobile -->
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="document.querySelector('.doctor-sidebar').classList.remove('show')"></div>
 
@@ -325,14 +337,16 @@
                     </a>
                 </div>
 
+                <!-- Dashboard -->
                 <div class="nav-section">Overview</div>
                 <div class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </div>
 
+                <!-- Today's Work -->
                 <div class="nav-divider"></div>
                 <div class="nav-section">Today's Work</div>
                 <div class="nav-item">
@@ -351,14 +365,37 @@
                     </a>
                 </div>
 
+                <!-- Clinical Section -->
                 <div class="nav-divider"></div>
-                <div class="nav-section">Patient Management</div>
+                <div class="nav-section">Clinical</div>
                 <div class="nav-item">
-                    <a href="{{ route('doctor.appointments.index') }}" class="nav-link {{ request()->routeIs('doctor.appointments.*') ? 'active' : '' }}">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>All Appointments</span>
+                    <a href="{{ route('ai.ambient-listening.index') }}" class="nav-link {{ request()->routeIs('ai.ambient-listening.index') ? 'active' : '' }}">
+                        <i class="fas fa-microphone"></i>
+                        <span>Ambient Listening</span>
                     </a>
                 </div>
+                <div class="nav-item">
+                    <a href="{{ route('ai.ambient-listening.recorded-voices') }}" class="nav-link {{ request()->routeIs('ai.ambient-listening.recorded-voices') ? 'active' : '' }}">
+                        <i class="fas fa-history"></i>
+                        <span>Session Recordings</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('diagnosis.index') }}" class="nav-link {{ request()->routeIs('diagnosis.index') ? 'active' : '' }}">
+                        <i class="fas fa-stethoscope"></i>
+                        <span>Diagnoses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('clinical.monitoring') }}" class="nav-link {{ request()->routeIs('clinical.monitoring') ? 'active' : '' }}">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Clinical Monitoring</span>
+                    </a>
+                </div>
+
+                <!-- Patients Section -->
+                <div class="nav-divider"></div>
+                <div class="nav-section">Patients</div>
                 <div class="nav-item">
                     <a href="{{ route('doctor.patients.index') }}" class="nav-link {{ request()->routeIs('doctor.patients.*') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>
@@ -366,15 +403,31 @@
                     </a>
                 </div>
                 <div class="nav-item">
+                    <a href="{{ route('doctor.notes.index') }}" class="nav-link {{ request()->routeIs('doctor.notes.*') ? 'active' : '' }}">
+                        <i class="fas fa-sticky-note"></i>
+                        <span>Doctor Notes</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.chat.index') }}" class="nav-link {{ request()->routeIs('doctor.chat.*') ? 'active' : '' }}">
+                        <i class="fas fa-comments"></i>
+                        <span>Communications</span>
+                    </a>
+                </div>
+                <div class="nav-item">
                     <a href="{{ route('doctor.cases.overview') }}" class="nav-link {{ request()->routeIs('doctor.cases.*') ? 'active' : '' }}">
-                        <i class="fas fa-folder-open"></i>
-                        <span>Medical Records</span>
-                        @php
-                            $casesCount = \App\Models\Diagnosis::where('doctor_id', auth()->id())->count();
-                        @endphp
-                        @if($casesCount > 0)
-                            <span class="nav-badge">{{ $casesCount }}</span>
-                        @endif
+                        <i class="fas fa-folder"></i>
+                        <span>Cases Overview</span>
+                    </a>
+                </div>
+
+                <!-- Practice Section -->
+                <div class="nav-divider"></div>
+                <div class="nav-section">Practice</div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.appointments.index') }}" class="nav-link {{ request()->routeIs('doctor.appointments.*') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
                     </a>
                 </div>
                 <div class="nav-item">
@@ -383,40 +436,124 @@
                         <span>New Appointment</span>
                     </a>
                 </div>
-
-                <div class="nav-divider"></div>
-                <div class="nav-section">Tools</div>
                 <div class="nav-item">
-                    <a href="{{ route('ai.ambient-listening.index') }}" class="nav-link {{ request()->routeIs('ai.ambient-listening.index') ? 'active' : '' }}">
-                        <i class="fas fa-ear-listen"></i>
-                        <span>Ambient Listening</span>
+                    <a href="{{ route('doctor.availability.index') }}" class="nav-link {{ request()->routeIs('doctor.availability.*') ? 'active' : '' }}">
+                        <i class="fas fa-clock"></i>
+                        <span>Availability</span>
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="{{ route('ai.ambient-listening.recorded-voices') }}" class="nav-link {{ request()->routeIs('ai.ambient-listening.recorded-voices') ? 'active' : '' }}">
-                        <i class="fas fa-history"></i>
-                        <span>Consultation History</span>
+                    <a href="{{ route('doctor.settings.appointments') }}" class="nav-link {{ request()->routeIs('doctor.settings.appointments') ? 'active' : '' }}">
+                        <i class="fas fa-cogs"></i>
+                        <span>Appointment Settings</span>
                     </a>
                 </div>
 
+                <!-- Analytics Section -->
                 <div class="nav-divider"></div>
-                <div class="nav-section">Practice</div>
+                <div class="nav-section">Analytics</div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.analytics.index') }}" class="nav-link {{ request()->routeIs('doctor.analytics.*') ? 'active' : '' }}">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </div>
                 <div class="nav-item">
                     <a href="{{ route('reviews.index') }}" class="nav-link {{ request()->routeIs('reviews.index') ? 'active' : '' }}">
-                        <i class="fas fa-star-half-alt"></i>
+                        <i class="fas fa-star"></i>
                         <span>Reviews</span>
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="{{ route('doctor.blog.index') }}" class="nav-link {{ request()->routeIs('doctor.blog.*') ? 'active' : '' }}">
-                        <i class="fas fa-newspaper"></i>
-                        <span>Blog</span>
+                    <a href="{{ route('doctor.testimonials.index') }}" class="nav-link {{ request()->routeIs('doctor.testimonials.*') ? 'active' : '' }}">
+                        <i class="fas fa-comments"></i>
+                        <span>Testimonials</span>
+                    </a>
+                </div>
+
+                <!-- Business Tools Section -->
+                <div class="nav-divider"></div>
+                <div class="nav-section">Business</div>
+                <div class="nav-item">
+                    <a href="{{ route('sms.config.index') }}" class="nav-link {{ request()->routeIs('sms.config.*') ? 'active' : '' }}">
+                        <i class="fas fa-sms"></i>
+                        <span>SMS Configuration</span>
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="{{ route('doctor.chat.index') }}" class="nav-link {{ request()->routeIs('doctor.chat.*') ? 'active' : '' }}">
-                        <i class="fas fa-comments"></i>
-                        <span>Messages</span>
+                    <a href="{{ route('doctor.landing-page.index') }}" class="nav-link {{ request()->routeIs('doctor.landing-page.*') ? 'active' : '' }}">
+                        <i class="fas fa-globe"></i>
+                        <span>Landing Page</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.blog.index') }}" class="nav-link {{ request()->routeIs('doctor.blog.*') ? 'active' : '' }}">
+                        <i class="fas fa-blog"></i>
+                        <span>Blog Posts</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.claims.index') }}" class="nav-link {{ request()->routeIs('doctor.claims.*') ? 'active' : '' }}">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span>Claims</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.kiosk.setup') }}" class="nav-link {{ request()->routeIs('doctor.kiosk.*') ? 'active' : '' }}">
+                        <i class="fas fa-desktop"></i>
+                        <span>Kiosk Setup</span>
+                    </a>
+                </div>
+                @if(!auth()->user()->hospital_id)
+                <div class="nav-item">
+                    <a href="{{ route('invoices.index') }}" class="nav-link {{ request()->routeIs('invoices.index') ? 'active' : '' }}">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Billing & Invoices</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('subscription.manage') }}" class="nav-link {{ request()->routeIs('subscription.manage') ? 'active' : '' }}">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Subscription</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('subscription.pricing') }}" class="nav-link {{ request()->routeIs('subscription.pricing') ? 'active' : '' }}">
+                        <i class="fas fa-tags"></i>
+                        <span>Pricing</span>
+                    </a>
+                </div>
+                @endif
+
+                <!-- HEP Section (Physical Therapy) -->
+                @php
+                    $doctor = auth()->user()->doctor;
+                    $showHep = $doctor && $doctor->specialty && in_array(strtolower($doctor->specialty->name), ['orthopedics', 'physical therapy', 'sports medicine', 'rehabilitation']);
+                @endphp
+                @if($showHep)
+                <div class="nav-divider"></div>
+                <div class="nav-section">Physical Therapy</div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.hep.index') }}" class="nav-link {{ request()->routeIs('doctor.hep.*') ? 'active' : '' }}">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>Home Exercise Programs</span>
+                    </a>
+                </div>
+                @endif
+
+                <!-- Account Section -->
+                <div class="nav-divider"></div>
+                <div class="nav-section">Account</div>
+                <div class="nav-item">
+                    <a href="{{ route('doctor.profile.edit') }}" class="nav-link {{ request()->routeIs('doctor.profile.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-md"></i>
+                        <span>Doctor Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{ route('sub-users.index') }}" class="nav-link {{ request()->routeIs('sub-users.*') ? 'active' : '' }}">
+                        <i class="fas fa-users"></i>
+                        <span>Sub-Users</span>
                     </a>
                 </div>
             </div>
@@ -428,7 +565,7 @@
                     </div>
                     <div>
                         <div class="text-white" style="font-size: 0.9rem; font-weight: 500;">{{ Auth::user()->name ?? 'Doctor' }}</div>
-                        <small class="text-white-50">{{ Auth::user()->doctor->specialty ?? 'Physician' }}</small>
+                        <small class="text-white-50">{{ Auth::user()->doctor->specialty->name ?? 'Physician' }}</small>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
@@ -438,8 +575,12 @@
                     </button>
                 </form>
             </div>
+            <!-- Theme Toggle -->
+            <button data-theme-toggle class="btn btn-outline-secondary btn-sm ms-2" type="button" aria-label="Switch to light theme" title="Toggle theme">
+                <i data-theme-icon class="fas fa-sun" aria-hidden="true"></i>
+            </button>
         </nav>
-        <main class="doctor-content">
+        <main class="doctor-content" style="background: #060d1f !important;">
             @yield('content')
         </main>
     </div>
@@ -597,5 +738,8 @@
         });
     })();
     </script>
+    
+    <!-- Theme Switcher -->
+    <script src="{{ asset('js/theme-switcher.js') }}"></script>
 </body>
 </html>
