@@ -27,6 +27,7 @@ use App\Http\Controllers\Doctor\BlogController;
 use App\Http\Controllers\Doctor\ChatController;
 use App\Http\Controllers\Doctor\TestimonialController;
 use App\Http\Controllers\Doctor\AnalyticsController;
+use App\Http\Controllers\Doctor\ConsultationWizardController;
 use App\Http\Controllers\PublicChatController;
 use App\Http\Controllers\Admin\MonthlyInvoiceController;
 use App\Http\Controllers\Admin\SubscriptionPlanController;
@@ -765,6 +766,14 @@ Route::middleware(['auth', 'admin.impersonation', 'doctor', 'sub.user.permission
     Route::get('/on-deck', [DoctorDashboardController::class, 'onDeck'])->name('on-deck');
     Route::post('/appointments/{appointment}/status', [DoctorDashboardController::class, 'updateAppointmentStatus'])->name('appointments.status');
     Route::post('/appointments/reorder', [DoctorDashboardController::class, 'reorderAppointments'])->name('appointments.reorder');
+
+    // Consultation Wizard Routes
+    Route::get('/consultation-wizard', [ConsultationWizardController::class, 'index'])->name('consultation-wizard');
+    Route::get('/consultation-wizard/patient/{patientId}', [ConsultationWizardController::class, 'getPatientData'])->name('consultation-wizard.patient');
+    Route::get('/consultation-wizard/patient/{patientId}/ai-summary', [ConsultationWizardController::class, 'getAICaseSummary'])->name('consultation-wizard.ai-summary');
+    Route::post('/consultation-wizard/save-draft', [ConsultationWizardController::class, 'saveDraft'])->name('consultation-wizard.save-draft');
+    Route::get('/consultation-wizard/load-draft', [ConsultationWizardController::class, 'loadDraft'])->name('consultation-wizard.load-draft');
+    Route::post('/consultation-wizard/complete', [ConsultationWizardController::class, 'completeConsultation'])->name('consultation-wizard.complete');
 
     // Prescription routes for appointments
     Route::post('/prescriptions/{appointment}', [PrescriptionController::class, 'store'])->name('prescriptions.store');

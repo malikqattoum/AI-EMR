@@ -3,27 +3,36 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAppointmentRequest;
 use App\Models\Appointment;
 use App\Models\Review;
 use App\Models\DoctorNote;
-use App\Mail\AppointmentConfirmationMail;
-use App\Mail\AppointmentCancellationMail;
-use App\Mail\AppointmentCompletionMail;
-use App\Mail\FollowUpAppointmentMail;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Traits\HandlesEffectiveDoctor;
+use App\Services\AppointmentEmailService;
+use App\Services\AppointmentBookingService;
+use App\Services\AppointmentStatusService;
+use App\Services\DashboardStatsService;
+use App\Services\RiskPredictionService;
+use App\Services\PredictiveAnalyticsService;
 
 class DashboardController extends Controller
 {
     use HandlesEffectiveDoctor;
-    public function __construct()
-    {
+
+    public function __construct(
+        protected AppointmentEmailService $emailService,
+        protected AppointmentBookingService $bookingService,
+        protected AppointmentStatusService $statusService,
+        protected DashboardStatsService $statsService,
+        protected RiskPredictionService $riskService
+    ) {
         // Middleware is handled at route level
     }
 
@@ -72,17 +81,47 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // Calculate statistics
-        $stats = $this->getDashboardStats($doctor);
+        // Calculate statistics using service
+        $stats = $this->statsService->getDoctorDashboardStats($doctor);
 
-        return view('doctor.dashboard', compact(
+        // Calculate additional stats for "Needs Attention" section
+        $completedToday = $doctor->appointments()
+            ->where('status', 'completed')
+            ->whereDate('completed_at', today())
+            ->count();
+
+        $highRiskPatients = $doctor->appointments()
+            ->whereDate('appointment_date', today())
+            ->whereHas('patient.patientRiskScores', function ($q) {
+                $q->whereRaw('GREATEST(no_show_risk, hospitalization_risk) >= 0.7');
+            })
+            ->distinct()
+            ->count('patient_id');
+
+        // Add to stats
+        $stats['completed_today'] = $completedToday;
+        $stats['high_risk_patients'] = $highRiskPatients;
+
+        // Get counts for "Needs Attention" section
+        $unreadMessages = 0; // TODO: Implement when messages system is ready
+        $pendingFollowUps = $doctor->appointments()
+            ->where('appointment_type', 'follow-up')
+            ->where('status', 'scheduled')
+            ->where('appointment_date', '>', now())
+            ->count();
+        $unreviewedLabs = 0; // TODO: Implement when lab system is ready
+
+        return view('doctor.dashboard-improved', compact(
             'doctor',
             'todayAppointments',
             'upcomingAppointments',
             'pendingAppointments',
             'recentReviews',
             'recentNotes',
-            'stats'
+            'stats',
+            'unreadMessages',
+            'pendingFollowUps',
+            'unreviewedLabs'
         ));
     }
 
@@ -114,18 +153,13 @@ class DashboardController extends Controller
             $query->whereHas('patient.patientRiskScores', function ($q) use ($request) {
                 $q->whereColumn('appointment_id', 'appointments.id');
 
-                switch ($request->risk_category) {
-                    case 'low':
-                        $q->whereRaw('GREATEST(no_show_risk, hospitalization_risk) < 0.3');
-                        break;
-                    case 'medium':
-                        $q->whereRaw('GREATEST(no_show_risk, hospitalization_risk) >= 0.3')
-                          ->whereRaw('GREATEST(no_show_risk, hospitalization_risk) < 0.7');
-                        break;
-                    case 'high':
-                        $q->whereRaw('GREATEST(no_show_risk, hospitalization_risk) >= 0.7');
-                        break;
-                }
+                match ($request->risk_category) {
+                    'low' => $q->whereRaw('GREATEST(no_show_risk, hospitalization_risk) < 0.3'),
+                    'medium' => $q->whereRaw('GREATEST(no_show_risk, hospitalization_risk) >= 0.3')
+                        ->whereRaw('GREATEST(no_show_risk, hospitalization_risk) < 0.7'),
+                    'high' => $q->whereRaw('GREATEST(no_show_risk, hospitalization_risk) >= 0.7'),
+                    default => null,
+                };
             });
         }
 
@@ -158,7 +192,7 @@ class DashboardController extends Controller
         $appointment->load(['patient', 'review']);
 
         // Generate risk predictions if they don't exist for this appointment
-        $this->ensureRiskPredictions($appointment);
+        $this->riskService->ensurePredictionsExist($appointment);
 
         // Reload appointment with risk scores
         $appointment->load(['patient.patientRiskScores' => function($query) use ($appointment) {
@@ -175,21 +209,11 @@ class DashboardController extends Controller
     {
         $doctor = $this->getEffectiveDoctor();
 
-        // Check if effective doctor exists
-        if (!$doctor) {
-            Log::error('No effective doctor found for user during appointment confirmation', [
-                'user_id' => Auth::id(),
-                'appointment_id' => $appointment->id,
-                'user_role' => Auth::user()->role,
-                'is_sub_user' => Auth::user()->isSubUser(),
-                'parent_user_id' => Auth::user()->parent_user_id,
-            ]);
-
+        if (!$this->validateDoctorExists($doctor)) {
             return redirect()->route('dashboard')
                 ->with('error', 'No doctor profile found. Please contact support if you believe this is an error.');
         }
 
-        // Check if this appointment belongs to the doctor
         if ($appointment->doctor_id !== $doctor->id) {
             abort(403);
         }
@@ -199,46 +223,10 @@ class DashboardController extends Controller
         }
 
         $appointment->confirm();
-
-        // Load patient relationship for email sending
         $appointment->load('patient');
 
-        // Send confirmation email to patient
-        if ($appointment->patient && $appointment->patient->email) {
-            Log::info('Sending appointment confirmation email', [
-                'appointment_id' => $appointment->id,
-                'patient_id' => $appointment->patient->id,
-                'patient_email' => $appointment->patient->email,
-                'doctor_id' => $appointment->doctor_id,
-                'appointment_date' => $appointment->appointment_date,
-                'status' => $appointment->status
-            ]);
-
-            try {
-                Mail::to($appointment->patient->email)->send(new AppointmentConfirmationMail($appointment));
-                Log::info('Appointment confirmation email sent successfully', [
-                    'appointment_id' => $appointment->id,
-                    'patient_email' => $appointment->patient->email
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Failed to send appointment confirmation email', [
-                    'appointment_id' => $appointment->id,
-                    'patient_email' => $appointment->patient->email,
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
-                ]);
-                // Continue with the process even if email fails
-            }
-        } else {
-            Log::warning('Cannot send appointment confirmation email - missing patient or email', [
-                'appointment_id' => $appointment->id,
-                'has_patient' => $appointment->patient ? true : false,
-                'patient_id' => $appointment->patient ? $appointment->patient->id : null,
-                'has_email' => $appointment->patient && $appointment->patient->email ? true : false,
-                'guest_appointment' => $appointment->isGuestAppointment(),
-                'guest_email' => $appointment->guest_email
-            ]);
-        }
+        // Send confirmation email using service
+        $this->emailService->sendConfirmation($appointment);
 
         return back()->with('success', 'Appointment confirmed successfully.');
     }
@@ -250,21 +238,11 @@ class DashboardController extends Controller
     {
         $doctor = $this->getEffectiveDoctor();
 
-        // Check if effective doctor exists
-        if (!$doctor) {
-            Log::error('No effective doctor found for user during appointment cancellation', [
-                'user_id' => Auth::id(),
-                'appointment_id' => $appointment->id,
-                'user_role' => Auth::user()->role,
-                'is_sub_user' => Auth::user()->isSubUser(),
-                'parent_user_id' => Auth::user()->parent_user_id,
-            ]);
-
+        if (!$this->validateDoctorExists($doctor)) {
             return redirect()->route('dashboard')
                 ->with('error', 'No doctor profile found. Please contact support if you believe this is an error.');
         }
 
-        // Check if this appointment belongs to the doctor
         if ($appointment->doctor_id !== $doctor->id) {
             abort(403);
         }
@@ -278,47 +256,10 @@ class DashboardController extends Controller
         ]);
 
         $appointment->cancel('doctor', $request->cancellation_reason);
-
-        // Load patient relationship for email sending
         $appointment->load('patient');
 
-        // Send cancellation email to patient
-        if ($appointment->patient && $appointment->patient->email) {
-            Log::info('Sending appointment cancellation email', [
-                'appointment_id' => $appointment->id,
-                'patient_id' => $appointment->patient->id,
-                'patient_email' => $appointment->patient->email,
-                'doctor_id' => $appointment->doctor_id,
-                'appointment_date' => $appointment->appointment_date,
-                'status' => $appointment->status,
-                'cancellation_reason' => $request->cancellation_reason
-            ]);
-
-            try {
-                Mail::to($appointment->patient->email)->send(new AppointmentCancellationMail($appointment, $request->cancellation_reason));
-                Log::info('Appointment cancellation email sent successfully', [
-                    'appointment_id' => $appointment->id,
-                    'patient_email' => $appointment->patient->email
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Failed to send appointment cancellation email', [
-                    'appointment_id' => $appointment->id,
-                    'patient_email' => $appointment->patient->email,
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
-                ]);
-                // Continue with the process even if email fails
-            }
-        } else {
-            Log::warning('Cannot send appointment cancellation email - missing patient or email', [
-                'appointment_id' => $appointment->id,
-                'has_patient' => $appointment->patient ? true : false,
-                'patient_id' => $appointment->patient ? $appointment->patient->id : null,
-                'has_email' => $appointment->patient && $appointment->patient->email ? true : false,
-                'guest_appointment' => $appointment->isGuestAppointment(),
-                'guest_email' => $appointment->guest_email
-            ]);
-        }
+        // Send cancellation email using service
+        $this->emailService->sendCancellation($appointment, $request->cancellation_reason);
 
         return back()->with('success', 'Appointment cancelled successfully.');
     }
@@ -330,7 +271,6 @@ class DashboardController extends Controller
     {
         $doctor = $this->getEffectiveDoctor();
 
-        // Check if this appointment belongs to the doctor
         if ($appointment->doctor_id !== $doctor->id) {
             abort(403);
         }
@@ -350,48 +290,11 @@ class DashboardController extends Controller
         ]);
 
         $appointment->complete();
-
-        // Load patient relationship for email sending
         $appointment->load('patient');
 
-        // Send completion email to patient with review request
-        if ($appointment->patient && $appointment->patient->email) {
-            Log::info('Sending appointment completion email', [
-                'appointment_id' => $appointment->id,
-                'patient_id' => $appointment->patient->id,
-                'patient_email' => $appointment->patient->email,
-                'doctor_id' => $appointment->doctor_id,
-                'appointment_date' => $appointment->appointment_date,
-                'status' => $appointment->status,
-                'diagnosis_id' => $appointment->diagnosis_id
-            ]);
-
-            try {
-                $diagnosis = $appointment->diagnosis_id ? \App\Models\Diagnosis::find($appointment->diagnosis_id) : null;
-                Mail::to($appointment->patient->email)->send(new AppointmentCompletionMail($appointment, $diagnosis));
-                Log::info('Appointment completion email sent successfully', [
-                    'appointment_id' => $appointment->id,
-                    'patient_email' => $appointment->patient->email
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Failed to send appointment completion email', [
-                    'appointment_id' => $appointment->id,
-                    'patient_email' => $appointment->patient->email,
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
-                ]);
-                // Continue with the process even if email fails
-            }
-        } else {
-            Log::warning('Cannot send appointment completion email - missing patient or email', [
-                'appointment_id' => $appointment->id,
-                'has_patient' => $appointment->patient ? true : false,
-                'patient_id' => $appointment->patient ? $appointment->patient->id : null,
-                'has_email' => $appointment->patient && $appointment->patient->email ? true : false,
-                'guest_appointment' => $appointment->isGuestAppointment(),
-                'guest_email' => $appointment->guest_email
-            ]);
-        }
+        // Send completion email using service
+        $diagnosis = $appointment->diagnosis_id ? \App\Models\Diagnosis::find($appointment->diagnosis_id) : null;
+        $this->emailService->sendCompletion($appointment, $diagnosis);
 
         return back()->with('success', 'Appointment completed successfully.');
     }
@@ -490,130 +393,50 @@ class DashboardController extends Controller
     /**
      * Store a newly created appointment
      */
-    public function storeAppointment(Request $request)
+    public function storeAppointment(StoreAppointmentRequest $request)
     {
-        // Log that the method was called
-        Log::info('storeAppointment method called', [
-            'current_user_id' => Auth::id(),
-            'request_method' => $request->method(),
-            'request_data' => $request->all(),
-            'has_csrf_token' => $request->has('_token'),
-        ]);
-
         $doctor = $this->getEffectiveDoctor();
 
-        // Prepare validation rules based on patient type
-        $rules = [
-            'appointment_date' => 'required|date|after:now',
-            'appointment_type' => 'required|in:' . implode(',', $doctor->getEnabledAppointmentTypes()),
-            'reason' => 'required|string|max:500',
-            'patient_type' => 'required|in:existing,new',
-        ];
-
-        if ($request->patient_type === 'existing') {
-            $rules['existing_patient_id'] = 'required|exists:users,id';
-        } else {
-            $rules['patient_name'] = 'required|string|max:255';
-            $rules['patient_email'] = 'required|email|unique:users,email';
-            $rules['patient_phone'] = 'required|string|max:20';
-            $rules['patient_date_of_birth'] = 'required|date|before:today';
-            $rules['patient_gender'] = 'required|in:male,female,other';
-            $rules['patient_terms'] = 'required|accepted';
-        }
-
-        try {
-            $request->validate($rules);
-            Log::info('Validation passed successfully');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error('Validation failed', [
-                'errors' => $e->errors(),
-                'request_data' => $request->all(),
-            ]);
-            throw $e;
+        if (!$this->validateDoctorExists($doctor)) {
+            return redirect()->route('dashboard')
+                ->with('error', 'No doctor profile found. Please contact support.');
         }
 
         // Validate slot availability
-        $appointmentDate = Carbon::parse($request->appointment_date);
-        $slots = $doctor->getAvailableSlots($appointmentDate->format('Y-m-d'));
-        $requestedSlot = $slots->first(fn($slot) => $slot['datetime'] === $appointmentDate->toDateTimeString());
-
-        if (!$requestedSlot) {
-            return back()->withErrors(['appointment_date' => 'Selected time slot is not available.']);
+        $slotValidation = $this->bookingService->validateSlot($doctor, $request->appointment_date);
+        
+        if (!$slotValidation['valid']) {
+            return back()->withErrors(['appointment_date' => $slotValidation['error']]);
         }
 
-        // Handle patient creation/selection
+        // Create appointment based on patient type
         if ($request->patient_type === 'existing') {
-            $patient = \App\Models\User::findOrFail($request->existing_patient_id);
-        } else {
-            // Auto-generate a secure password
-            $generatedPassword = \Illuminate\Support\Str::random(12);
-
-            // Calculate age from date of birth
-            $birthDate = \Carbon\Carbon::parse($request->patient_date_of_birth);
-            $age = $birthDate->age;
-
-            $patient = \App\Models\User::create([
-                'name' => $request->patient_name,
-                'email' => $request->patient_email,
-                'phone' => $request->patient_phone,
-                'date_of_birth' => $request->patient_date_of_birth,
-                'age' => $age, // Calculate age from date of birth
-                'gender' => $request->patient_gender,
-                'password' => bcrypt($generatedPassword),
-                'role' => 'patient',
-                'email_verified_at' => now(), // Auto-verify since created by doctor
-                'primary_doctor_id' => $doctor->user_id, // Assign the doctor as primary doctor
+            $result = $this->bookingService->bookForExistingPatient($doctor, [
+                'patient_id' => $request->existing_patient_id,
+                'appointment_date' => $request->appointment_date,
+                'appointment_type' => $request->appointment_type,
+                'reason' => $request->reason,
             ]);
-
-            // Send welcome notification with login credentials
-            try {
-                $patient->notify(new \App\Notifications\SystemAlertNotification(
-                    'Welcome to Our Medical Portal',
-                    "Your patient account has been created by Dr. {$doctor->user->name}.\n\n" .
-                    "Login Email: {$request->patient_email}\n" .
-                    "Temporary Password: {$generatedPassword}\n\n" .
-                    "Please log in and change your password. You can manage your appointments and health records.",
-                    'success',
-                    [
-                        'link' => route('login'),
-                        'link_text' => 'Sign In to Your Account'
-                    ]
-                ));
-            } catch (\Exception $e) {
-                Log::error('Failed to send welcome notification to new patient: ' . $e->getMessage());
-            }
+        } else {
+            $result = $this->bookingService->bookForNewPatient($doctor, [
+                'patient_name' => $request->patient_name,
+                'patient_email' => $request->patient_email,
+                'patient_phone' => $request->patient_phone,
+                'patient_date_of_birth' => $request->patient_date_of_birth,
+                'patient_gender' => $request->patient_gender,
+                'appointment_date' => $request->appointment_date,
+                'appointment_type' => $request->appointment_type,
+                'reason' => $request->reason,
+            ]);
         }
 
-        // Create appointment
-        $appointment = Appointment::create([
-            'doctor_id' => $doctor->id,
-            'patient_id' => $patient->id,
-            'appointment_date' => $appointmentDate,
-            'appointment_end' => $appointmentDate->copy()->addMinutes($doctor->appointment_duration),
-            'status' => $doctor->auto_approve_appointments ? 'confirmed' : 'pending',
-            'appointment_type' => $request->appointment_type,
-            'reason' => $request->reason,
-            'consultation_fee' => $doctor->consultation_fee,
-        ]);
-
-        // Confirm appointment if auto-approve is enabled (same as patient booking)
-        if ($doctor->auto_approve_appointments) {
-            $appointment->confirm();
+        if (!$result['success']) {
+            return back()->withErrors(['error' => $result['message']])->withInput();
         }
 
-        // Log appointment creation for debugging
-        Log::info('Appointment created by doctor', [
-            'appointment_id' => $appointment->id,
-            'doctor_id' => $appointment->doctor_id,
-            'patient_id' => $appointment->patient_id,
-            'appointment_date' => $appointment->appointment_date,
-            'status' => $appointment->status,
-            'auto_approve' => $doctor->auto_approve_appointments,
-            'current_user_id' => Auth::id(),
-            'effective_doctor_id' => $doctor->id,
-        ]);
+        $appointment = $result['data']['appointment'] ?? $result['data'];
 
-        // Send notifications (same as patient booking flow)
+        // Send notifications
         $this->sendAppointmentNotifications($appointment);
 
         return redirect()->route('doctor.appointments.show', $appointment)
@@ -831,9 +654,15 @@ class DashboardController extends Controller
     /**
      * Get calendar events for appointments (AJAX)
      */
-    public function getCalendarEvents(Request $request)
+    public function getCalendarEvents(Request $request): JsonResponse
     {
         $doctor = $this->getEffectiveDoctor();
+        
+        $request->validate([
+            'start' => 'required|date',
+            'end' => 'required|date|after_or_equal:start',
+        ]);
+        
         $start = $request->start;
         $end = $request->end;
 
@@ -863,49 +692,6 @@ class DashboardController extends Controller
         return response()->json($events);
     }
 
-    /**
-     * Get dashboard statistics
-     */
-    private function getDashboardStats($doctor)
-    {
-        $today = today();
-        $thisMonth = now()->startOfMonth();
-        $lastMonth = now()->subMonth()->startOfMonth();
-
-        return [
-            'total_appointments' => $doctor->appointments()->count(),
-            'today_appointments' => $doctor->appointments()->whereDate('appointment_date', $today)->count(),
-            'pending_appointments' => $doctor->appointments()->where('status', 'pending')->count(),
-            'this_month_appointments' => $doctor->appointments()->whereDate('appointment_date', '>=', $thisMonth)->count(),
-            'completed_appointments' => $doctor->appointments()->where('status', 'completed')->count(),
-            'cancelled_appointments' => $doctor->appointments()->where('status', 'cancelled')->count(),
-            'average_rating' => $doctor->average_rating,
-            'total_reviews' => $doctor->total_reviews,
-            'this_month_reviews' => $doctor->reviews()->whereDate('created_at', '>=', $thisMonth)->count(),
-            'revenue_this_month' => $doctor->appointments()
-                ->where('status', 'completed')
-                ->whereDate('appointment_date', '>=', $thisMonth)
-                ->sum('consultation_fee') / 100, // Convert from cents to dollars
-            'total_notes' => $this->getEffectiveDoctorUser()->doctorNotes()->count(),
-            'voice_notes' => $this->getEffectiveDoctorUser()->doctorNotes()->where('note_type', 'voice')->count(),
-            'this_month_notes' => $this->getEffectiveDoctorUser()->doctorNotes()->whereDate('created_at', '>=', $thisMonth)->count(),
-        ];
-    }
-
-    /**
-     * Get event color based on appointment status
-     */
-    private function getEventColor($status)
-    {
-        return match($status) {
-            'pending' => '#f59e0b',
-            'confirmed' => '#10b981',
-            'cancelled' => '#ef4444',
-            'completed' => '#3b82f6',
-            'no_show' => '#6b7280',
-            default => '#6b7280'
-        };
-    }
 
     /**
      * Display the on-deck dashboard for real-time appointment tracking
@@ -974,11 +760,10 @@ class DashboardController extends Controller
     /**
      * Update appointment status via AJAX
      */
-    public function updateAppointmentStatus(Request $request, Appointment $appointment)
+    public function updateAppointmentStatus(Request $request, Appointment $appointment): JsonResponse
     {
         $doctor = $this->getEffectiveDoctor();
 
-        // Check if this appointment belongs to the doctor
         if ($appointment->doctor_id !== $doctor->id) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
         }
@@ -987,74 +772,19 @@ class DashboardController extends Controller
             'status' => 'required|in:check_in,in_progress,completed,no_show'
         ]);
 
-        $newStatus = $request->status;
+        $result = $this->statusService->updateStatus($appointment, $request->status);
 
-        // Validate status transitions
-        $validTransitions = [
-            'check_in' => ['in_progress', 'no_show'],
-            'in_progress' => ['completed', 'no_show'],
-            'confirmed' => ['check_in', 'no_show'],
-        ];
-
-        if (!isset($validTransitions[$appointment->status]) ||
-            !in_array($newStatus, $validTransitions[$appointment->status])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid status transition'
-            ], 400);
+        if (!$result['success']) {
+            return response()->json($result, 400);
         }
 
-        try {
-            // Update appointment status
-            switch ($newStatus) {
-                case 'in_progress':
-                    if ($appointment->status === 'check_in') {
-                        $appointment->update(['status' => 'in_progress']);
-                    }
-                    break;
-                case 'completed':
-                    if ($appointment->status === 'in_progress') {
-                        $appointment->complete();
-                    }
-                    break;
-                case 'no_show':
-                    if (in_array($appointment->status, ['check_in', 'in_progress', 'confirmed'])) {
-                        $appointment->markAsNoShow();
-                    }
-                    break;
-            }
-
-            // Broadcast the status change
-            broadcast(new \App\Events\AppointmentStatusUpdated($appointment))->toOthers();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Appointment status updated successfully',
-                'appointment' => [
-                    'id' => $appointment->id,
-                    'status' => $appointment->status,
-                    'updated_at' => $appointment->updated_at->toISOString()
-                ]
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Failed to update appointment status', [
-                'appointment_id' => $appointment->id,
-                'new_status' => $newStatus,
-                'error' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update appointment status'
-            ], 500);
-        }
+        return response()->json($result);
     }
 
     /**
      * Update appointment order (drag and drop)
      */
-    public function reorderAppointments(Request $request)
+    public function reorderAppointments(Request $request): JsonResponse
     {
         $doctor = $this->getEffectiveDoctor();
 
@@ -1063,89 +793,15 @@ class DashboardController extends Controller
             'order.*' => 'integer|exists:appointments,id'
         ]);
 
-        try {
-            // Update sort order for the doctor's appointments
-            foreach ($request->order as $index => $appointmentId) {
-                $appointment = Appointment::where('id', $appointmentId)
-                    ->where('doctor_id', $doctor->id)
-                    ->first();
+        $result = $this->statusService->reorderAppointments($doctor->id, $request->order);
 
-                if ($appointment) {
-                    $appointment->update(['sort_order' => $index + 1]);
-                }
-            }
-
-            return response()->json(['success' => true]);
-
-        } catch (\Exception $e) {
-            Log::error('Failed to reorder appointments', [
-                'error' => $e->getMessage(),
-                'order' => $request->order
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update appointment order'
-            ], 500);
+        if (!$result['success']) {
+            return response()->json($result, 500);
         }
+
+        return response()->json($result);
     }
 
-    /**
-     * Ensure risk predictions exist for an appointment
-     */
-    private function ensureRiskPredictions(Appointment $appointment)
-    {
-        // Skip if no patient associated
-        if (!$appointment->patient_id) {
-            return;
-        }
-
-        // Cache key for this appointment's risk predictions
-        $cacheKey = "risk_predictions_{$appointment->patient_id}_{$appointment->id}";
-
-        // Check cache first
-        if (Cache::has($cacheKey)) {
-            return; // Already processed recently
-        }
-
-        // Check if risk score already exists for this appointment
-        $existingRiskScore = \App\Models\PatientRiskScore::where('patient_id', $appointment->patient_id)
-            ->where('appointment_id', $appointment->id)
-            ->first();
-
-        if ($existingRiskScore) {
-            // Cache for 1 hour to prevent repeated checks
-            Cache::put($cacheKey, true, 3600);
-            return; // Already exists
-        }
-
-        try {
-            // Generate predictions using the service
-            $predictiveService = app(\App\Services\PredictiveAnalyticsService::class);
-            $predictions = $predictiveService->predictRisks($appointment->patient, $appointment);
-
-            // Create and save the risk score
-            $riskScore = new \App\Models\PatientRiskScore();
-            $riskScore->patient_id = $appointment->patient_id;
-            $riskScore->appointment_id = $appointment->id;
-            $riskScore->no_show_risk = $predictions['no_show_risk'];
-            $riskScore->hospitalization_risk = $predictions['hospitalization_risk'];
-            $riskScore->save();
-
-            // Cache success for 1 hour
-            Cache::put($cacheKey, true, 3600);
-
-        } catch (\Exception $e) {
-            // Log error but don't fail the page load
-            Log::error('Failed to generate risk predictions for appointment ' . $appointment->id, [
-                'error' => $e->getMessage(),
-                'patient_id' => $appointment->patient_id
-            ]);
-
-            // Cache failure for 5 minutes to avoid repeated attempts
-            Cache::put($cacheKey, false, 300);
-        }
-    }
 
     /**
      * Show form to create a follow-up appointment
@@ -1174,12 +830,10 @@ class DashboardController extends Controller
     {
         $doctor = $this->getEffectiveDoctor();
 
-        // Check if this appointment belongs to the doctor
         if ($appointment->doctor_id !== $doctor->id) {
             abort(403);
         }
 
-        // Validate the request
         $request->validate([
             'appointment_date' => 'required|date|after:now',
             'appointment_type' => 'required|in:video_call,phone_call,in_person,follow_up',
@@ -1188,7 +842,6 @@ class DashboardController extends Controller
             'duration' => 'nullable|integer|min:15|max:240',
         ]);
 
-        // Create new appointment as follow-up
         $followUpAppointment = new Appointment();
         $followUpAppointment->doctor_id = $doctor->id;
         $followUpAppointment->patient_id = $appointment->patient_id;
@@ -1197,7 +850,7 @@ class DashboardController extends Controller
         $followUpAppointment->patient_phone = $appointment->patient_phone;
         $followUpAppointment->appointment_date = $request->appointment_date;
         $followUpAppointment->appointment_type = $request->appointment_type;
-        $followUpAppointment->consultation_fee = $request->consultation_fee * 100; // Convert to cents
+        $followUpAppointment->consultation_fee = $request->consultation_fee * 100;
         $followUpAppointment->appointment_duration = $request->duration ?? 30;
         $followUpAppointment->reason = $request->reason;
         $followUpAppointment->status = 'pending';
@@ -1205,47 +858,10 @@ class DashboardController extends Controller
         $followUpAppointment->original_appointment_id = $appointment->id;
         $followUpAppointment->save();
 
-        // Load the patient relationship for email sending
         $followUpAppointment->load('patient');
 
-        // Send email notification to patient about new follow-up appointment
-        if ($followUpAppointment->patient && $followUpAppointment->patient->email) {
-            Log::info('Sending follow-up appointment email', [
-                'follow_up_appointment_id' => $followUpAppointment->id,
-                'original_appointment_id' => $appointment->id,
-                'patient_id' => $followUpAppointment->patient->id,
-                'patient_email' => $followUpAppointment->patient->email,
-                'doctor_id' => $followUpAppointment->doctor_id,
-                'appointment_date' => $followUpAppointment->appointment_date,
-                'status' => $followUpAppointment->status
-            ]);
-
-            try {
-                Mail::to($followUpAppointment->patient->email)->send(new FollowUpAppointmentMail($followUpAppointment, $appointment));
-                Log::info('Follow-up appointment email sent successfully', [
-                    'follow_up_appointment_id' => $followUpAppointment->id,
-                    'patient_email' => $followUpAppointment->patient->email
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Failed to send follow-up appointment email', [
-                    'follow_up_appointment_id' => $followUpAppointment->id,
-                    'patient_email' => $followUpAppointment->patient->email,
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
-                ]);
-                // Continue with the process even if email fails
-            }
-        } else {
-            Log::warning('Cannot send follow-up appointment email - missing patient or email', [
-                'follow_up_appointment_id' => $followUpAppointment->id,
-                'original_appointment_id' => $appointment->id,
-                'has_patient' => $followUpAppointment->patient ? true : false,
-                'patient_id' => $followUpAppointment->patient ? $followUpAppointment->patient->id : null,
-                'has_email' => $followUpAppointment->patient && $followUpAppointment->patient->email ? true : false,
-                'guest_appointment' => $followUpAppointment->isGuestAppointment(),
-                'guest_email' => $followUpAppointment->guest_email
-            ]);
-        }
+        // Send follow-up email using service
+        $this->emailService->sendFollowUp($followUpAppointment, $appointment);
 
         return redirect()->route('doctor.appointments.show', $appointment)
             ->with('success', 'Follow-up appointment created successfully!');
@@ -1301,4 +917,40 @@ class DashboardController extends Controller
         ));
     }
 
+    /**
+     * Validate that doctor exists and return boolean.
+     *
+     * @param mixed $doctor
+     * @return bool
+     */
+    protected function validateDoctorExists($doctor): bool
+    {
+        if (!$doctor) {
+            Log::error('No effective doctor found for user', [
+                'user_id' => Auth::id(),
+                'user_role' => Auth::user()->role ?? 'unknown',
+                'is_sub_user' => Auth::user()?->isSubUser() ?? false,
+                'parent_user_id' => Auth::user()?->parent_user_id,
+            ]);
+            
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * Get event color based on appointment status
+     */
+    protected function getEventColor(string $status): string
+    {
+        return match($status) {
+            'pending' => '#f59e0b',
+            'confirmed' => '#10b981',
+            'cancelled' => '#ef4444',
+            'completed' => '#3b82f6',
+            'no_show' => '#6b7280',
+            default => '#6b7280'
+        };
+    }
 }
