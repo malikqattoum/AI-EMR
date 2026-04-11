@@ -909,6 +909,17 @@ Route::middleware(['auth', 'admin.impersonation', 'doctor', 'sub.user.permission
         Route::post('/{thread}/suggestion/{suggestion}/reject', [DoctorMessagesController::class, 'rejectSuggestion'])->name('reject-suggestion');
         Route::get('/attachment/{attachment}', [DoctorMessagesController::class, 'attachment'])->name('attachment');
     });
+
+    // Video Recordings routes
+    Route::prefix('video-recordings')->name('video-recordings.')->group(function () {
+        Route::get('/', [App\Http\Controllers\VideoRecordingController::class, 'index'])->name('index');
+        Route::get('/{recording}', [App\Http\Controllers\VideoRecordingController::class, 'show'])->name('show');
+        Route::get('/{recording}/playback', [App\Http\Controllers\VideoRecordingController::class, 'playback'])->name('playback');
+        Route::get('/{recording}/download', [App\Http\Controllers\VideoRecordingController::class, 'download'])->name('download');
+        Route::post('/{recording}/generate-summary', [App\Http\Controllers\VideoRecordingController::class, 'generateSummary'])->name('generate-summary');
+        Route::post('/{recording}/generate-analysis', [App\Http\Controllers\VideoRecordingController::class, 'generateAnalysis'])->name('generate-analysis');
+        Route::delete('/{recording}', [App\Http\Controllers\VideoRecordingController::class, 'destroy'])->name('destroy');
+    });
 });
 
 // Hospital Admin routes
@@ -1577,6 +1588,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/settings/transcription', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings/transcription', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
 });
+
+// Daily.co Webhook route (no auth required - webhook from Daily.co)
+Route::post('/webhooks/daily-recording', [App\Http\Controllers\VideoRecordingWebhookController::class, 'handle'])->name('webhooks.daily-recording');
 
 // WebSocket test routes
 Route::get('/websocket-test', [App\Http\Controllers\WebSocketController::class, 'testPage'])->name('websocket.test');

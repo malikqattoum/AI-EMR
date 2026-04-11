@@ -196,6 +196,14 @@ class Appointment extends Model
     }
 
     /**
+     * Get the video recording for this appointment
+     */
+    public function videoRecording()
+    {
+        return $this->hasOne(VideoRecording::class);
+    }
+
+    /**
      * Scope for upcoming appointments
      */
     public function scopeUpcoming($query)

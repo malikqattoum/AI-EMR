@@ -394,6 +394,11 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::get('{appointment}/patient-phone', [App\Http\Controllers\VideoCallController::class, 'getPatientPhone']);
         Route::post('{appointment}/video/token', [App\Http\Controllers\VideoCallController::class, 'generateVideoToken']);
         Route::post('{appointment}/video/end', [App\Http\Controllers\VideoCallController::class, 'endVideoCall']);
+        
+        // Video Recording Routes
+        Route::post('{appointment}/video/recording/start', [App\Http\Controllers\VideoCallController::class, 'startRecording']);
+        Route::post('{appointment}/video/recording/stop', [App\Http\Controllers\VideoCallController::class, 'stopRecording']);
+        Route::get('{appointment}/video/recording/status', [App\Http\Controllers\VideoCallController::class, 'getRecordingStatus']);
     });
 
     // Clinical Monitoring Routes

@@ -443,6 +443,12 @@
                         </a>
                     </div>
                     <div class="nav-item">
+                        <a href="{{ route('doctor.video-recordings.index') }}" class="nav-link {{ request()->routeIs('doctor.video-recordings.*') ? 'active' : '' }}">
+                            <i class="fas fa-video"></i>
+                            <span>Video Recordings</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
                         <a href="{{ route('doctor.claims.index') }}" class="nav-link {{ request()->routeIs('doctor.claims.*') ? 'active' : '' }}">
                             <i class="fas fa-file-invoice-dollar"></i>
                             <span>Claims</span>
