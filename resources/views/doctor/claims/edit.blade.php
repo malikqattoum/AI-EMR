@@ -1,11 +1,6 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Edit Claim')
-
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -13,7 +8,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">Edit Insurance Claim</h1>
-                <a href="{{ route('doctor.claims.index') }}" class="btn btn-secondary">
+                <a href="{{ route('doctor.claims.index') }}" class="btn btn-outline-light">
                     <i class="fas fa-arrow-left"></i> Back to Claims
                 </a>
             </div>
@@ -209,7 +204,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-save"></i> Update Claim
                                     </button>
-                                    <a href="{{ route('doctor.claims.show', $claim) }}" class="btn btn-outline-secondary">
+                                    <a href="{{ route('doctor.claims.show', $claim) }}" class="btn btn-outline-light">
                                         Cancel
                                     </a>
                                 </div>

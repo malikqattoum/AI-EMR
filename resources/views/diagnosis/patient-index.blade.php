@@ -264,7 +264,7 @@
 }
 
 .diagnosis-card:hover {
-    background-color: #f8f9fa !important;
+    background-color: rgba(10, 22, 40, 0.6) !important;
 }
 
 .diagnosis-preview p {

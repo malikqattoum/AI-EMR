@@ -21,7 +21,7 @@
             border-radius: 10px 10px 0 0;
         }
         .content {
-            background: #f8f9fa;
+            background: rgba(10, 22, 40, 0.6);
             padding: 30px;
             border-radius: 0 0 10px 10px;
         }

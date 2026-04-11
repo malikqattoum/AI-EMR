@@ -1,9 +1,61 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Ambient Listening Performance')
 
+@push('styles')
+<style>
+.card { background: var(--card-bg) !important; border: 1px solid var(--card-border) !important; border-radius: 16px !important; }
+.card-header { background: rgba(0,212,170,0.05) !important; border-bottom: 1px solid var(--card-border) !important; color: var(--offwhite) !important; }
+.card-body { background: transparent !important; }
+.form-control, .form-select { background: rgba(10,20,40,0.8) !important; border: 1px solid var(--card-border) !important; color: var(--offwhite) !important; border-radius: 10px !important; }
+.form-control:focus { border-color: rgba(0,212,170,0.5) !important; box-shadow: 0 0 0 3px rgba(0,212,170,0.08) !important; }
+.form-label { color: var(--offwhite) !important; }
+.text-muted { color: var(--muted) !important; }
+.bg-primary { background: rgba(0,212,170,0.15) !important; }
+.bg-success { background: rgba(0,212,170,0.15) !important; }
+.bg-warning { background: rgba(251,191,36,0.15) !important; }
+.bg-info { background: rgba(59,130,246,0.15) !important; }
+.bg-light { background: rgba(255,255,255,0.04) !important; }
+.bg-white { background: var(--card-bg) !important; }
+.bg-secondary { background: rgba(255,255,255,0.06) !important; }
+.text-primary { color: var(--teal) !important; }
+.text-success { color: var(--teal) !important; }
+.text-dark { color: var(--offwhite) !important; }
+.text-white { color: var(--offwhite) !important; }
+.text-danger { color: #f87171 !important; }
+.btn-primary { background: var(--teal) !important; border-color: var(--teal) !important; color: var(--navy) !important; font-weight: 600; }
+.btn-success { background: rgba(0,212,170,0.15) !important; border-color: rgba(0,212,170,0.3) !important; color: var(--teal) !important; }
+.btn-danger { background: rgba(248,113,113,0.15) !important; border-color: rgba(248,113,113,0.3) !important; color: #f87171 !important; }
+.btn-warning { background: rgba(251,191,36,0.15) !important; border-color: rgba(251,191,36,0.3) !important; color: #fbbf24 !important; }
+.btn-info { background: rgba(59,130,246,0.15) !important; border-color: rgba(59,130,246,0.3) !important; color: #60a5fa !important; }
+.btn-secondary { background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: var(--muted) !important; }
+.btn-outline-primary { border-color: rgba(0,212,170,0.3) !important; color: var(--teal) !important; }
+.btn-outline-secondary { border-color: rgba(255,255,255,0.15) !important; color: var(--muted) !important; }
+.alert-success { background: rgba(0,212,170,0.08) !important; border: 1px solid rgba(0,212,170,0.2) !important; color: var(--teal) !important; }
+.alert-danger { background: rgba(248,113,113,0.08) !important; border: 1px solid rgba(248,113,113,0.2) !important; color: #f87171 !important; }
+.alert-warning { background: rgba(251,191,36,0.08) !important; border: 1px solid rgba(251,191,36,0.2) !important; color: #fbbf24 !important; }
+.alert-info { background: rgba(59,130,246,0.08) !important; border: 1px solid rgba(59,130,246,0.2) !important; color: #60a5fa !important; }
+.border { border-color: var(--card-border) !important; }
+.border-success { border-color: rgba(0,212,170,0.2) !important; }
+.border-warning { border-color: rgba(251,191,36,0.2) !important; }
+.fw-bold, .fw-semibold { color: var(--offwhite) !important; }
+.fw-normal { color: var(--muted) !important; }
+.table { color: var(--offwhite) !important; }
+.table-hover tbody tr:hover { background-color: rgba(0,212,170,0.05) !important; }
+.table td { border-color: var(--card-border) !important; color: var(--offwhite) !important; }
+.table th { border-color: var(--card-border) !important; color: var(--muted) !important; }
+.pagination .page-link { background: rgba(10,20,40,0.8) !important; border-color: var(--card-border) !important; color: var(--offwhite) !important; }
+.pagination .page-item.active .page-link { background: var(--teal) !important; border-color: var(--teal) !important; color: var(--navy) !important; }
+.modal-content { background: var(--card-bg) !important; border: 1px solid var(--card-border) !important; }
+.modal-header { background: rgba(0,212,170,0.05) !important; border-bottom: 1px solid var(--card-border) !important; color: var(--offwhite) !important; }
+.modal-footer { background: rgba(0,212,170,0.03) !important; border-top: 1px solid var(--card-border) !important; }
+.badge { color: var(--offwhite) !important; font-weight: 600; }
+</style>
+@endpush
+
 @section('content')
-<div class="container-fluid">
+<div class="dashboard-container">
+    <div class="container-fluid px-3 px-md-4">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -174,6 +226,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 

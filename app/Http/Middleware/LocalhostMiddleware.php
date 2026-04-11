@@ -13,6 +13,10 @@ class LocalhostMiddleware
      * Only allow requests from localhost (127.0.0.1, ::1, or localhost).
      * This is used for debug routes that should never be accessible in production.
      *
+     * Uses Laravel's built-in IP resolution which correctly handles trusted proxy
+     * configuration. Does NOT trust X-Forwarded-For or similar headers for access
+     * control decisions, as those can be spoofed.
+     *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next)

@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Appointment Details')
 
@@ -11,14 +11,14 @@
     padding: 0.75rem 1.5rem;
     border: none;
     background-color: transparent;
-    color: #6c757d;
+    color: var(--muted) !important;
     border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
 }
 
 .copilot-tab.active {
-    color: #0d6efd;
-    border-bottom-color: #0d6efd;
+    color: var(--teal) !important;
+    border-bottom-color: var(--teal) !important;
     font-weight: 500;
 }
 
@@ -41,13 +41,13 @@
     align-items: center;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--card-border) !important;
 }
 
 .copilot-section-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #212529;
+    color: var(--offwhite) !important;
 }
 
 .copilot-badge {
@@ -57,10 +57,11 @@
 }
 
 .copilot-content {
-    background-color: #f8f9fa;
+    background-color: rgba(0, 212, 170, 0.08) !important;
     border-radius: 0.5rem;
     padding: 1.25rem;
-    border-left: 4px solid #0d6efd;
+    border-left: 4px solid var(--teal) !important;
+    color: var(--offwhite) !important;
 }
 
 .copilot-list {
@@ -72,44 +73,49 @@
     padding: 0.5rem 0;
     position: relative;
     padding-left: 1.5rem;
+    color: var(--offwhite) !important;
 }
 
 .copilot-list li:before {
     content: "•";
-    color: #0d6efd;
+    color: var(--teal) !important;
     position: absolute;
     left: 0;
     font-weight: bold;
 }
 
 .copilot-warning {
-    background-color: #fff3cd;
-    border-left-color: #ffc107;
+    background-color: rgba(251, 191, 36, 0.1) !important;
+    border-left-color: #fbbf24 !important;
+    color: #fbbf24 !important;
 }
 
 .copilot-danger {
-    background-color: #f8d7da;
-    border-left-color: #dc3545;
+    background-color: rgba(248, 113, 113, 0.1) !important;
+    border-left-color: #f87171 !important;
+    color: #f87171 !important;
 }
 
 .copilot-success {
-    background-color: #d1e7dd;
-    border-left-color: #198754;
+    background-color: rgba(0, 212, 170, 0.1) !important;
+    border-left-color: var(--teal) !important;
+    color: var(--teal) !important;
 }
 
 .copilot-info {
-    background-color: #cff4fc;
-    border-left-color: #0dcaf0;
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    border-left-color: #60a5fa !important;
+    color: #60a5fa !important;
 }
 
 .copilot-disclaimer {
     font-size: 0.875rem;
-    color: #6c757d;
-    background-color: #f8f9fa;
+    color: var(--muted) !important;
+    background-color: rgba(255, 255, 255, 0.04) !important;
     padding: 1rem;
     border-radius: 0.25rem;
     margin-top: 1rem;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--card-border) !important;
 }
 
 .copilot-actions {
@@ -125,7 +131,7 @@
 
 .edit-copilot-btn {
     cursor: pointer;
-    color: #0d6efd;
+    color: var(--teal) !important;
     font-size: 0.875rem;
 }
 
@@ -146,8 +152,8 @@
 .copilot-loading-spinner {
     width: 3rem;
     height: 3rem;
-    border: 0.25rem solid #f3f3f3;
-    border-top: 0.25rem solid #0d6efd;
+    border: 0.25rem solid rgba(255,255,255,0.1);
+    border-top: 0.25rem solid var(--teal) !important;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 1rem;
@@ -159,17 +165,17 @@
 }
 
 .copilot-error {
-    color: #dc3545;
-    background-color: #f8d7da;
+    color: #f87171 !important;
+    background-color: rgba(248, 113, 113, 0.1) !important;
     padding: 1rem;
     border-radius: 0.25rem;
     margin-bottom: 1rem;
-    border: 1px solid #f5c2c7;
+    border: 1px solid rgba(248, 113, 113, 0.2) !important;
 }
 
 .copilot-compliance-label {
     font-size: 0.75rem;
-    color: #6c757d;
+    color: var(--muted) !important;
     text-align: right;
     margin-top: 1rem;
     font-style: italic;
@@ -184,7 +190,7 @@
         <div class="dashboard-header">
             <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
                 <div class="d-flex align-items-center">
-                    <a href="{{ route('doctor.appointments.index') }}" class="btn btn-light me-3 shadow-sm">
+                    <a href="{{ route('doctor.appointments.index') }}" class="btn btn-secondary me-3 shadow-sm">
                         <i class="fas fa-arrow-left me-2"></i>Back to Appointments
                     </a>
                     <div>
@@ -422,7 +428,7 @@
                     @if($riskScore)
                         <div class="row g-4 mb-4">
                             <div class="col-md-6">
-                                <div class="text-center p-4 bg-light rounded">
+                                <div class="text-center p-4 bg-secondary rounded">
                                     <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                                         <i class="fas fa-user-times text-warning fa-2x"></i>
                                     </div>
@@ -432,7 +438,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="text-center p-4 bg-light rounded">
+                                <div class="text-center p-4 bg-secondary rounded">
                                     <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                                         <i class="fas fa-hospital text-danger fa-2x"></i>
                                     </div>
@@ -444,7 +450,7 @@
                         </div>
 
                         <!-- Risk Level Summary -->
-                        <div class="bg-light p-3 rounded">
+                        <div class="bg-secondary p-3 rounded">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     @php
@@ -456,7 +462,7 @@
                                         </span>
                                         <small class="text-muted d-block mt-1">Strong compliance patterns detected</small>
                                     @elseif($maxRisk < 0.7)
-                                        <span class="badge bg-warning fs-6 px-3 py-2 text-dark">
+                                        <span class="badge bg-warning fs-6 px-3 py-2 text-white">
                                             <i class="fas fa-exclamation-triangle me-1"></i>Medium Risk Patient
                                         </span>
                                         <small class="text-muted d-block mt-1">Consider follow-up reminders</small>
@@ -492,7 +498,7 @@
                         <h5 class="mb-4 text-primary fw-bold">
                             <i class="fas fa-clipboard-list me-2"></i>Reason for Visit
                         </h5>
-                        <div class="bg-light p-4 rounded" style="border-left: 4px solid #007bff;">
+                        <div class="bg-secondary p-4 rounded" style="border-left: 4px solid #007bff;">
                             <p class="mb-0 fs-6 lh-base">{{ e($appointment->reason) }}</p>
                         </div>
                     </div>
@@ -520,7 +526,7 @@
                     @if($appointment->prescriptions && $appointment->prescriptions->count() > 0)
                         <h5 class="section-header">Existing Prescriptions</h5>
                         @foreach($appointment->prescriptions as $prescription)
-                            <div class="bg-light p-3 rounded mb-3" data-prescription-id="{{ $prescription->id }}">
+                            <div class="bg-secondary p-3 rounded mb-3" data-prescription-id="{{ $prescription->id }}">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                     <h6 class="mb-0 fw-bold">{{ $prescription->medication_name }}</h6>
                                     <div class="d-flex gap-2">
@@ -727,7 +733,7 @@
                                         <h6 class="form-section-title">
                                             <i class="fas fa-brain me-2"></i>AI Clinical Support
                                         </h6>
-                                        <span class="form-section-badge bg-warning text-dark">Optional</span>
+                                        <span class="form-section-badge bg-warning text-white">Optional</span>
                                     </div>
                                     @if($appointment->status == 'completed')
                                     <small class="text-muted d-block mb-3">
@@ -871,7 +877,7 @@
                                 <h6 class="form-section-title">
                                     <i class="fas fa-stethoscope me-2"></i>Diagnosis Details
                                 </h6>
-                                <span class="form-section-badge bg-warning text-dark">Required</span>
+                                <span class="form-section-badge bg-warning text-white">Required</span>
                             </div>
 
                             <div class="row g-3">
@@ -1064,7 +1070,7 @@
                                         <h6 class="copilot-section-title">
                                             <i class="fas fa-list-check me-2"></i>Differential Considerations
                                         </h6>
-                                        <span class="badge copilot-badge bg-warning text-dark">
+                                        <span class="badge copilot-badge bg-warning text-white">
                                             <i class="fas fa-exclamation-triangle me-1"></i>Not Diagnoses
                                         </span>
                                     </div>
@@ -1258,7 +1264,7 @@
                     </div>
                     <div class="card-body">
                         <p class="mb-2"><strong>When to use:</strong> When you already know exactly what medication to prescribe.</p>
-                        <div class="bg-light p-3 rounded">
+                        <div class="bg-secondary p-3 rounded">
                             <strong>Steps:</strong>
                             <ol class="mb-0">
                                 <li>Fill out the prescription form manually with medication details</li>
@@ -1277,7 +1283,7 @@
                     </div>
                     <div class="card-body">
                         <p class="mb-2"><strong>When to use:</strong> When you need AI suggestions before filling any form fields.</p>
-                        <div class="bg-light p-3 rounded">
+                        <div class="bg-secondary p-3 rounded">
                             <strong>Steps:</strong>
                             <ol class="mb-0">
                                 <li><strong>Click "AI Clinical Support" button first</strong> (form can be empty)</li>
@@ -1298,7 +1304,7 @@
                     </div>
                     <div class="card-body">
                         <p class="mb-2"><strong>When to use:</strong> When you start manually but want AI to check for issues.</p>
-                        <div class="bg-light p-3 rounded">
+                        <div class="bg-secondary p-3 rounded">
                             <strong>Steps:</strong>
                             <ol class="mb-0">
                                 <li>Fill some fields in the prescription form manually</li>
@@ -1314,12 +1320,12 @@
 
                 <!-- Scenario 4 -->
                 <div class="card border-warning mb-3">
-                    <div class="card-header bg-warning text-dark">
+                    <div class="card-header bg-warning text-white">
                         <h6 class="mb-0"><i class="fas fa-search me-2"></i>Scenario 4: AI Exploration (Research Only)</h6>
                     </div>
                     <div class="card-body">
                         <p class="mb-2"><strong>When to use:</strong> When you want to see AI suggestions but plan to prescribe differently.</p>
-                        <div class="bg-light p-3 rounded">
+                        <div class="bg-secondary p-3 rounded">
                             <strong>Steps:</strong>
                             <ol class="mb-0">
                                 <li><strong>Click "AI Clinical Support" button</strong></li>
@@ -1452,7 +1458,7 @@
                 </div>
 
                 <div class="alert alert-light border mt-4">
-                    <h6 class="text-dark mb-2"><i class="fas fa-shield-alt me-2"></i>Privacy & Security</h6>
+                    <h6 class="text-white mb-2"><i class="fas fa-shield-alt me-2"></i>Privacy & Security</h6>
                     <small class="text-muted">All clinical data is encrypted and HIPAA-compliant. AI analysis occurs locally and no patient data leaves your secure environment.</small>
                 </div>
             </div>
@@ -1620,7 +1626,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card border-warning mb-3">
-                            <div class="card-header bg-warning text-dark">
+                            <div class="card-header bg-warning text-white">
                                 <h6 class="mb-0"><i class="fas fa-user-times me-2"></i>No-Show Risk</h6>
                             </div>
                             <div class="card-body">
@@ -1657,7 +1663,7 @@
                 </div>
 
                 <div class="alert alert-light border">
-                    <h6 class="text-dark mb-2"><i class="fas fa-lightbulb me-2"></i>Understanding the Results:</h6>
+                    <h6 class="text-white mb-2"><i class="fas fa-lightbulb me-2"></i>Understanding the Results:</h6>
                     <ul class="mb-0 small">
                         <li><strong>Low Risk (< 30%):</strong> Patient shows strong compliance patterns and stable health indicators</li>
                         <li><strong>Medium Risk (30-70%):</strong> Moderate concern - consider follow-up reminders or additional monitoring</li>

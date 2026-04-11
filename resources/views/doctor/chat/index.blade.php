@@ -4,54 +4,7 @@
 
 @push('styles')
 <style>
-:root {
-    --navy: #060d1f;
-    --navy-card: #0f1c3a;
-    --teal: #00d4aa;
-    --offwhite: #e8edf5;
-    --muted: rgba(232,237,231,0.55);
-    --card-border: rgba(0,212,170,0.12);
-}
-
-.dashboard-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(0,212,170,0.15);
-    position: relative;
-    overflow: hidden;
-}
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--teal), transparent);
-}
-.dashboard-header h2 {
-    color: var(--offwhite);
-    font-weight: 700;
-    font-size: 2rem;
-    margin-bottom: 0.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-.dashboard-header h2::before {
-    content: '💬';
-    font-size: 2rem;
-}
-.dashboard-header p {
-    color: var(--muted);
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-@media (max-width: 768px) {
-    .dashboard-header { padding: 1.5rem; margin-bottom: 1.5rem; }
-    .dashboard-header h2 { font-size: 1.6rem; }
-}
+/* Page-specific styles - dashboard-header is already defined in layouts.doctor */
 </style>
 @endpush
 

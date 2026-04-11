@@ -126,16 +126,16 @@
     }
 
     .patient-info-section {
-        background-color: #f8f9fa;
+        background-color: rgba(10, 22, 40, 0.6);
         border-radius: 12px;
         padding: 25px;
         box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         margin-bottom: 20px;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid rgba(0, 212, 170, 0.15);
     }
 
     .patient-info-section h4 {
-        color: #2c3e50;
+        color: rgba(232, 237, 231, 0.9);
         margin-top: 0;
         margin-bottom: 20px;
         font-weight: 600;
@@ -158,15 +158,15 @@
     }
 
     .ai-response-section {
-        background-color: #f8f9fa;
+        background-color: rgba(10, 22, 40, 0.6);
         border-radius: 12px;
         padding: 25px;
         box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid rgba(0, 212, 170, 0.15);
     }
 
     .ai-response-section h4 {
-        color: #2c3e50;
+        color: rgba(232, 237, 231, 0.9);
         margin-top: 0;
         margin-bottom: 20px;
         font-weight: 600;

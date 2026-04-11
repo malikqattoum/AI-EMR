@@ -465,7 +465,7 @@
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
-    background-color: #f8f9fa !important;
+    background-color: rgba(10, 22, 40, 0.4) !important;
     color: #212529 !important;
 }
 

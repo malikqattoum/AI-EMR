@@ -1,7 +1,127 @@
-@extends('master')
+@extends('layouts.doctor')
+
+@section('title', 'Ambient Listening')
+
+@push('styles')
+<style>
+/* Dark theme overrides for voice assistant page */
+.card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 16px !important;
+}
+.card-header {
+    background: rgba(0,212,170,0.05) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+    color: var(--offwhite) !important;
+}
+.card-body { background: transparent !important; }
+.card-footer { background: rgba(0,212,170,0.03) !important; border-top: 1px solid var(--card-border) !important; }
+
+.form-control, .form-select {
+    background: rgba(10,20,40,0.8) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--offwhite) !important;
+    border-radius: 10px !important;
+}
+.form-control:focus, .form-select:focus {
+    border-color: rgba(0,212,170,0.5) !important;
+    box-shadow: 0 0 0 3px rgba(0,212,170,0.08) !important;
+}
+.form-control::placeholder { color: rgba(232,237,231,0.25) !important; }
+.form-label { color: var(--offwhite) !important; }
+.form-text, .text-muted { color: var(--muted) !important; }
+
+.breadcrumb { background: transparent !important; }
+.breadcrumb-item a { color: var(--teal) !important; }
+.breadcrumb-item.active { color: var(--muted) !important; }
+
+.bg-primary { background: rgba(0,212,170,0.15) !important; }
+.bg-success { background: rgba(0,212,170,0.15) !important; }
+.bg-warning { background: rgba(251,191,36,0.15) !important; }
+.bg-info { background: rgba(59,130,246,0.15) !important; }
+.bg-light { background: rgba(255,255,255,0.04) !important; }
+.bg-white { background: var(--card-bg) !important; }
+.bg-lighter { background: rgba(255,255,255,0.03) !important; }
+
+.text-primary { color: var(--teal) !important; }
+.text-success { color: var(--teal) !important; }
+.text-white { color: var(--offwhite) !important; }
+.text-dark { color: var(--offwhite) !important; }
+.text-muted { color: var(--muted) !important; }
+.text-danger { color: #f87171 !important; }
+
+.btn-primary { background: var(--teal) !important; border-color: var(--teal) !important; color: var(--navy) !important; font-weight: 600; }
+.btn-primary:hover { background: #00e8bb !important; }
+.btn-success { background: rgba(0,212,170,0.15) !important; border-color: rgba(0,212,170,0.3) !important; color: var(--teal) !important; }
+.btn-success:hover { background: rgba(0,212,170,0.25) !important; }
+.btn-danger { background: rgba(248,113,113,0.15) !important; border-color: rgba(248,113,113,0.3) !important; color: #f87171 !important; }
+.btn-danger:hover { background: rgba(248,113,113,0.25) !important; }
+.btn-warning { background: rgba(251,191,36,0.15) !important; border-color: rgba(251,191,36,0.3) !important; color: #fbbf24 !important; }
+.btn-warning:hover { background: rgba(251,191,36,0.25) !important; }
+.btn-info { background: rgba(59,130,246,0.15) !important; border-color: rgba(59,130,246,0.3) !important; color: #60a5fa !important; }
+.btn-secondary { background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: var(--muted) !important; }
+.btn-secondary:hover { background: rgba(255,255,255,0.1) !important; color: var(--offwhite) !important; }
+.btn-outline-primary { border-color: rgba(0,212,170,0.3) !important; color: var(--teal) !important; }
+.btn-outline-primary:hover { background: rgba(0,212,170,0.08) !important; }
+.btn-outline-secondary { border-color: rgba(255,255,255,0.15) !important; color: var(--muted) !important; }
+.btn-outline-secondary:hover { background: rgba(255,255,255,0.08) !important; color: var(--offwhite) !important; }
+.btn-outline-danger { border-color: rgba(248,113,113,0.3) !important; color: #f87171 !important; }
+.btn-outline-danger:hover { background: rgba(248,113,113,0.08) !important; }
+.btn-light { background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.12) !important; color: var(--offwhite) !important; }
+.btn-light:hover { background: rgba(255,255,255,0.12) !important; color: white !important; }
+
+.alert-success { background: rgba(0,212,170,0.08) !important; border: 1px solid rgba(0,212,170,0.2) !important; color: var(--teal) !important; border-radius: 12px; }
+.alert-danger { background: rgba(248,113,113,0.08) !important; border: 1px solid rgba(248,113,113,0.2) !important; color: #f87171 !important; border-radius: 12px; }
+.alert-warning { background: rgba(251,191,36,0.08) !important; border: 1px solid rgba(251,191,36,0.2) !important; color: #fbbf24 !important; border-radius: 12px; }
+.alert-info { background: rgba(59,130,246,0.08) !important; border: 1px solid rgba(59,130,246,0.2) !important; color: #60a5fa !important; border-radius: 12px; }
+
+.border { border-color: var(--card-border) !important; }
+.border-success { border-color: rgba(0,212,170,0.2) !important; }
+.border-primary { border-color: rgba(0,212,170,0.3) !important; }
+
+.nav-pills { background: rgba(255,255,255,0.03) !important; }
+.nav-pills .nav-link { color: var(--muted) !important; }
+.nav-pills .nav-link.active { background: var(--teal) !important; color: var(--navy) !important; }
+
+kbd { background: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.15) !important; color: var(--offwhite) !important; }
+
+/* Page-specific overrides */
+.transcription-container { background: rgba(10,20,40,0.6) !important; }
+.speaker-segment:hover { background: rgba(255,255,255,0.04) !important; }
+.transcript-controls, #voiceAssistantTabs { background: rgba(0,212,170,0.03) !important; }
+#voiceAssistantTabs .nav-link:not(.active) { background: rgba(255,255,255,0.04) !important; color: var(--muted) !important; border-color: var(--card-border) !important; }
+#voiceAssistantAdvancedControls .card-body { background: rgba(10,20,40,0.8) !important; }
+
+.border.rounded { border-color: var(--card-border) !important; }
+.modal-content { background: var(--card-bg) !important; border: 1px solid var(--card-border) !important; }
+.modal-header { background: rgba(0,212,170,0.05) !important; border-bottom: 1px solid var(--card-border) !important; }
+.modal-footer { background: rgba(0,212,170,0.03) !important; border-top: 1px solid var(--card-border) !important; }
+
+.fw-bold { color: var(--offwhite) !important; }
+.fw-semibold { color: var(--offwhite) !important; }
+.fw-normal { color: var(--muted) !important; }
+
+.progress { background: rgba(255,255,255,0.05) !important; }
+.progress-bar { background: var(--teal) !important; }
+
+/* Keep speaker text visible */
+.speaker-text { color: var(--offwhite) !important; }
+
+/* Override for light background elements that should be dark */
+.bg-light.border,
+.bg-lighter,
+.p-3.bg-light,
+.bg-white,
+.border.rounded.p-3 {
+    background: rgba(10,20,40,0.8) !important;
+}
+</style>
+@endpush
 
 @section('content')
-<div class="container-fluid py-4" data-session-id="{{ $sessionId }}">
+<div class="dashboard-container">
+    <div class="container-fluid px-3 px-md-4" data-session-id="{{ $sessionId }}">
 
     <!-- Header -->
     <div class="row mb-4">
@@ -160,7 +280,7 @@
     <!-- Control Panel - Compact Global Settings -->
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card shadow-sm border-0 bg-light">
+            <div class="card shadow-sm border-0" style="background-color: rgba(10, 22, 40, 0.6);">
                 <div class="card-body p-3">
                     <!-- Language Selector and Global Controls -->
                     <div class="d-flex justify-content-between align-items-center">
@@ -489,7 +609,7 @@
         }
 
         .speaker-segment:hover {
-            background-color: #f8f9fa;
+            background-color: rgba(10, 22, 40, 0.6);
         }
 
         .speaker-header {
@@ -511,12 +631,12 @@
 
         .speaker-patient .speaker-label {
             background-color: #d1ecf1;
-            color: #0c5460;
+            color: var(--navy);
         }
 
         .speaker-text {
             font-size: 0.9rem;
-            color: #212529;
+            color: var(--offwhite);
         }
 
         /* Enhanced transcript status */
@@ -543,7 +663,7 @@
     </style>
 
     <!-- Tabs Navigation -->
-    <ul class="nav nav-pills mb-4 p-2 bg-light rounded-3" id="voiceAssistantTabs" role="tablist" style="box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <ul class="nav nav-pills mb-4 p-2 rounded-3" id="voiceAssistantTabs" role="tablist" style="box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <li class="nav-item" role="presentation">
             <button class="nav-link active px-4 py-3 fw-bold" id="transcription-tab" data-bs-toggle="tab" data-bs-target="#transcription-pane" type="button" role="tab" aria-controls="transcription-pane" aria-selected="true">
                 <i class="fas fa-microphone-alt me-2"></i>Live Session
@@ -557,13 +677,13 @@
             transition: all 0.3s ease;
         }
         #voiceAssistantTabs .nav-link:not(.active) {
-            background-color: #ffffff !important;
-            color: #6c757d !important;
-            border: 1px solid #dee2e6 !important;
+            background-color: rgba(10, 22, 40, 0.95) !important;
+            color: rgba(232, 237, 231, 0.7) !important;
+            border: 1px solid rgba(0, 212, 170, 0.2) !important;
             opacity: 1 !important;
         }
         #voiceAssistantTabs .nav-link:not(.active):hover {
-            background-color: #f8f9fa !important;
+            background-color: rgba(10, 22, 40, 0.8) !important;
             color: #00d4aa !important;
             border-color: #00d4aa !important;
         }
@@ -618,7 +738,7 @@
         .btn-warning {
             background-color: #ffc107 !important;
             border-color: #ffc107 !important;
-            color: #212529 !important;
+            color: var(--navy) !important;
         }
 
         .btn-warning:hover:not(:disabled) {
@@ -710,7 +830,7 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div class="transcription-container" style="background-color: #f8f9fa;">
+                    <div class="transcription-container" style="background-color: rgba(10, 22, 40, 0.6);">
                         <div id="transcriptionContainer">
                             <div id="react-transcript-container"></div>
                             <textarea id="transcriptionArea" class="form-control" style="height: 100%; border: none; background: transparent; resize: none; display: none;" placeholder="Start ambient listening to see transcription here..."></textarea>
@@ -719,7 +839,7 @@
 
 
                     <!-- Transcript Controls -->
-                    <div class="p-3 bg-light d-flex justify-content-between">
+                    <div class="p-3 d-flex justify-content-between" style="background-color: rgba(10, 22, 40, 0.4);">
                         <button id="copyTranscriptBtn" class="btn btn-outline-secondary btn-sm">
                             <i class="fas fa-copy me-1"></i> Copy
                         </button>
@@ -778,7 +898,7 @@
 
                         <!-- Confidence Score Indicator -->
                         <div class="col-12">
-                            <div class="card bg-light border">
+                            <div class="card border"
                                 <div class="card-body p-3">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="fw-bold">Transcription Accuracy:</span>
@@ -864,7 +984,7 @@
                         <h6 class="fw-bold text-primary">
                             <i class="fas fa-file-medical me-2"></i>Diagnosis Preview
                         </h6>
-                        <div id="diagnosisPreview" class="border rounded p-3 bg-light" style="max-height: 150px; overflow-y: auto;">
+                        <div id="diagnosisPreview" class="border rounded p-3" style="max-height: 150px; overflow-y: auto;">
                             <!-- Diagnosis text will be inserted here -->
                         </div>
                     </div>
@@ -877,7 +997,7 @@
 
                     <!-- Patient Info Display -->
                     <div class="mb-4">
-                        <div class="card bg-light">
+                        <div class="card" style="background-color: rgba(10, 22, 40, 0.6);">
                             <div class="card-body py-2">
                                 <small class="text-muted">Patient:</small>
                                 <span id="modalPatientName" class="fw-bold"></span>
@@ -915,7 +1035,7 @@
                     <div class="mb-4">
                         <h6 class="fw-bold text-primary mb-3">
                             <i class="fas fa-notes-medical me-2"></i>Additional Patient Data
-                            <span class="badge bg-warning text-dark ms-2">Important for AI Prescriptions</span>
+                            <span class="badge bg-warning ms-2" style="color: var(--navy);">Important for AI Prescriptions</span>
                         </h6>
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle me-2"></i>
@@ -952,7 +1072,7 @@
                     </div>
 
                     <!-- Appointment Preview -->
-                    <div id="appointmentPreview" class="card bg-light" style="display: none;">
+                    <div id="appointmentPreview" class="card" style="display: none; background-color: rgba(10, 22, 40, 0.6);">
                         <div class="card-body">
                             <h6 class="card-title">
                                 <i class="fas fa-calendar-alt me-2"></i>Appointment Details
@@ -1906,4 +2026,6 @@
 
 <!-- Form components are now initialized by the main ambient listening script -->
 <!-- This ensures proper timing and prevents conflicts -->
+    </div>
+</div>
 @endsection

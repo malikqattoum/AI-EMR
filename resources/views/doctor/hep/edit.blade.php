@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Edit ' . $program->title . ' - Physical Therapy HEP Program')
 
@@ -261,11 +261,15 @@
 <style>
 .exercise-item {
     position: relative;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--card-border);
+    color: var(--offwhite);
 }
 
 .exercise-header {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--card-border);
     padding-bottom: 0.5rem;
+    color: var(--offwhite);
 }
 
 .remove-exercise-btn {
@@ -280,7 +284,8 @@
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--offwhite);
 }
 
 .stat-item:last-child {
@@ -289,11 +294,12 @@
 
 .stat-label {
     font-weight: 500;
+    color: var(--muted);
 }
 
 .stat-value {
     font-weight: bold;
-    color: #007bff;
+    color: var(--teal);
 }
 
 .exercise-categories {
@@ -302,7 +308,7 @@
 }
 
 .category-filter:hover {
-    background-color: #007bff !important;
+    background-color: var(--teal) !important;
 }
 
 .exercise-selection-grid {
@@ -314,21 +320,23 @@
 }
 
 .exercise-select-card {
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    background: rgba(255,255,255,0.03);
+    color: var(--offwhite);
 }
 
 .exercise-select-card:hover {
-    border-color: #007bff;
-    box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+    border-color: var(--teal);
+    box-shadow: 0 2px 8px rgba(0,212,170,0.15);
 }
 
 .exercise-select-card.selected {
-    border-color: #007bff;
-    background-color: #f8f9ff;
+    border-color: var(--teal);
+    background-color: rgba(0,212,170,0.05);
 }
 </style>
 @endpush

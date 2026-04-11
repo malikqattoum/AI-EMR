@@ -1,3 +1,9 @@
+@push('styles')
+<style>
+    .badge.bg-light.text-dark { background: rgba(255,255,255,0.06) !important; color: var(--offwhite) !important; }
+.bg-light { background: rgba(10, 22, 40, 0.6) !important; }
+</style>
+@endpush
 @extends('master')
 
 @section('title', 'Manage Subscription')
@@ -673,7 +679,7 @@
                                     <div class="text-center mb-4">
                                         
                                         <!-- Billing Toggle -->
-                                        <div class="d-inline-flex align-items-center p-2 rounded-pill mt-3" style="background: #f8f9fa; border: 1px solid #e9ecef;">
+                                        <div class="d-inline-flex align-items-center p-2 rounded-pill mt-3" style="background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(0, 212, 170, 0.2);">
                                             <span class="px-3 py-2 billing-period-label" id="monthly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; background: #00d4aa; color: white;">Monthly</span>
                                             <span class="px-3 py-2 billing-period-label" id="yearly-label" style="border-radius: 20px; cursor: pointer; transition: all 0.3s ease; margin-left: 5px;">Yearly <small class="text-success">(Save up to 17%)</small></span>
                                         </div>
@@ -768,7 +774,7 @@
 
                                 <div class="row mb-4">
                                     <div class="col-md-6">
-                                        <div class="info-card p-3 rounded" style="background: #f8f9fa; border-left: 4px solid #28a745;">
+                                        <div class="info-card p-3 rounded" style="background: rgba(10, 22, 40, 0.6); border-left: 4px solid #28a745;">
                                             <small class="text-muted d-block">Your Plan</small>
                                             <strong class="text-success">{{ $setting->getAmountWithPeriod() }}</strong>
                                             <div class="mt-1">
@@ -777,7 +783,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="info-card p-3 rounded" style="background: #f8f9fa; border-left: 4px solid #007bff;">
+                                        <div class="info-card p-3 rounded" style="background: rgba(10, 22, 40, 0.6); border-left: 4px solid #007bff;">
                                             <small class="text-muted d-block">
                                                 @if($setting->isUnlimitedSubscription())
                                                     Access

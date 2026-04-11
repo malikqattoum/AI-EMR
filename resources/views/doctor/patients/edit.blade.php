@@ -1,4 +1,6 @@
-@extends('master')
+@extends('layouts.doctor')
+
+@section('title', 'Edit Patient')
 
 @section('content')
 <div class="container py-4">

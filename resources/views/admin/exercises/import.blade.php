@@ -22,7 +22,7 @@
     }
 
     .instructions-list {
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
         border-radius: 8px;
         padding: 1.5rem;
         margin-bottom: 2rem;
@@ -42,12 +42,12 @@
         padding: 2rem;
         text-align: center;
         transition: all 0.3s ease;
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
     }
 
     .file-upload-area:hover {
-        border-color: #007bff;
-        background: #e3f2fd;
+        border-color: rgba(0, 212, 170, 0.5);
+        background: rgba(10, 22, 40, 0.4);
     }
 
     .file-upload-area.dragover {

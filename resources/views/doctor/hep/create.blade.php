@@ -1,6 +1,14 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Create Physical Therapy - HEP Program')
+
+@push('styles')
+<style>
+.bg-light {
+    background-color: rgba(255,255,255,0.04) !important;
+}
+</style>
+@endpush
 
 @section('content')
 <div class="dashboard-container">
@@ -290,23 +298,24 @@
     align-items: center;
     padding: 1rem;
     border-radius: 8px;
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
+    background: rgba(255,255,255,0.04);
+    border: 2px solid var(--card-border);
     transition: all 0.3s ease;
+    color: var(--muted);
 }
 
 .step.active {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
+    background: rgba(0,212,170,0.1);
+    color: var(--offwhite);
+    border-color: var(--teal);
 }
 
 .step-number {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #6c757d;
-    color: white;
+    background: var(--card-border);
+    color: var(--muted);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -315,8 +324,8 @@
 }
 
 .step.active .step-number {
-    background: white;
-    color: #007bff;
+    background: var(--teal);
+    color: var(--navy);
 }
 
 .step-label {
@@ -327,7 +336,7 @@
 
 .step-arrow {
     margin: 0 1rem;
-    color: #6c757d;
+    color: var(--muted);
 }
 
 .step-content {
@@ -339,25 +348,26 @@
 }
 
 .method-card {
-    border: 2px solid #e9ecef;
+    border: 2px solid var(--card-border);
     border-radius: 12px;
     padding: 2rem;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    background: white;
+    background: rgba(255,255,255,0.03);
     height: 100%;
+    color: var(--offwhite);
 }
 
 .method-card:hover {
-    border-color: #007bff;
-    box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+    border-color: var(--teal);
+    box-shadow: 0 4px 12px rgba(0,212,170,0.15);
 }
 
 .method-card.selected {
-    border-color: #007bff;
-    background: #f8f9ff;
-    box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+    border-color: var(--teal);
+    background: rgba(0,212,170,0.05);
+    box-shadow: 0 4px 12px rgba(0,212,170,0.15);
 }
 
 .method-icon {
@@ -374,18 +384,20 @@
 }
 
 .exercise-item {
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1rem;
-    background: white;
+    background: rgba(255,255,255,0.03);
+    color: var(--offwhite);
 }
 
 .exercise-header {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    color: var(--offwhite);
 }
 
 .exercise-details {
@@ -401,12 +413,12 @@
 
 .exercise-select-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0,212,170,0.1);
 }
 
 .exercise-select-card.selected {
-    border: 2px solid #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    border: 2px solid var(--teal);
+    box-shadow: 0 0 0 0.2rem rgba(0,212,170,0.25);
 }
 
 .exercise-select-card .card {

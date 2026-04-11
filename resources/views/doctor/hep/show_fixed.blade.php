@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', $program->title . ' - HEP Program')
 
@@ -322,7 +322,7 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: conic-gradient(#007bff 0% var(--progress), #e9ecef var(--progress) 100%);
+    background: conic-gradient(var(--teal) 0% var(--progress), rgba(255,255,255,0.1) var(--progress) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -332,14 +332,15 @@
 .progress-value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #007bff;
+    color: var(--teal);
 }
 
 .stat-item {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--offwhite);
 }
 
 .stat-item:last-child {
@@ -348,25 +349,26 @@
 
 .stat-label {
     font-weight: 500;
+    color: var(--muted);
 }
 
 .stat-value {
     font-weight: bold;
-    color: #007bff;
+    color: var(--teal);
 }
 
 .week-section {
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1.5rem;
-    background: #f8f9fa;
+    background: rgba(255,255,255,0.02);
 }
 
 .week-header {
-    color: #495057;
+    color: var(--offwhite);
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #dee2e6;
+    border-bottom: 2px solid var(--card-border);
 }
 
 .exercises-grid {
@@ -376,11 +378,10 @@
 }
 
 .exercise-card {
-    background: white;
-    border: 1px solid #e9ecef;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .exercise-header {
@@ -388,6 +389,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    color: var(--offwhite);
 }
 
 .exercise-image {
@@ -400,13 +402,13 @@
 .exercise-placeholder {
     width: 60px;
     height: 60px;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6c757d;
+    color: var(--muted);
 }
 
 .exercise-details {
@@ -418,33 +420,36 @@
 
 .detail-item {
     font-size: 0.9rem;
+    color: var(--offwhite);
 }
 
 .exercise-notes {
     font-size: 0.9rem;
-    color: #6c757d;
+    color: var(--muted);
     padding-top: 0.5rem;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid var(--card-border);
 }
 
 .exercise-section {
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1.5rem;
-    background: white;
+    background: rgba(255,255,255,0.02);
 }
 
-.exercise-header {
-    color: #495057;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #dee2e6;
+.exercise-section h6 {
+    color: var(--offwhite);
 }
 
 .progression-table .table th {
-    background: #f8f9fa;
+    background: rgba(255,255,255,0.05);
     font-weight: 600;
     font-size: 0.85rem;
+    color: var(--offwhite);
+}
+
+.progression-table .table td {
+    color: var(--offwhite);
 }
 
 @media (max-width: 768px) {

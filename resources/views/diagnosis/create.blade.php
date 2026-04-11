@@ -241,10 +241,10 @@
 
 <style>
 .voice-input-container {
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.6);
     border-radius: 8px;
     padding: 20px;
-    border: 2px dashed #dee2e6;
+    border: 2px dashed rgba(0, 212, 170, 0.3);
 }
 
 .voice-recorder {

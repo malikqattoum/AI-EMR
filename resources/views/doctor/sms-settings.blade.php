@@ -1,9 +1,8 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'SMS Provider Settings')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('js/sms-settings.css') }}">
 <style>
     .provider-badge {
         display: inline-flex;
@@ -15,33 +14,33 @@
     }
 
     .provider-badge.custom {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
+        background: rgba(0,212,170,0.15);
+        color: #00d4aa;
+        border: 1px solid rgba(0,212,170,0.3);
     }
 
     .provider-badge.inherited {
-        background: #e2e3e5;
-        color: #383d41;
-        border: 1px solid #d6d8db;
+        background: rgba(255,255,255,0.08);
+        color: rgba(232,237,231,0.7);
+        border: 1px solid rgba(255,255,255,0.12);
     }
 
     .provider-badge.inherited-doctor {
-        background: #cce5ff;
-        color: #004085;
-        border: 1px solid #b8daff;
+        background: rgba(59,130,246,0.15);
+        color: #60a5fa;
+        border: 1px solid rgba(59,130,246,0.3);
     }
 
     .provider-badge.inherited-hospital {
-        background: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeeba;
+        background: rgba(251,191,36,0.15);
+        color: #fbbf24;
+        border: 1px solid rgba(251,191,36,0.3);
     }
 
     .provider-badge.inherited-system {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
+        background: rgba(248,113,113,0.15);
+        color: #f87171;
+        border: 1px solid rgba(248,113,113,0.3);
     }
 
     .hierarchy-indicator {
@@ -49,7 +48,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 1rem;
-        background: #f8f9fa;
+        background: rgba(10,22,40,0.9);
         border-radius: 8px;
         margin-bottom: 1.5rem;
     }
@@ -60,14 +59,14 @@
         align-items: center;
         padding: 0.75rem 1.5rem;
         border-radius: 8px;
-        background: #fff;
-        border: 2px solid #e9ecef;
+        background: rgba(15,28,58,0.9);
+        border: 2px solid rgba(0,212,170,0.12);
         min-width: 120px;
     }
 
     .hierarchy-level.active {
-        border-color: #28a745;
-        background: #d4edda;
+        border-color: #00d4aa;
+        background: rgba(0,212,170,0.1);
     }
 
     .hierarchy-level.inactive {
@@ -75,7 +74,7 @@
     }
 
     .hierarchy-arrow {
-        color: #6c757d;
+        color: rgba(232,237,231,0.55);
         font-size: 1.5rem;
     }
 
@@ -97,6 +96,10 @@
     .unifonic { background: #4CAF50; }
     .smsgatewayhub { background: #FF9800; }
     .log { background: #6c757d; }
+
+    .bg-light {
+        background-color: rgba(255,255,255,0.04) !important;
+    }
 </style>
 @endpush
 

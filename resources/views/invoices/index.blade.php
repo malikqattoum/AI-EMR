@@ -494,7 +494,7 @@
                                                     <small class="text-muted">One-time payment</small>
                                                 @endif
                                                 <br>
-                                                <span class="badge bg-light text-dark" style="font-size: 0.7rem;">
+                                                <span class="badge bg-light" style="font-size: 0.7rem; color: var(--navy);">
                                                     {{ $invoice->getHumanType() }}
                                                 </span>
                                             </td>

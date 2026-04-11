@@ -1,11 +1,13 @@
-@extends('master')
+@extends('layouts.doctor')
+
+@section('title', 'Edit Availability')
 
 @section('content')
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow-sm">
-                <div class="card-header bg-warning text-dark">
+                <div class="card-header">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-edit me-2"></i>
                         <h4 class="mb-0">Edit Availability Slot</h4>
@@ -115,7 +117,7 @@
                             <a href="{{ route('doctor.availability.index') }}" class="btn btn-outline-secondary">
                                 <i class="fas fa-arrow-left me-1"></i>Cancel
                             </a>
-                            <button type="submit" class="btn btn-warning">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-1"></i>Update Slot
                             </button>
                         </div>

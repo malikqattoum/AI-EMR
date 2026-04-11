@@ -173,8 +173,8 @@
 }
 
 .card-reader {
-    background: #f8f9fa;
-    border: 3px solid #dee2e6;
+    background: rgba(10, 22, 40, 0.6);
+    border: 3px solid rgba(0, 212, 170, 0.3);
     border-radius: 12px;
     padding: 2rem;
     position: relative;

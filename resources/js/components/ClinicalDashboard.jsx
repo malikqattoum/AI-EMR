@@ -35,7 +35,7 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
 
     useEffect(() => {
         if (!patientId) {
-            // console.warn('Patient ID is required for ClinicalDashboard');
+            console.warn('Patient ID is required for ClinicalDashboard');
             return;
         }
 
@@ -43,14 +43,17 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                // Fetch historical scores for trends
-                const historicalData = await ClinicalMonitoringService.getHistoricalScores(patientId);
+                // Fetch latest scores
+                const scoresData = await ClinicalMonitoringService.getHistoricalScores(patientId);
                 if (!isMounted) return;
-
-                if (historicalData && historicalData.length > 0) {
-                    const labels = historicalData.map(d => new Date(d.calculated_at).toLocaleTimeString());
-                    const news2Data = historicalData.filter(d => d.algorithm_type === 'news2').map(d => d.score);
+                
+                if (scoresData && scoresData.length > 0) {
+                    setScores(scoresData);
                     
+                    // Use the most recent scores for display
+                    const labels = scoresData.slice(-20).map(d => new Date(d.calculated_at).toLocaleTimeString());
+                    const news2Data = scoresData.filter(d => d.algorithm_type === 'news2').slice(-20).map(d => d.score);
+
                     setTrends({
                         labels,
                         datasets: [
@@ -71,7 +74,7 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
                 setAiInsights(insights);
 
             } catch (error) {
-                // console.error('Error fetching clinical data:', error);
+                console.error('Error fetching clinical data:', error);
             } finally {
                 if (isMounted) setLoading(false);
             }
@@ -97,6 +100,13 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
 
     return (
         <div className="space-y-6">
+            {loading ? (
+                <div className="flex flex-col items-center justify-center p-12 space-y-4 bg-white rounded-xl border border-gray-100">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                    <p className="text-gray-500 font-medium">Loading clinical dashboard...</p>
+                </div>
+            ) : (
+                <>
             {/* Tab Navigation */}
             <div className="flex space-x-1 bg-slate-100 p-1 rounded-xl w-fit border border-slate-200">
                 <button
@@ -260,6 +270,8 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
                 </div>
             ) : (
                 <TreatmentOptimization patientId={patientId} appointmentId={appointmentId} />
+            )}
+                </>
             )}
         </div>
     );

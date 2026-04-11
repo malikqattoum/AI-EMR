@@ -1,67 +1,35 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Testimonials Management')
 
 @push('styles')
 <style>
-/* Professional Dashboard Header Styling */
-.dashboard-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0,212,170,0.15);
-    position: relative;
-    overflow: hidden;
+/* Professional Dashboard Header Styling - keeping testimonial-card specific styles */
+
+.star-rating {
+    color: #ffc107;
 }
 
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #00d4aa, transparent);
+.review-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.dashboard-header h2 {
-    color: #e8edf5;
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.dashboard-header h2::before {
-    content: '💬';
-    font-size: 2rem;
+.case-study-input {
+    resize: vertical;
+    min-height: 80px;
 }
 
-.dashboard-header p {
-    color: rgba(232,237,231,0.55);
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0;
+.text-muted {
+    color: var(--muted) !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .dashboard-header {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .dashboard-header h2 {
-        font-size: 2rem;
-    }
-
-    .dashboard-header p {
-        font-size: 1rem;
-    }
+.bg-light {
+    background-color: rgba(255,255,255,0.04) !important;
 }
 </style>
 @endpush
@@ -189,7 +157,7 @@
                         <div class="row">
                             @foreach($reviews->where('is_public', true)->take(3) as $review)
                                 <div class="col-lg-4 mb-3">
-                                    <div class="card review-card h-100" style="background: #f8f9fa; border-left: 4px solid var(--bs-success);">
+                                    <div class="card review-card h-100" style="background: rgba(10, 22, 40, 0.6); border-left: 4px solid var(--bs-success);">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"

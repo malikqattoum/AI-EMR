@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Process;
 
 class SetupEmailAutomationCommand extends Command
 {
@@ -63,16 +64,18 @@ class SetupEmailAutomationCommand extends Command
             
         } else {
             $this->info("⚙️  Setting up cron jobs...");
-            
+
             // Get current crontab
-            $currentCrontab = shell_exec('crontab -l 2>/dev/null') ?: '';
+            $listProcess = new Process(['bash', '-c', 'crontab -l 2>/dev/null || true']);
+            $listProcess->run();
+            $currentCrontab = $listProcess->getOutput() ?: '';
             $newCrontab = $currentCrontab;
-            
+
             // Add header if crontab is empty
             if (empty(trim($currentCrontab))) {
                 $newCrontab .= "# MedCura AI - Email Automation Cron Jobs\n";
             }
-            
+
             $added = 0;
             foreach ($cronJobs as $job) {
                 // Check if job already exists
@@ -84,16 +87,19 @@ class SetupEmailAutomationCommand extends Command
                     $this->warn("⚠️  Cron job already exists: {$job['description']}");
                 }
             }
-            
+
             if ($added > 0) {
                 // Write new crontab
                 $tempFile = tempnam(sys_get_temp_dir(), 'crontab');
                 file_put_contents($tempFile, $newCrontab);
-                
-                $result = shell_exec("crontab $tempFile 2>&1");
+
+                $installProcess = new Process(['bash', '-c', "crontab $tempFile 2>&1"]);
+                $installProcess->run();
+
                 unlink($tempFile);
-                
-                if ($result === null || empty(trim($result))) {
+
+                $result = $installProcess->getOutput();
+                if ($installProcess->isSuccessful() && empty(trim($result))) {
                     $this->info("✅ Successfully added $added cron job(s)!");
                 } else {
                     $this->error("❌ Failed to update crontab: $result");
@@ -103,7 +109,7 @@ class SetupEmailAutomationCommand extends Command
                 $this->info("ℹ️  All cron jobs already exist.");
             }
         }
-        
+
         $this->newLine();
         $this->info("🧪 Testing Commands:");
         $this->line("# Test the automation system");
@@ -119,10 +125,12 @@ class SetupEmailAutomationCommand extends Command
         $this->newLine();
         $this->line("# Monitor system");
         $this->line("php artisan email:monitor");
-        
+
         $this->newLine();
         $this->info("📊 Current Cron Jobs:");
-        $currentJobs = shell_exec('crontab -l 2>/dev/null') ?: 'No cron jobs found';
+        $monitorProcess = new Process(['bash', '-c', 'crontab -l 2>/dev/null || echo "No cron jobs found"']);
+        $monitorProcess->run();
+        $currentJobs = $monitorProcess->getOutput();
         $this->line($currentJobs);
         
         return 0;

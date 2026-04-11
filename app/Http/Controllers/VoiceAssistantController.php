@@ -2401,6 +2401,79 @@ INSTRUCTIONS:
         }
     }
     
+    /**
+     * Save post-recording diagnosis - handles diagnosis creation after audio recording is complete
+     */
+    public function savePostRecordingDiagnosis(Request $request)
+    {
+        $request->validate([
+            'diagnosisText' => 'required|string|max:10000',
+            'selectedPatient' => 'required|exists:users,id',
+            'transcription' => 'required|string|max:50000',
+            'sessionId' => 'required|string',
+            'appointmentId' => 'nullable|exists:appointments,id',
+            'doctorNotes' => 'nullable|string|max:5000',
+        ]);
+
+        try {
+            // Get the patient
+            $patient = User::findOrFail($request->selectedPatient);
+
+            // Ensure the patient belongs to the authenticated doctor
+            $isAssignedPatient = Auth::user()->canAccessPatient($patient);
+            if (!$isAssignedPatient) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Patient not assigned to this doctor or no confirmed appointments exist.'
+                ], 403);
+            }
+
+            // Create the diagnosis record
+            $diagnosis = Diagnosis::create([
+                'doctor_id' => Auth::id(),
+                'patient_id' => $patient->id,
+                'type' => 'voice_assistant',
+                'diagnosis_text' => $request->diagnosisText,
+                'voice_transcript' => $request->transcription,
+                'patient_data' => [
+                    'transcription' => $request->transcription,
+                    'session_id' => $request->sessionId,
+                    'appointment_id' => $request->appointmentId,
+                    'doctor_notes' => $request->doctorNotes,
+                ],
+            ]);
+
+            // Update the voice transcription record
+            VoiceTranscription::where('session_id', $request->sessionId)
+                ->where('doctor_id', Auth::id())
+                ->update([
+                    'diagnosis_id' => $diagnosis->id,
+                    'status' => 'diagnosis_created',
+                ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Post-recording diagnosis saved successfully!',
+                'diagnosis' => [
+                    'id' => $diagnosis->id,
+                    'created_at' => $diagnosis->created_at,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Post-recording diagnosis save failed: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'session_id' => $request->sessionId ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to save post-recording diagnosis: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
         /**
          * HYBRID METHOD: Process audio file on server for enhanced accuracy
          * This endpoint handles server-side audio processing for better transcription accuracy

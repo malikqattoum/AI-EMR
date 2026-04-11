@@ -66,7 +66,7 @@
                 <div class="card-header bg-success text-white">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0"><i class="fas fa-stethoscope me-2"></i>Diagnosis</h5>
-                        <span class="badge bg-light text-dark">
+                        <span class="badge bg-light" style="color: var(--navy);">
                             <i class="fas fa-{{ $diagnosis->type === 'ai' ? 'robot' : 'user-md' }} me-1"></i>
                             {{ ucfirst($diagnosis->type) }} Diagnosis
                         </span>
@@ -305,7 +305,7 @@
             <!-- Follow-up Questions -->
             @if($diagnosis->followUps->count() > 0)
                 <div class="card mb-4">
-                    <div class="card-header bg-warning text-dark">
+                    <div class="card-header bg-warning" style="color: var(--navy);">
                         <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>Patient Follow-up Questions ({{ $diagnosis->followUps->count() }})</h5>
                     </div>
                     <div class="card-body">
@@ -369,11 +369,11 @@
 .activity-stat {
     padding: 1rem;
     border-radius: 8px;
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.6);
 }
 
 .follow-up-item {
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.6);
 }
 
 .diagnosis-content {

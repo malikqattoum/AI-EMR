@@ -242,7 +242,7 @@
 }
 
 .follow-up-item {
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.6);
 }
 
 .rating-stars {

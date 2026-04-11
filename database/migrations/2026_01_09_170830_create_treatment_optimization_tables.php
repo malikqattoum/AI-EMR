@@ -11,13 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('treatment_optimization_tables')) {
-            Schema::create('treatment_optimization_tables', function (Blueprint $table) {
-                $table->id();
-                $table->timestamps();
-            });
-        }
-
         if (!Schema::hasTable('treatment_optimization_recommendations')) {
             Schema::create('treatment_optimization_recommendations', function (Blueprint $table) {
                 $table->id();

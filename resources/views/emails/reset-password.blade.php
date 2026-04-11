@@ -72,8 +72,8 @@
     }
     
     .backup-url {
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
+        background: rgba(10, 22, 40, 0.6);
+        border: 1px solid rgba(0, 212, 170, 0.2);
         border-radius: 8px;
         padding: 15px;
         margin: 20px 0;

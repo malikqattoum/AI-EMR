@@ -5,7 +5,7 @@
 @section('styles')
 <style>
 .performance-dashboard {
-    background: #f8f9fa;
+    background: #060d1f;
     min-height: 100vh;
     padding: 20px 0;
 }

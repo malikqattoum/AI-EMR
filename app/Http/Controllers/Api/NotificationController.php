@@ -292,17 +292,55 @@ class NotificationController extends Controller
     }
 
     /**
-     * Get guest notifications (for non-authenticated access)
+     * Get notifications for guest users (unauthenticated)
      */
     public function guestNotifications(Request $request, string $token): JsonResponse
     {
-        // This could be used for guest appointment notifications
-        // Implementation depends on your guest notification system
+        try {
+            // Validate token format
+            if (empty($token) || !is_string($token)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid token format'
+                ], 400);
+            }
 
-        return response()->json([
-            'success' => true,
-            'notifications' => [],
-            'message' => 'Guest notifications feature not implemented yet',
-        ]);
+            // Find appointment by token
+            $appointment = \App\Models\Appointment::where('guest_token', $token)->first();
+
+            if (!$appointment) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid or expired token'
+                ], 404);
+            }
+
+            // Get notifications for this appointment
+            $notifications = \App\Models\Notification::where(function($query) use ($appointment) {
+                $query->where('notifiable_type', \App\Models\Appointment::class)
+                      ->where('notifiable_id', $appointment->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(50)
+            ->get();
+
+            return response()->json([
+                'success' => true,
+                'notifications' => $notifications,
+                'appointment_id' => $appointment->id,
+                'appointment_status' => $appointment->status
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching guest notifications', [
+                'token' => $token,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch notifications',
+                'notifications' => []
+            ], 500);
+        }
     }
 }

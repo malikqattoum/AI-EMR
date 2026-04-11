@@ -1,11 +1,6 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Kiosk Management - Doctor Dashboard')
-
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-@endpush
 
 @section('content')
 <div class="container-fluid">

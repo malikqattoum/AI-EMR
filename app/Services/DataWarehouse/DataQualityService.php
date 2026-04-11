@@ -4,6 +4,8 @@ namespace App\Services\DataWarehouse;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
 
 class DataQualityService
 {
@@ -175,8 +177,36 @@ class DataQualityService
 
     private function standardizeFormats()
     {
-        // Standardize phone numbers, emails, etc. if needed
-        // For now, this is a placeholder
+        // Standardize phone numbers to E.164 format
+        DB::table('users')
+            ->whereNotNull('phone')
+            ->where('phone', '!=', '')
+            ->chunk(100, function ($users) {
+                foreach ($users as $user) {
+                    $cleanedPhone = preg_replace('/[^0-9+]/', '', $user->phone);
+                    if (preg_match('/^\+?1?(\d{10,15})$/', $cleanedPhone, $matches)) {
+                        $standardizedPhone = '+' . ltrim($matches[1], '+');
+                        DB::table('users')
+                            ->where('id', $user->id)
+                            ->update(['phone' => $standardizedPhone]);
+                    }
+                }
+            });
+
+        // Standardize email addresses to lowercase
+        DB::table('users')
+            ->whereNotNull('email')
+            ->whereRaw('email != LOWER(email)')
+            ->chunk(100, function ($users) {
+                foreach ($users as $user) {
+                    DB::table('users')
+                        ->where('id', $user->id)
+                        ->update(['email' => strtolower($user->email)]);
+                }
+            });
+
+        // Note: Date format standardization removed — Laravel timestamps are already in Y-m-d H:i:s format.
+        // Rewriting them would unnecessarily touch updated_at and fire N UPDATE queries per row.
     }
 
     public function generateQualityReport()

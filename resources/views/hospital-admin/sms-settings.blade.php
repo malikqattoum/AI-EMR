@@ -6,11 +6,15 @@
 <link rel="stylesheet" href="{{ asset('js/sms-settings.css') }}">
 <style>
     .sms-settings-card {
-        background: #fff;
+        background: rgba(10, 22, 40, 0.6);
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         padding: 2rem;
         margin-bottom: 2rem;
+    }
+
+    .bg-light {
+        background: rgba(10, 22, 40, 0.6) !important;
     }
 
     .provider-badge {
@@ -45,7 +49,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 1rem;
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
         border-radius: 8px;
         margin-bottom: 1.5rem;
     }

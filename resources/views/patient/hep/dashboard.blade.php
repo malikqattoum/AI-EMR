@@ -2,6 +2,12 @@
 
 @section('title', 'My Home Exercise Programs')
 
+@push('styles')
+<style>
+.bg-light { background: rgba(10, 22, 40, 0.6) !important; }
+</style>
+@endpush
+
 @section('content')
 <div class="dashboard-container">
     <div class="container-fluid px-3 px-md-4">
@@ -353,7 +359,7 @@
 }
 
 .upcoming-exercise {
-    background: #f8f9fa;
+    background: rgba(10, 22, 40, 0.6);
 }
 
 .completed-program {

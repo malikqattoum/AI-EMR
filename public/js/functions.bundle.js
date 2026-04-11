@@ -1,6 +1,7 @@
-if( typeof jQuery !== 'undefined' ) {
-	var $ = jQuery.noConflict();
-}
+// NOTE: Removed jQuery.noConflict() call as it breaks $ usage in inline scripts
+// if( typeof jQuery !== 'undefined' ) {
+//     var $ = jQuery.noConflict();
+// }
 
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -94,7 +95,7 @@ if( typeof jQuery !== 'undefined' ) {
 			x: 0,
 			y: 0,
 		},
-		$jq: typeof jQuery !== "undefined" ? jQuery.noConflict() : '',
+		$jq: typeof jQuery !== "undefined" ? jQuery : '',
 		resizers: {},
 		recalls: {},
 		debounced: false,

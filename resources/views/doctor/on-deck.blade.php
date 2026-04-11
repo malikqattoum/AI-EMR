@@ -1,12 +1,201 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'On-Deck Dashboard')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-<link rel="stylesheet" href="{{ asset('css/on-deck.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.css">
+<style>
+/* On-Deck specific overrides */
+.on-deck-container {
+    padding: 1.5rem 2rem;
+    background: #060d1f !important;
+    min-height: 100vh;
+}
+
+.on-deck-header {
+    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
+    border: 1px solid rgba(0,212,170,0.15);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.on-deck-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00d4aa, transparent);
+}
+
+.on-deck-header h1 {
+    color: #e8edf5;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.on-deck-header p {
+    color: rgba(232,237,231,0.55);
+    margin-bottom: 0;
+}
+
+.on-deck-filters {
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: end;
+}
+
+.filter-controls .form-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
+    border: none;
+    color: #060d1f;
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border-radius: 10px;
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,212,170,0.3);
+    color: #060d1f;
+}
+
+.btn-success {
+    background: #00d4aa;
+    border-color: #00d4aa;
+    color: #060d1f;
+}
+
+.btn-danger {
+    background: rgba(248,113,113,0.15);
+    border: 1px solid rgba(248,113,113,0.3);
+    color: #f87171;
+}
+
+.sortable-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.appointment-card {
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.appointment-card:hover {
+    border-color: rgba(0,212,170,0.25);
+    transform: translateY(-2px);
+}
+
+.appointment-card .appointment-time {
+    color: #00d4aa;
+    font-weight: 600;
+}
+
+.appointment-card .appointment-patient {
+    color: #e8edf5;
+    font-weight: 500;
+}
+
+.status-indicator {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-check-in {
+    background: rgba(59,130,246,0.15);
+    color: #60a5fa;
+}
+
+.status-in-progress {
+    background: rgba(251,191,36,0.15);
+    color: #fbbf24;
+}
+
+.status-completed {
+    background: rgba(0,212,170,0.15);
+    color: #00d4aa;
+}
+
+.status-no-show {
+    background: rgba(248,113,113,0.15);
+    color: #f87171;
+}
+
+.on-deck-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(10,22,40,0.9);
+    border: 1px solid rgba(0,212,170,0.12);
+    border-radius: 16px;
+}
+
+.on-deck-empty i {
+    font-size: 4rem;
+    color: rgba(232,237,231,0.25);
+    margin-bottom: 1rem;
+}
+
+.on-deck-empty h4 {
+    color: #e8edf5;
+    margin-bottom: 0.5rem;
+}
+
+.on-deck-empty p {
+    color: rgba(232,237,231,0.55);
+}
+
+.appointment-details {
+    color: rgba(232,237,231,0.7);
+    font-size: 0.875rem;
+    margin: 1rem 0;
+}
+
+.appointment-details strong {
+    color: rgba(232,237,231,0.9);
+}
+
+.drag-handle {
+    color: rgba(232,237,231,0.4);
+    cursor: grab;
+    margin-right: 1rem;
+}
+
+.realtime-indicator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00d4aa;
+}
+</style>
 @endpush
 
 @section('content')
@@ -430,4 +619,4 @@ document.addEventListener('touchend', function(e) {
     });
 });
 </script>
-@endsection
+@endpush

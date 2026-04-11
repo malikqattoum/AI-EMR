@@ -404,9 +404,9 @@
 
 .exercise-placeholder {
     padding: 3rem;
-    border: 2px dashed #dee2e6;
+    border: 2px dashed rgba(0, 212, 170, 0.3);
     border-radius: 8px;
-    background: #f8f9fa;
+    background: rgba(10, 22, 40, 0.6);
 }
 
 .exercise-details, .progress-tracking {

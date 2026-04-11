@@ -75,10 +75,10 @@
     }
 
     .table th {
-        background-color: #f8f9fa;
+        background-color: rgba(10, 22, 40, 0.6);
         border: none;
         font-weight: 600;
-        color: #495057;
+        color: rgba(232, 237, 231, 0.9);
         padding: 1rem 0.75rem;
     }
 
@@ -93,7 +93,7 @@
     }
 
     .table tbody tr:hover {
-        background-color: #f8f9fa;
+        background-color: rgba(10, 22, 40, 0.4);
     }
 </style>
 @endpush

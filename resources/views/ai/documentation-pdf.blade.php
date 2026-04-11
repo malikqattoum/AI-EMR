@@ -34,11 +34,11 @@
             letter-spacing: 1px;
         }
         .patient-info {
-            background-color: #f8f9fa;
+            background-color: rgba(10, 22, 40, 0.6);
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 30px;
-            border: 1px solid #dee2e6;
+            border: 1px solid rgba(0, 212, 170, 0.2);
         }
         .patient-info table {
             width: 100%;

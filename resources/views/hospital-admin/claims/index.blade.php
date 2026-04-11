@@ -8,7 +8,7 @@
     .risk-medium { color: #ffc107; }
     .risk-high { color: #dc3545; }
     .underpayment-alert { color: #dc3545; font-weight: bold; }
-    .ai-codes { background-color: #f8f9fa; padding: 5px; border-radius: 3px; font-size: 0.9em; }
+    .ai-codes { background-color: rgba(10, 22, 40, 0.6); padding: 5px; border-radius: 3px; font-size: 0.9em; }
     .confidence-score { font-size: 0.8em; color: #6c757d; }
 </style>
 @endpush

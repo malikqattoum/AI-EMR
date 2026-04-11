@@ -1,6 +1,57 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Create Note')
+
+@push('styles')
+<style>
+.voice-recorder-container {
+    border: 2px dashed var(--card-border);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    background-color: rgba(10,20,40,0.6);
+}
+
+.recorder-controls .btn {
+    min-width: 140px;
+}
+
+.recording-active {
+    border-color: var(--teal) !important;
+    background-color: rgba(0,212,170,0.05) !important;
+}
+
+.recording-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.btn-check:checked + .btn {
+    background-color: var(--teal);
+    border-color: var(--teal);
+    color: var(--navy);
+}
+
+#recordingTimer {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.transcription-enhanced {
+    border-left: 4px solid var(--teal);
+    background-color: rgba(0,212,170,0.05);
+}
+
+.transcription-processing {
+    border-left: 4px solid var(--teal);
+    background-color: rgba(0,212,170,0.03);
+}
+</style>
+@endpush
 
 @section('content')
 <div class="dashboard-container">
@@ -235,10 +286,10 @@
 }
 
 .voice-recorder-container {
-    border: 2px dashed #dee2e6;
+    border: 2px dashed rgba(0, 212, 170, 0.3);
     border-radius: 0.5rem;
     padding: 2rem;
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.6);
 }
 
 .recorder-controls .btn {

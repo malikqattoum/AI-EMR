@@ -41,31 +41,31 @@
                             <div class="step-label mt-2">Patient</div>
                         </div>
                         <div class="progress-step" data-step="vitals" style="position: relative; z-index: 1; text-align: center; width: 20%;">
-                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #f8f9fa; color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
+                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(10, 22, 40, 0.6); color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
                                 <i class="fas fa-heart-pulse"></i>
                             </div>
                             <div class="step-label mt-2">Vitals</div>
                         </div>
                         <div class="progress-step" data-step="symptoms" style="position: relative; z-index: 1; text-align: center; width: 20%;">
-                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #f8f9fa; color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
+                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(10, 22, 40, 0.6); color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
                                 <i class="fas fa-clipboard-list"></i>
                             </div>
                             <div class="step-label mt-2">Symptoms</div>
                         </div>
                         <div class="progress-step" data-step="diagnosis" style="position: relative; z-index: 1; text-align: center; width: 20%;">
-                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #f8f9fa; color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
+                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(10, 22, 40, 0.6); color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
                                 <i class="fas fa-stethoscope"></i>
                             </div>
                             <div class="step-label mt-2">Diagnosis</div>
                         </div>
                         <div class="progress-step" data-step="analysis" style="position: relative; z-index: 1; text-align: center; width: 20%;">
-                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #f8f9fa; color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
+                            <div class="step-icon rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(10, 22, 40, 0.6); color: #6c757d; font-size: 1.25rem; margin: 0 auto; border: 2px solid #e9ecef;">
                                 <i class="fas fa-robot"></i>
                             </div>
                             <div class="step-label mt-2">AI Analysis</div>
                         </div>
                     </div>
-                    <div class="progress mt-3" style="height: 8px; border-radius: 4px; background-color: #f8f9fa;">
+                    <div class="progress mt-3" style="height: 8px; border-radius: 4px; background-color: rgba(10, 22, 40, 0.6);">
                         <div class="progress-bar" role="progressbar" style="width: 20%; background-color: #00d4aa;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>

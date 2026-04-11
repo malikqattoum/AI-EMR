@@ -1,70 +1,12 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Manage Availability')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/custom-openai.css') }}">
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-
 <style>
-/* Professional Dashboard Header Styling */
-.dashboard-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0,212,170,0.15);
-    position: relative;
-    overflow: hidden;
-}
-
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #00d4aa, transparent);
-}
-
-.dashboard-header h2 {
-    color: #e8edf5;
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.dashboard-header h2::before {
-    content: '📅';
-    font-size: 2rem;
-}
-
-.dashboard-header p {
-    color: rgba(232,237,231,0.55);
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .dashboard-header {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .dashboard-header h2 {
-        font-size: 2rem;
-    }
-
-    .dashboard-header p {
-        font-size: 1rem;
-    }
+.bg-light {
+    background-color: rgba(255,255,255,0.04) !important;
 }
 </style>
 @endpush
@@ -262,11 +204,11 @@ document.addEventListener('keydown', function(e) {
 </script>
 @push('modals')
 <!-- Bulk Add Modal -->
-<div id="bulkModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999999; align-items: center; justify-content: center;">
-    <div style="background: white; border-radius: 15px; padding: 2rem; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-            <h5 style="margin: 0; color: #2c3e50; font-weight: 600;">Quick Add Time Slot</h5>
-            <button type="button" onclick="closeBulkModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6c757d; padding: 0;">&times;</button>
+<div id="bulkModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999999; align-items: center; justify-content: center;">
+    <div style="background: #0f1c3a; border-radius: 15px; padding: 2rem; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(0,212,170,0.15);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(0,212,170,0.15); padding-bottom: 1rem;">
+            <h5 style="margin: 0; color: #e8edf5; font-weight: 600;">Quick Add Time Slot</h5>
+            <button type="button" onclick="closeBulkModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: rgba(232,237,231,0.55); padding: 0;">&times;</button>
         </div>
         <form method="POST" action="{{ route('doctor.availability.store') }}">
             @csrf
@@ -275,19 +217,19 @@ document.addEventListener('keydown', function(e) {
             <div style="margin-bottom: 1.5rem;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #495057;">Start Time</label>
-                        <input type="time" name="start_time" required style="width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 5px; font-size: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #e8edf5;">Start Time</label>
+                        <input type="time" name="start_time" required style="width: 100%; padding: 0.5rem; border: 1px solid rgba(0,212,170,0.3); border-radius: 5px; font-size: 1rem; background: rgba(10,20,40,0.8); color: #e8edf5;">
                     </div>
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #495057;">End Time</label>
-                        <input type="time" name="end_time" required style="width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 5px; font-size: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #e8edf5;">End Time</label>
+                        <input type="time" name="end_time" required style="width: 100%; padding: 0.5rem; border: 1px solid rgba(0,212,170,0.3); border-radius: 5px; font-size: 1rem; background: rgba(10,20,40,0.8); color: #e8edf5;">
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #495057;">Slot Duration (minutes)</label>
-                        <select name="slot_duration" required style="width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 5px; font-size: 1rem; background: white;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #e8edf5;">Slot Duration (minutes)</label>
+                        <select name="slot_duration" required style="width: 100%; padding: 0.5rem; border: 1px solid rgba(0,212,170,0.3); border-radius: 5px; font-size: 1rem; background: rgba(10,20,40,0.8); color: #e8edf5;">
                             <option value="15">15 minutes</option>
                             <option value="30" selected>30 minutes</option>
                             <option value="45">45 minutes</option>
@@ -295,8 +237,8 @@ document.addEventListener('keydown', function(e) {
                         </select>
                     </div>
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #495057;">Max Bookings per Slot</label>
-                        <select name="max_bookings_per_slot" required style="width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 5px; font-size: 1rem; background: white;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #e8edf5;">Max Bookings per Slot</label>
+                        <select name="max_bookings_per_slot" required style="width: 100%; padding: 0.5rem; border: 1px solid rgba(0,212,170,0.3); border-radius: 5px; font-size: 1rem; background: rgba(10,20,40,0.8); color: #e8edf5;">
                             <option value="1" selected>1 patient</option>
                             <option value="2">2 patients</option>
                             <option value="3">3 patients</option>
@@ -305,8 +247,8 @@ document.addEventListener('keydown', function(e) {
                 </div>
             </div>
 
-            <div style="display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                <button type="button" onclick="closeBulkModal()" style="padding: 0.5rem 1.5rem; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem;">Cancel</button>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0,212,170,0.15);">
+                <button type="button" onclick="closeBulkModal()" style="padding: 0.5rem 1.5rem; background: rgba(255,255,255,0.06); color: #e8edf5; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; cursor: pointer; font-size: 1rem;">Cancel</button>
                 <button type="submit" style="padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%); color: #060d1f; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: 500;">Add Time Slot</button>
             </div>
         </form>

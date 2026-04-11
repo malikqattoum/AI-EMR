@@ -1,71 +1,10 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Manage Appointments')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/custom-openai.css') }}">
 <link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-
-<style>
-/* Professional Dashboard Header Styling */
-.dashboard-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(0,212,170,0.15);
-    position: relative;
-    overflow: hidden;
-}
-
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #00d4aa, transparent);
-}
-
-.dashboard-header h2 {
-    color: #e8edf5;
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.dashboard-header h2::before {
-    content: '📅';
-    font-size: 2rem;
-}
-
-.dashboard-header p {
-    color: rgba(232,237,231,0.55);
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .dashboard-header {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .dashboard-header h2 {
-        font-size: 2rem;
-    }
-
-    .dashboard-header p {
-        font-size: 1rem;
-    }
-}
-</style>
 @endpush
 
 @section('content')
@@ -90,7 +29,7 @@
                     <a href="{{ route('ai.ambient-listening.index') }}" class="btn btn-success btn-lg">
                         <i class="fas fa-microphone me-2"></i>Start Consultation
                     </a>
-                    <a href="{{ route('doctor.appointments.create') }}" class="btn btn-light btn-lg">
+                    <a href="{{ route('doctor.appointments.create') }}" class="btn btn-secondary btn-lg">
                         <i class="fas fa-plus me-2"></i>New Appointment
                     </a>
                 </div>

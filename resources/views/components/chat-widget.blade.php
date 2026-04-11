@@ -98,14 +98,14 @@
 }
 
 .chat-message.bot .message-bubble, .chat-message.doctor .message-bubble {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: rgba(10, 22, 40, 0.6);
+    color: rgba(232, 237, 231, 0.9);
     border-radius: 18px 18px 18px 4px;
     padding: 8px 15px;
     display: inline-block;
     max-width: 80%;
     word-wrap: break-word;
-    border: 1px solid #dee2e6;
+    border: 1px solid rgba(0, 212, 170, 0.2);
 }
 
 .chat-message .message-time {

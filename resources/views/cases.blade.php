@@ -53,7 +53,7 @@ body { background: var(--navy) !important; }
 .modal-footer { background: rgba(0,212,170,0.03) !important; border-top: 1px solid var(--card-border) !important; }
 .nav-pills .nav-link { color: var(--muted) !important; }
 .nav-pills .nav-link.active { background: var(--teal) !important; color: var(--navy) !important; }
-.badge { color: var(--navy) !important; font-weight: 600; }
+.badge { color: var(--offwhite) !important; font-weight: 600; }
 .text-truncate { color: var(--offwhite) !important; }
 .border-0 { border-color: transparent !important; }
 .shadow-sm { box-shadow: none !important; }
@@ -178,7 +178,7 @@ body { background: var(--navy) !important; }
 .modal-footer { background: rgba(0,212,170,0.03) !important; border-top: 1px solid var(--card-border) !important; }
 .nav-pills .nav-link { color: var(--muted) !important; }
 .nav-pills .nav-link.active { background: var(--teal) !important; color: var(--navy) !important; }
-.badge { color: var(--navy) !important; font-weight: 600; }
+.badge { color: var(--offwhite) !important; font-weight: 600; }
 .text-truncate { color: var(--offwhite) !important; }
 .border-0 { border-color: transparent !important; }
 .shadow-sm { box-shadow: none !important; }

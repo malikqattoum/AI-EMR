@@ -1,11 +1,6 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Claim Details')
-
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -14,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">Claim Details</h1>
                 <div>
-                    <a href="{{ route('doctor.claims.index') }}" class="btn btn-secondary me-2">
+                    <a href="{{ route('doctor.claims.index') }}" class="btn btn-outline-light me-2">
                         <i class="fas fa-arrow-left"></i> Back to Claims
                     </a>
                     @if($claim->claim_status !== 'submitted')
@@ -43,7 +38,7 @@
                                         <label class="form-label">Patient</label>
                                         <p class="mb-0">
                                             <strong>{{ $claim->patient->name }}</strong><br>
-                                            <small class="text-muted">{{ $claim->patient->email }}</small>
+                                            <small class="text-white-50">{{ $claim->patient->email }}</small>
                                         </p>
                                     </div>
                                     <div class="mb-3">
@@ -134,7 +129,7 @@
                                                 @endforeach
                                             </p>
                                         @else
-                                            <p class="mb-0 text-muted">No ICD-10 codes specified</p>
+                                            <p class="mb-0 text-white-50">No ICD-10 codes specified</p>
                                         @endif
                                     </div>
                                 </div>
@@ -148,7 +143,7 @@
                                                 @endforeach
                                             </p>
                                         @else
-                                            <p class="mb-0 text-muted">No CPT codes specified</p>
+                                            <p class="mb-0 text-white-50">No CPT codes specified</p>
                                         @endif
                                     </div>
                                 </div>
@@ -253,7 +248,7 @@
                                 <h5 class="card-title mb-0">Actions</h5>
                             </div>
                             <div class="card-body">
-                                <p class="text-muted mb-0">Claim status is final and cannot be changed.</p>
+                                <p class="text-white-50 mb-0">Claim status is final and cannot be changed.</p>
                             </div>
                         </div>
                     @endif
@@ -269,7 +264,7 @@
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
                                         <h6>Created</h6>
-                                        <p class="text-muted mb-0">{{ $claim->created_at->format('M d, Y g:i A') }}</p>
+                                        <p class="text-white-50 mb-0">{{ $claim->created_at->format('M d, Y g:i A') }}</p>
                                     </div>
                                 </div>
                                 @if($claim->updated_at->gt($claim->created_at))
@@ -277,7 +272,7 @@
                                         <div class="timeline-marker"></div>
                                         <div class="timeline-content">
                                             <h6>Last Updated</h6>
-                                            <p class="text-muted mb-0">{{ $claim->updated_at->format('M d, Y g:i A') }}</p>
+                                            <p class="text-white-50 mb-0">{{ $claim->updated_at->format('M d, Y g:i A') }}</p>
                                         </div>
                                     </div>
                                 @endif
@@ -286,7 +281,7 @@
                                         <div class="timeline-marker"></div>
                                         <div class="timeline-content">
                                             <h6>Submitted</h6>
-                                            <p class="text-muted mb-0">{{ $claim->updated_at->format('M d, Y g:i A') }}</p>
+                                            <p class="text-white-50 mb-0">{{ $claim->updated_at->format('M d, Y g:i A') }}</p>
                                         </div>
                                     </div>
                                 @endif
@@ -317,7 +312,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-warning">Mark as Denied</button>
                 </div>
             </form>
@@ -338,7 +333,7 @@
                 <p class="text-danger"><strong>This action cannot be undone.</strong></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
                 <form action="{{ route('doctor.claims.destroy', $claim) }}" method="POST">
                     @csrf
                     @method('DELETE')

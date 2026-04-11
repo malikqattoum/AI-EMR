@@ -6,22 +6,25 @@
 }
 
 .ai-copilot-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    color: white;
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.15) 0%, rgba(10, 22, 40, 0.9) 100%);
+    color: #e8ede7;
     padding: 1.5rem;
     border-radius: 0.5rem 0.5rem 0 0;
+    border-bottom: 1px solid rgba(0, 212, 170, 0.15);
 }
 
 .ai-copilot-body {
     padding: 2rem;
     max-height: 600px;
     overflow-y: auto;
+    background: rgba(10, 22, 40, 0.85);
 }
 
 .ai-copilot-footer {
     padding: 1rem 2rem;
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.95);
     border-radius: 0 0 0.5rem 0.5rem;
+    border-top: 1px solid rgba(0, 212, 170, 0.12);
 }
 
 .copilot-tab {
@@ -29,14 +32,14 @@
     padding: 0.75rem 1.5rem;
     border: none;
     background-color: transparent;
-    color: #6c757d;
+    color: rgba(232, 237, 231, 0.6);
     border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
 }
 
 .copilot-tab.active {
-    color: #0d6efd;
-    border-bottom-color: #0d6efd;
+    color: #00d4aa;
+    border-bottom-color: #00d4aa;
     font-weight: 500;
 }
 
@@ -75,7 +78,7 @@
 }
 
 .copilot-content {
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.6);
     border-radius: 0.5rem;
     padding: 1.25rem;
     border-left: 4px solid #0d6efd;
@@ -101,33 +104,33 @@
 }
 
 .copilot-warning {
-    background-color: #fff3cd;
-    border-left-color: #ffc107;
+    background-color: rgba(251, 191, 36, 0.12);
+    border-left-color: #fbbf24;
 }
 
 .copilot-danger {
-    background-color: #f8d7da;
-    border-left-color: #dc3545;
+    background-color: rgba(248, 113, 113, 0.12);
+    border-left-color: #f87171;
 }
 
 .copilot-success {
-    background-color: #d1e7dd;
-    border-left-color: #198754;
+    background-color: rgba(0, 212, 170, 0.12);
+    border-left-color: #00d4aa;
 }
 
 .copilot-info {
-    background-color: #cff4fc;
-    border-left-color: #0dcaf0;
+    background-color: rgba(59, 130, 246, 0.12);
+    border-left-color: #60a5fa;
 }
 
 .copilot-disclaimer {
     font-size: 0.875rem;
-    color: #6c757d;
-    background-color: #f8f9fa;
+    color: rgba(232, 237, 231, 0.6);
+    background-color: rgba(10, 22, 40, 0.8);
     padding: 1rem;
     border-radius: 0.25rem;
     margin-top: 1rem;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(0, 212, 170, 0.12);
 }
 
 .copilot-actions {
@@ -268,7 +271,7 @@
                                     <h6 class="copilot-section-title">
                                         <i class="fas fa-list-check me-2"></i>Differential Considerations
                                     </h6>
-                                    <span class="badge copilot-badge bg-warning text-dark">
+                                    <span class="badge copilot-badge bg-warning" style="color: var(--navy);">
                                         <i class="fas fa-exclamation-triangle me-1"></i>Not Diagnoses
                                     </span>
                                 </div>

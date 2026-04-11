@@ -77,6 +77,36 @@
         font-size: 1rem;
     }
 }
+
+/* Fix text visibility on dark background */
+.table-card h5,
+.table-card h6 {
+    color: #e8edf5 !important;
+}
+
+.table-card .text-muted {
+    color: rgba(232,237,231,0.55) !important;
+}
+
+.appointment-type-card h6 {
+    color: #e8edf5 !important;
+}
+
+.form-check-label {
+    color: #e8edf5 !important;
+}
+
+.tips-list .text-muted {
+    color: rgba(232,237,231,0.55) !important;
+}
+
+.enabled-types-list h6 {
+    color: #e8edf5 !important;
+}
+
+.enabled-types-list .text-muted {
+    color: rgba(232,237,231,0.55) !important;
+}
 </style>
 @endsection
 
@@ -344,8 +374,8 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .appointment-type-card.disabled {
-    border-color: #e9ecef;
-    background-color: #f8f9fa;
+    border-color: rgba(0, 212, 170, 0.2);
+    background-color: rgba(10, 22, 40, 0.6);
 }
 
 .appointment-type-card:hover {

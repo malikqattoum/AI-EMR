@@ -474,9 +474,9 @@
             }
             
             .btn {
-                background: #f8f9fa !important;
-                color: #2c3e50 !important;
-                border: 1px solid #ddd !important;
+                background: rgba(10, 22, 40, 0.6) !important;
+                color: rgba(232, 237, 231, 0.9) !important;
+                border: 1px solid rgba(0, 212, 170, 0.2) !important;
             }
         }
     </style>

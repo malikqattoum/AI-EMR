@@ -48,7 +48,7 @@
     }
 
     .week-section {
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
         border-radius: 8px;
         padding: 1rem;
         margin-bottom: 1rem;

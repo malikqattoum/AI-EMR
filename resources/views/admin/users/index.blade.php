@@ -129,10 +129,10 @@
     }
 
     .user-table thead th {
-        background: #f8f9fa;
-        border-bottom: 2px solid #e9ecef;
+        background: rgba(10, 22, 40, 0.6);
+        border-bottom: 2px solid rgba(0, 212, 170, 0.2);
         font-weight: 600;
-        color: #495057;
+        color: rgba(232, 237, 231, 0.9);
         padding: 1rem;
         text-transform: uppercase;
         font-size: 0.75rem;
@@ -150,7 +150,7 @@
     }
 
     .user-table tbody tr:hover {
-        background-color: #f8f9fa;
+        background-color: rgba(10, 22, 40, 0.4);
     }
 
     /* User Avatar */

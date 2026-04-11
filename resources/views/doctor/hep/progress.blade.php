@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Progress - Physical Therapy (' . $program->title . ')')
 
@@ -228,7 +228,7 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: conic-gradient(#007bff 0% var(--progress), #e9ecef var(--progress) 100%);
+    background: conic-gradient(var(--teal) 0% var(--progress), rgba(255,255,255,0.1) var(--progress) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -238,14 +238,14 @@
 .progress-value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #007bff;
+    color: var(--teal);
 }
 
 .week-progress {
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1rem;
-    background: #f8f9fa;
+    background: rgba(255,255,255,0.02);
 }
 
 .sessions-list {
@@ -254,12 +254,17 @@
 }
 
 .session-item {
-    background: white;
+    background: rgba(255,255,255,0.03);
     transition: all 0.2s ease;
+    color: var(--offwhite);
 }
 
 .session-item:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,212,170,0.1);
+}
+
+.session-item strong {
+    color: var(--offwhite);
 }
 
 .avatar-circle {
@@ -282,7 +287,8 @@
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--offwhite);
 }
 
 .detail-item:last-child {
@@ -291,17 +297,18 @@
 
 .label {
     font-weight: 500;
-    color: #6c757d;
+    color: var(--muted);
 }
 
 .value {
     text-align: right;
     font-weight: 500;
+    color: var(--offwhite);
 }
 
 .compliance-item {
     padding: 0.5rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--card-border);
 }
 
 .compliance-item:last-child {

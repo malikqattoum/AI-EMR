@@ -4,32 +4,7 @@
 
 @push('styles')
 <style>
-:root {
-    --navy: #060d1f;
-    --navy-card: #0f1c3a;
-    --teal: #00d4aa;
-    --offwhite: #e8edf5;
-    --muted: rgba(232,237,231,0.55);
-    --card-border: rgba(0,212,170,0.12);
-    --card-bg: rgba(10,22,40,0.9);
-}
-.dashboard-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    border-radius: 16px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid rgba(0,212,170,0.15);
-}
-.dashboard-header h2, .h1 { color: var(--offwhite) !important; font-weight: 700; }
-.dashboard-header p { color: var(--muted) !important; }
-.dashboard-header i { color: var(--teal); }
-.card {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--card-border) !important;
-    border-radius: 16px !important;
-    overflow: hidden;
-}
-.card-body { background: transparent !important; padding: 0 !important; }
+/* Page-specific styles for message list */
 .list-group-item {
     background: transparent !important;
     border-bottom: 1px solid var(--card-border) !important;
@@ -45,13 +20,9 @@
     border-top: 1px solid var(--card-border) !important;
     padding: 1rem !important;
 }
-.text-dark { color: var(--offwhite) !important; }
 .badge.bg-info { background: rgba(59,130,246,0.15) !important; color: #60a5fa !important; }
 .badge.bg-secondary { background: rgba(255,255,255,0.08) !important; color: var(--muted) !important; }
 .badge.bg-success { background: rgba(0,212,170,0.15) !important; color: var(--teal) !important; }
-.alert-success { background: rgba(0,212,170,0.08) !important; border: 1px solid rgba(0,212,170,0.2) !important; color: var(--teal) !important; border-radius: 12px; }
-.text-center.py-5 { color: var(--muted); }
-.text-muted { color: var(--muted) !important; }
 </style>
 @endpush
 
@@ -80,7 +51,7 @@
                     <ul class="list-group list-group-flush">
                         @foreach($threads as $thread)
                             <li class="list-group-item">
-                                <a href="{{ route('doctor.messages.show', $thread) }}" class="text-decoration-none text-dark">
+                                <a href="{{ route('doctor.messages.show', $thread) }}" class="text-decoration-none text-white">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div class="me-auto">
                                             <div class="d-flex align-items-center gap-2 mb-1">

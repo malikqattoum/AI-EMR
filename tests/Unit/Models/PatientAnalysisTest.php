@@ -27,9 +27,9 @@ class PatientAnalysisTest extends TestCase
         $this->patientAnalysis = PatientAnalysis::factory()->create([
             'user_id' => $this->user->id,
             'name' => 'John Doe',
-            'age' => 35,
+            'age' => '35',
             'gender' => 'male',
-            'symptoms' => 'Headache, fever',
+            'symptoms' => json_encode(['Headache', 'fever']),
             'preliminary_diagnosis' => 'Possible viral infection',
             'visit_number' => 1
         ]);
@@ -52,7 +52,7 @@ class PatientAnalysisTest extends TestCase
             'previous_record_id', 'visit_number', 'patient_key',
             // Enhanced medical fields
             'chief_complaint', 'symptom_duration', 'past_medical_history',
-            'medication_history', 'allergies', 'family_history', 'social_history',
+            'medication_history', 'allergies', 'past_medications', 'family_history', 'social_history',
             'pain_scale', 'visit_type', 'heart_rate', 'respiratory_rate',
             'oxygen_saturation', 'physician_notes', 'additional_notes',
             // Head-to-Toe Assessment fields
@@ -180,7 +180,7 @@ class PatientAnalysisTest extends TestCase
 
     public function test_patient_analysis_uses_correct_table()
     {
-        $this->assertEquals('patient_data', $this->patientAnalysis->getTable());
+        $this->assertEquals('patient_analyses', $this->patientAnalysis->getTable());
     }
 
     public function test_patient_analysis_with_comprehensive_medical_data()

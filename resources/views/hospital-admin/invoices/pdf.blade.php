@@ -97,7 +97,7 @@
             border-bottom: 1px solid #eee;
         }
         .items-table tr:nth-child(even) {
-            background-color: #f8f9fa;
+            background-color: rgba(10, 22, 40, 0.6);
         }
         .total-section {
             text-align: right;
@@ -134,7 +134,7 @@
             font-size: 12px;
         }
         .payment-info {
-            background-color: #f8f9fa;
+            background-color: rgba(10, 22, 40, 0.6);
             padding: 20px;
             border-radius: 8px;
             margin: 30px 0;

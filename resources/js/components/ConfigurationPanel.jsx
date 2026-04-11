@@ -7,20 +7,37 @@ const ConfigurationPanel = () => {
 
     useEffect(() => {
         const fetchRules = async () => {
-            const data = await ClinicalMonitoringService.getRules();
-            setRules(data);
-            setLoading(false);
+            try {
+                const data = await ClinicalMonitoringService.getRules();
+                setRules(data);
+            } catch (error) {
+                console.error('Error fetching rules:', error);
+            } finally {
+                setLoading(false);
+            }
         };
         fetchRules();
     }, []);
 
     const handleToggle = async (rule) => {
-        const updatedRule = { ...rule, is_active: !rule.is_active };
-        await ClinicalMonitoringService.updateRule(rule.id, updatedRule);
-        setRules(prev => prev.map(r => r.id === rule.id ? updatedRule : r));
+        try {
+            const updatedRule = { ...rule, is_active: !rule.is_active };
+            await ClinicalMonitoringService.updateRule(rule.id, updatedRule);
+            setRules(prev => prev.map(r => r.id === rule.id ? updatedRule : r));
+        } catch (error) {
+            console.error('Error toggling rule:', error);
+            // Revert the toggle on error by re-fetching
+            const data = await ClinicalMonitoringService.getRules();
+            setRules(data);
+        }
     };
 
-    if (loading) return <div className="p-6">Loading configuration...</div>;
+    if (loading) return (
+        <div className="flex items-center justify-center p-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <span className="ml-3 text-gray-500">Loading configuration...</span>
+        </div>
+    );
 
     return (
         <div className="p-6 bg-white rounded-xl shadow-sm border border-gray-100">

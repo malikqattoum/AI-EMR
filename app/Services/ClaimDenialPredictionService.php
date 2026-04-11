@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Models\Claim;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ClaimDenialPredictionService
 {
@@ -99,16 +101,25 @@ class ClaimDenialPredictionService
     private function callPredictionScript(string $dataFile): array
     {
         $pythonScript = base_path('python/predict_denial.py');
-        $command = "python \"{$pythonScript}\" \"{$dataFile}\" 2>&1";
 
-        Log::info('Executing Python prediction command: ' . $command);
+        Log::info('Executing Python prediction command', [
+            'script' => $pythonScript,
+            'data_file' => $dataFile,
+        ]);
 
-        $output = shell_exec($command);
+        $process = new Process(['python', $pythonScript, $dataFile]);
+        $process->setTimeout(60);
+        $process->run();
 
-        if ($output === null) {
-            throw new \Exception('Python script execution failed');
+        if (!$process->isSuccessful()) {
+            Log::error('Python script execution failed', [
+                'error' => $process->getErrorOutput(),
+                'exit_code' => $process->getExitCode(),
+            ]);
+            throw new \Exception('Python script execution failed: ' . $process->getErrorOutput());
         }
 
+        $output = $process->getOutput();
         Log::info('Python script output: ' . $output);
 
         $result = json_decode($output, true);
@@ -148,19 +159,28 @@ class ClaimDenialPredictionService
 
             // Call training script
             $pythonScript = base_path('python/train_denial_predictor.py');
-            $command = "python \"{$pythonScript}\" \"{$tempFile}\" 2>&1";
 
-            Log::info('Executing Python training command: ' . $command);
+            Log::info('Executing Python training command', [
+                'script' => $pythonScript,
+                'data_file' => $tempFile,
+            ]);
 
-            $output = shell_exec($command);
+            $process = new Process(['python', $pythonScript, $tempFile]);
+            $process->setTimeout(300); // 5 minutes for training
+            $process->run();
 
             // Clean up
             $this->cleanupTempFile($tempFile);
 
-            if ($output === null) {
-                throw new \Exception('Training script execution failed');
+            if (!$process->isSuccessful()) {
+                Log::error('Training script failed', [
+                    'error' => $process->getErrorOutput(),
+                    'exit_code' => $process->getExitCode(),
+                ]);
+                throw new \Exception('Training script failed: ' . $process->getErrorOutput());
             }
 
+            $output = $process->getOutput();
             Log::info('Training completed: ' . $output);
 
             return true;
@@ -372,16 +392,25 @@ class ClaimDenialPredictionService
     private function callAppealPredictionScript(string $dataFile): array
     {
         $pythonScript = base_path('python/predict_appeal_success.py');
-        $command = "python \"{$pythonScript}\" \"{$dataFile}\" 2>&1";
 
-        Log::info('Executing Python appeal prediction command: ' . $command);
+        Log::info('Executing Python appeal prediction command', [
+            'script' => $pythonScript,
+            'data_file' => $dataFile,
+        ]);
 
-        $output = shell_exec($command);
+        $process = new Process(['python', $pythonScript, $dataFile]);
+        $process->setTimeout(60);
+        $process->run();
 
-        if ($output === null) {
-            throw new \Exception('Appeal prediction script execution failed');
+        if (!$process->isSuccessful()) {
+            Log::error('Appeal prediction script failed', [
+                'error' => $process->getErrorOutput(),
+                'exit_code' => $process->getExitCode(),
+            ]);
+            throw new \Exception('Appeal prediction script failed: ' . $process->getErrorOutput());
         }
 
+        $output = $process->getOutput();
         Log::info('Appeal prediction script output: ' . $output);
 
         $result = json_decode($output, true);

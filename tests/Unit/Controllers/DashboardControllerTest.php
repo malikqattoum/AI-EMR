@@ -35,7 +35,14 @@ class DashboardControllerTest extends TestCase
             'specialty_id' => $specialty->id
         ]);
 
-        $this->controller = new DashboardController();
+        // Bind mock services to container
+        $this->mock(\App\Services\AppointmentEmailService::class);
+        $this->mock(\App\Services\AppointmentBookingService::class);
+        $this->mock(\App\Services\AppointmentStatusService::class);
+        $this->mock(\App\Services\DashboardStatsService::class);
+        $this->mock(\App\Services\RiskPredictionService::class);
+
+        $this->controller = app(DashboardController::class);
         $this->actingAs($this->user);
     }
 

@@ -701,8 +701,18 @@ function sendManualOffer() {
 }
 
 function bulkOperations() {
-    // Implementation for bulk operations
-    alert('Bulk operations feature coming soon!');
+    const selectedCheckboxes = document.querySelectorAll('.waitlist-item:checked');
+    const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+    
+    if (selectedIds.length === 0) {
+        if (window.showNotification) {
+            window.showNotification('Please select items to perform bulk operations on.', 'warning');
+        }
+        return;
+    }
+    
+    // Implementation for bulk operations - redirect to bulk action page
+    window.location.href = `/doctor/waitlist/bulk-edit?ids=${selectedIds.join(',')}`;
 }
 
 function viewAnalytics() {

@@ -1,4 +1,6 @@
-@extends('master')
+@extends('layouts.doctor')
+
+@section('title', 'Patient Details')
 
 @section('content')
 <div class="container-fluid py-4">
@@ -17,7 +19,7 @@
                 <div class="card-body text-center">
                     <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
                     <h4>{{ $patient->name }}</h4>
-                    <p class="text-muted">{{ $patient->age ?? 'N/A' }} years • {{ ucfirst($patient->gender ?? 'N/A') }}</p>
+                    <p class="text-white-50">{{ $patient->age ?? 'N/A' }} years &bull; {{ ucfirst($patient->gender ?? 'N/A') }}</p>
                     <hr>
                     <div class="text-start">
                         <p><i class="fas fa-envelope me-2"></i>{{ $patient->email }}</p>
@@ -85,7 +87,7 @@
                             </table>
                         </div>
                     @else
-                        <p class="text-muted">No appointments yet.</p>
+                        <p class="text-white-50">No appointments yet.</p>
                     @endif
                 </div>
             </div>
@@ -113,7 +115,7 @@
                             </div>
                         @endforeach
                     @else
-                        <p class="text-muted">No diagnoses yet.</p>
+                        <p class="text-white-50">No diagnoses yet.</p>
                     @endif
                 </div>
             </div>

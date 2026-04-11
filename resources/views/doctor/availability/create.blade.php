@@ -1,85 +1,9 @@
-@extends('master')
+@extends('layouts.doctor')
 
-@section('title', 'Add Availability Slot')
+@section('title', 'Add Availability')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/custom-openai.css') }}">
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-
-/* Professional Dashboard Header Styling */
-.dashboard-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0,212,170,0.15);
-    position: relative;
-    overflow: hidden;
-}
-
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #00d4aa, transparent);
-}
-
-.dashboard-header h2 {
-    color: #e8edf5;
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.dashboard-header h2::before {
-    content: '📅';
-    font-size: 2rem;
-}
-
-.dashboard-header p {
-    color: rgba(232,237,231,0.55);
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-/* Button styles within header */
-.dashboard-header .btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.dashboard-header .btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-    color: white;
-    transform: translateY(-1px);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .dashboard-header {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .dashboard-header h2 {
-        font-size: 2rem;
-    }
-
-    .dashboard-header p {
-        font-size: 1rem;
-    }
-}
 @endpush
 
 @section('content')

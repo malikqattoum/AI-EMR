@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Edit Blog Post')
 

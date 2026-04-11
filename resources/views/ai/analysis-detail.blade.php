@@ -150,7 +150,7 @@
                     <div class="col-lg-6 mb-4">
                         @if(isset($analysisData['differential_considerations']) && !empty($analysisData['differential_considerations']))
                             <div class="card shadow-sm h-100">
-                                <div class="card-header bg-warning text-dark">
+                                <div class="card-header bg-warning" style="color: var(--navy);">
                                     <h5 class="card-title mb-0 fw-bold">
                                         <i class="fas fa-list-check me-2"></i>Differential Considerations
                                     </h5>

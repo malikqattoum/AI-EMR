@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Physical Therapy - HEP Programs')
 
@@ -217,17 +217,12 @@
 @push('styles')
 <style>
 .stats-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stats-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 212, 170, 0.15);
 }
 
 .stats-icon {
@@ -245,22 +240,14 @@
 .stats-number {
     font-size: 2rem;
     font-weight: bold;
-    color: #2d3748;
+    color: var(--offwhite);
     margin: 0;
 }
 
 .stats-label {
-    color: #718096;
+    color: var(--muted);
     font-size: 0.9rem;
     margin: 0;
-}
-
-.table-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 2rem;
 }
 
 .badge {

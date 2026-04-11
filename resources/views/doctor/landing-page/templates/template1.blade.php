@@ -120,7 +120,7 @@
         }
 
         .review-card {
-            background: #f8f9fa;
+            background: rgba(10, 22, 40, 0.6);
             border-left: 4px solid var(--accent-color);
         }
 

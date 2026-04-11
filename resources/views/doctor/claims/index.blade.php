@@ -1,11 +1,6 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Claims Management')
-
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-<link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
-@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -17,7 +12,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h3 class="card-title mb-0"><i class="fas fa-file-medical me-2"></i>Claims Management</h3>
-                            <p class="text-muted mb-0">Track and manage insurance claims and billing information</p>
+                            <p class="text-light mb-0">Track and manage insurance claims and billing information</p>
                         </div>
                         <a href="{{ route('doctor.claims.create') }}" class="btn btn-primary">
                             <i class="fas fa-plus me-2"></i>Create New Claim
@@ -105,7 +100,7 @@
                                         <td>
                                             <div>
                                                 <strong>{{ $claim->patient->name }}</strong><br>
-                                                <small class="text-muted">{{ $claim->patient->email }}</small>
+                                                <small class="text-white-50">{{ $claim->patient->email }}</small>
                                             </div>
                                         </td>
                                         <td>${{ number_format($claim->expected_amount, 2) }}</td>
@@ -135,7 +130,7 @@
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 @if($claim->claim_status === 'pending')
-                                                    <a href="{{ route('doctor.claims.edit', $claim) }}" class="btn btn-sm btn-outline-secondary" title="Edit Claim">
+                                                    <a href="{{ route('doctor.claims.edit', $claim) }}" class="btn btn-sm btn-outline-light" title="Edit Claim">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     @if($claim->claim_status === 'pending')
@@ -160,9 +155,9 @@
                                 @empty
                                     <tr>
                                         <td colspan="7" class="text-center py-4">
-                                            <i class="fas fa-file-medical fa-3x text-muted mb-3"></i>
-                                            <h5 class="text-muted">No claims found</h5>
-                                            <p class="text-muted">You haven't created any claims yet.</p>
+                                            <i class="fas fa-file-medical fa-3x text-white-50 mb-3"></i>
+                                            <h5 class="text-white">No claims found</h5>
+                                            <p class="text-white-50">You haven't created any claims yet.</p>
                                             <a href="{{ route('doctor.claims.create') }}" class="btn btn-primary">
                                                 Create Your First Claim
                                             </a>

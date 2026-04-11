@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class MedicalAudioSecurity
 {
@@ -19,18 +20,17 @@ class MedicalAudioSecurity
             ]);
             return response()->json(['error' => 'Unauthorized access'], 403);
         }
-        
+
         // 2. Encrypt all audio data in transit (Enforce HTTPS/WSS)
         if (!$request->isSecure() && app()->environment('production')) {
             return response()->json(['error' => 'Secure connection required'], 403);
         }
         $request->headers->set('X-Required-Encryption', 'TLS_1_3');
-        
+
         // 3. Implement automatic data retention policy
         $this->applyRetentionPolicy($request);
-        
+
         // 4. Audit log all access
-        // Assuming an AuditLog model exists or using a generic logger
         Log::info('Medical Audio Access', [
             'user_id' => auth()->id(),
             'action' => 'audio_access',
@@ -38,10 +38,13 @@ class MedicalAudioSecurity
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
-        
+
         return $next($request);
     }
-    
+
+    /**
+     * Validate that the user has permission to access medical audio for this visit.
+     */
     private function validateMedicalAccess($request)
     {
         // Check if user is authenticated
@@ -49,24 +52,34 @@ class MedicalAudioSecurity
             return false;
         }
 
-        // Check if user is a doctor or admin
-        // This logic depends on your User model and roles
         $user = auth()->user();
-        // if (!$user->isDoctor() && !$user->isAdmin()) return false;
 
-        // If visit_id is present, check if doctor is assigned to this visit
-        if ($request->has('visit_id')) {
-            // $visit = MedicalVisit::find($request->visit_id);
-            // if (!$visit || $visit->doctor_id !== $user->id) return false;
+        // Check if user is a doctor, admin, or authorized staff
+        $hasRole = $user->role === 'doctor' || $user->role === 'admin' || $user->role === 'hospital_admin';
+        if (!$hasRole) {
+            return false;
+        }
+
+        // If session_id is present, verify the transcription belongs to this doctor
+        if ($request->has('session_id')) {
+            $transcription = \App\Models\VoiceTranscription::where('session_id', $request->session_id)->first();
+
+            // If transcription exists, verify doctor ownership
+            if ($transcription && $transcription->doctor_id !== Auth::id()) {
+                return false;
+            }
         }
 
         return true;
     }
-    
-    private function applyRetentionPolicy($request)
+
+    /**
+     * Apply audio retention policy configuration.
+     * Actual deletion is handled by a scheduled command.
+     */
+    private function applyRetentionPolicy($request): void
     {
-        // Automatically delete audio files after 72 hours
-        // Keep transcripts as per medical retention policy
+        // Set retention policy configuration (actual enforcement via scheduled task)
         config(['medical.audio_retention_hours' => 72]);
     }
 }

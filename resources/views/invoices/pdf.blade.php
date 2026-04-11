@@ -65,7 +65,7 @@
             text-align: left;
         }
         .table th {
-            background-color: #f8f9fa;
+            background-color: rgba(10, 22, 40, 0.6);
             font-weight: bold;
         }
         .table .text-right {

@@ -352,7 +352,7 @@
 }
 
 .notification-item:hover {
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.4);
 }
 
 .notification-item:focus {

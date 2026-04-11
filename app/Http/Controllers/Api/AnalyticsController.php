@@ -7,6 +7,7 @@ use App\Services\AnalyticsPermissions;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class AnalyticsController extends Controller
 {
@@ -35,54 +36,133 @@ class AnalyticsController extends Controller
         // Get data scope for filtering
         $dataScope = $this->analyticsPermissions->getDataScope($user, 'executive');
 
-        // Mock data - in real implementation, this would query the data warehouse
+        // Calculate real metrics from database
+        $dateRange = $request->input('date_range', '30_days');
+        $startDate = match ($dateRange) {
+            '7_days' => now()->subDays(7),
+            '30_days' => now()->subDays(30),
+            '90_days' => now()->subDays(90),
+            '1_year' => now()->subYear(),
+            default => now()->subDays(30),
+        };
+
+        // Calculate the period length in days for like-for-like comparison
+        $periodDays = $startDate->diffInDays(now());
+
+        // Revenue metrics
+        $currentRevenue = DB::table('stripe_invoices')
+            ->where('created_at', '>=', $startDate)
+            ->where('status', 'paid')
+            ->sum('amount');
+
+        // Previous period: same-length window immediately before current window
+        $previousPeriodStart = now()->copy()->subDays($periodDays * 2);
+        $previousPeriodEnd = $startDate->copy();
+
+        $previousRevenue = DB::table('stripe_invoices')
+            ->where('created_at', '>=', $previousPeriodStart)
+            ->where('created_at', '<', $previousPeriodEnd)
+            ->where('status', 'paid')
+            ->sum('amount');
+
+        $revenueChange = $previousRevenue > 0 ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 0;
+
+        // Patient satisfaction metrics
+        $avgSatisfaction = DB::table('reviews')
+            ->where('created_at', '>=', $startDate)
+            ->avg('rating') ?? 0;
+
+        // Operational efficiency (appointment completion rate)
+        $totalAppointments = DB::table('appointments')
+            ->where('appointment_date', '>=', $startDate)
+            ->count();
+
+        $completedAppointments = DB::table('appointments')
+            ->where('appointment_date', '>=', $startDate)
+            ->where('status', 'completed')
+            ->count();
+
+        $completionRate = $totalAppointments > 0 ? round(($completedAppointments / $totalAppointments) * 100, 2) : 0;
+
+        // Clinical outcomes (diagnosis follow-up success rate)
+        $totalDiagnoses = DB::table('diagnoses')
+            ->where('created_at', '>=', $startDate)
+            ->count();
+
+        $followUpDiagnoses = DB::table('diagnoses')
+            ->where('created_at', '>=', $startDate)
+            ->whereNotNull('follow_up_date')
+            ->count();
+
+        $clinicalOutcomeRate = $totalDiagnoses > 0 ? round(($followUpDiagnoses / $totalDiagnoses) * 100, 2) : 0;
+
+        // Revenue trend data (last 5 months)
+        $revenueTrend = [];
+        for ($i = 4; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+            $monthRevenue = DB::table('stripe_invoices')
+                ->whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->where('status', 'paid')
+                ->sum('amount');
+
+            $revenueTrend['labels'][] = $month->format('M');
+            $revenueTrend['data'][] = $monthRevenue;
+        }
+
+        // Patient satisfaction distribution
+        $satisfactionDistribution = DB::table('reviews')
+            ->selectRaw('rating, COUNT(*) as count')
+            ->groupBy('rating')
+            ->orderBy('rating')
+            ->pluck('count', 'rating')
+            ->toArray();
+
+        $distributionData = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $distributionData[] = $satisfactionDistribution[$i] ?? 0;
+        }
+
         $data = [
             'summary' => [
                 'revenue' => [
-                    'value' => 125430,
-                    'change' => 12.5,
-                    'trend' => 'up',
-                    'target' => 130000
+                    'value' => $currentRevenue,
+                    'change' => $revenueChange,
+                    'trend' => $revenueChange >= 0 ? 'up' : 'down',
+                    'target' => config('analytics.targets.revenue', 130000)
                 ],
                 'patient_satisfaction' => [
-                    'value' => 4.8,
-                    'change' => 0.3,
-                    'trend' => 'up',
-                    'target' => 4.9
+                    'value' => round($avgSatisfaction, 2),
+                    'change' => 0, // Would need historical comparison
+                    'trend' => 'stable',
+                    'target' => config('analytics.targets.patient_satisfaction', 4.9)
                 ],
                 'operational_efficiency' => [
-                    'value' => 94.2,
-                    'change' => -2.1,
-                    'trend' => 'down',
-                    'target' => 95.0
+                    'value' => $completionRate,
+                    'change' => 0,
+                    'trend' => $completionRate >= 95 ? 'up' : 'down',
+                    'target' => config('analytics.targets.operational_efficiency', 95.0)
                 ],
                 'clinical_outcomes' => [
-                    'value' => 87.3,
-                    'change' => 5.2,
-                    'trend' => 'up',
-                    'target' => 90.0
+                    'value' => $clinicalOutcomeRate,
+                    'change' => 0,
+                    'trend' => $clinicalOutcomeRate >= 80 ? 'up' : 'down',
+                    'target' => config('analytics.targets.clinical_outcomes', 90.0)
                 ]
             ],
             'charts' => [
-                'revenue_trend' => [
-                    'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                    'data' => [95000, 105000, 115000, 120000, 125430]
-                ],
+                'revenue_trend' => $revenueTrend,
                 'patient_satisfaction_distribution' => [
                     'labels' => ['1★', '2★', '3★', '4★', '5★'],
-                    'data' => [5, 15, 25, 35, 20]
+                    'data' => $distributionData
                 ]
             ],
-            'alerts' => [
-                [
-                    'id' => 'alert_123',
-                    'type' => 'warning',
-                    'message' => 'Patient satisfaction below target',
-                    'metric' => 'patient_satisfaction',
-                    'threshold' => 4.9,
-                    'current_value' => 4.8
-                ]
-            ]
+            'alerts' => $this->generateDashboardAlerts([
+                'revenue' => $currentRevenue,
+                'patient_satisfaction' => $avgSatisfaction,
+                'operational_efficiency' => $completionRate,
+                'clinical_outcomes' => $clinicalOutcomeRate,
+            ])
         ];
 
         return response()->json([
@@ -121,25 +201,89 @@ class AnalyticsController extends Controller
             ], 403);
         }
 
-        // Mock revenue data
+        // Calculate real revenue metrics
+        $currentMonth = now();
+        $lastMonth = now()->subMonth();
+
+        $currentMRR = DB::table('stripe_invoices')
+            ->whereYear('created_at', $currentMonth->year)
+            ->whereMonth('created_at', $currentMonth->month)
+            ->where('status', 'paid')
+            ->sum('amount');
+
+        $lastMRR = DB::table('stripe_invoices')
+            ->whereYear('created_at', $lastMonth->year)
+            ->whereMonth('created_at', $lastMonth->month)
+            ->where('status', 'paid')
+            ->sum('amount');
+
+        $mrrChange = $lastMRR > 0 ? round((($currentMRR - $lastMRR) / $lastMRR) * 100, 2) : 0;
+
+        // ARPU (Average Revenue Per User)
+        $activeUsers = DB::table('users')
+            ->where('is_active', true)
+            ->count();
+
+        $arpu = $activeUsers > 0 ? round($currentMRR / $activeUsers, 2) : 0;
+
+        // Churn rate (cancelled subscriptions / total subscriptions)
+        $totalSubscriptions = DB::table('subscriptions')->count();
+        $cancelledSubscriptions = DB::table('subscriptions')
+            ->where('status', 'cancelled')
+            ->count();
+
+        $churnRate = $totalSubscriptions > 0 ? round(($cancelledSubscriptions / $totalSubscriptions) * 100, 2) : 0;
+
+        // CLV (Customer Lifetime Value)
+        $avgLifespan = $churnRate > 0 ? round(100 / $churnRate, 2) : 12; // months
+        $clv = round($arpu * $avgLifespan, 2);
+
+        // Revenue breakdown by subscription plan
+        $planBreakdown = DB::table('subscriptions')
+            ->join('subscription_plans', 'subscriptions.subscription_plan_id', '=', 'subscription_plans.id')
+            ->select(
+                'subscription_plans.name as plan',
+                DB::raw('COUNT(subscriptions.id) as subscriber_count'),
+                DB::raw('SUM(subscriptions.amount) as total_revenue')
+            )
+            ->where('subscriptions.status', 'active')
+            ->groupBy('subscription_plans.name')
+            ->get();
+
+        $totalPlanRevenue = $planBreakdown->sum('total_revenue');
+        $byPlan = $planBreakdown->map(function ($plan) use ($totalPlanRevenue) {
+            return [
+                'plan' => $plan->plan,
+                'revenue' => $plan->total_revenue,
+                'percentage' => $totalPlanRevenue > 0 ? round(($plan->total_revenue / $totalPlanRevenue) * 100, 2) : 0,
+                'subscriber_count' => $plan->subscriber_count,
+            ];
+        })->sortByDesc('revenue')->values();
+
+        // Simple forecast based on 3-month trend
+        $threeMonthsAgo = now()->subMonths(3);
+        $threeMonthRevenue = DB::table('stripe_invoices')
+            ->where('created_at', '>=', $threeMonthsAgo)
+            ->where('status', 'paid')
+            ->sum('amount');
+
+        $avgMonthlyGrowth = $threeMonthsAgo > 0 ? round($threeMonthRevenue / 3, 2) : 0;
+        $nextMonthForecast = $currentMRR + $avgMonthlyGrowth;
+
         $data = [
             'kpis' => [
-                'mrr' => ['value' => 125430, 'change' => 12.5],
-                'arpu' => ['value' => 89.50, 'change' => 8.2],
-                'churn_rate' => ['value' => 3.2, 'change' => -0.5],
-                'clv' => ['value' => 2340, 'change' => 15.3]
+                'mrr' => ['value' => $currentMRR, 'change' => $mrrChange],
+                'arpu' => ['value' => $arpu, 'change' => 0],
+                'churn_rate' => ['value' => $churnRate, 'change' => 0],
+                'clv' => ['value' => $clv, 'change' => 0]
             ],
             'breakdown' => [
-                'by_plan' => [
-                    ['plan' => 'Premium', 'revenue' => 75000, 'percentage' => 60],
-                    ['plan' => 'Standard', 'revenue' => 37500, 'percentage' => 30],
-                    ['plan' => 'Basic', 'revenue' => 12930, 'percentage' => 10]
-                ]
+                'by_plan' => $byPlan
             ],
             'forecast' => [
-                'next_month' => 138000,
-                'confidence' => 85,
-                'trend' => 'up'
+                'next_month' => $nextMonthForecast,
+                'confidence' => 75, // Base confidence
+                'trend' => $mrrChange >= 0 ? 'up' : 'down'
             ]
         ];
 
@@ -257,5 +401,55 @@ class AnalyticsController extends Controller
     {
         $user = request()->user();
         return $this->analyticsPermissions->applyDataFilter($user, $query, $dashboardName);
+    }
+
+    /**
+     * Generate alerts based on current metric values
+     */
+    protected function generateDashboardAlerts(array $metrics): array
+    {
+        $alerts = [];
+
+        $targets = [
+            'revenue' => config('analytics.targets.revenue', 130000),
+            'patient_satisfaction' => config('analytics.targets.patient_satisfaction', 4.9),
+            'operational_efficiency' => config('analytics.targets.operational_efficiency', 95.0),
+            'clinical_outcomes' => config('analytics.targets.clinical_outcomes', 90.0),
+        ];
+
+        if ($metrics['patient_satisfaction'] > 0 && $metrics['patient_satisfaction'] < $targets['patient_satisfaction']) {
+            $alerts[] = [
+                'id' => 'alert_patient_satisfaction_' . now()->timestamp,
+                'type' => 'warning',
+                'message' => 'Patient satisfaction is below target (' . round($metrics['patient_satisfaction'], 2) . ' vs ' . $targets['patient_satisfaction'] . ' target)',
+                'metric' => 'patient_satisfaction',
+                'threshold' => $targets['patient_satisfaction'],
+                'current_value' => round($metrics['patient_satisfaction'], 2)
+            ];
+        }
+
+        if ($metrics['operational_efficiency'] < $targets['operational_efficiency']) {
+            $alerts[] = [
+                'id' => 'alert_operational_efficiency_' . now()->timestamp,
+                'type' => 'warning',
+                'message' => 'Appointment completion rate is below target (' . $metrics['operational_efficiency'] . '% vs ' . $targets['operational_efficiency'] . '% target)',
+                'metric' => 'operational_efficiency',
+                'threshold' => $targets['operational_efficiency'],
+                'current_value' => $metrics['operational_efficiency']
+            ];
+        }
+
+        if ($metrics['revenue'] > 0 && $metrics['revenue'] < $targets['revenue'] * 0.8) {
+            $alerts[] = [
+                'id' => 'alert_revenue_' . now()->timestamp,
+                'type' => 'critical',
+                'message' => 'Revenue is significantly below target',
+                'metric' => 'revenue',
+                'threshold' => $targets['revenue'],
+                'current_value' => $metrics['revenue']
+            ];
+        }
+
+        return $alerts;
     }
 }

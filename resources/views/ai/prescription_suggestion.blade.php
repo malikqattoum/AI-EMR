@@ -1,19 +1,20 @@
 @push('styles')
 <style>
+.bg-light { background: rgba(10, 22, 40, 0.6) !important; }
 .suggestion-item.accepted {
-    border-color: #198754 !important;
-    background-color: #f8fff9 !important;
+    border-color: rgba(0, 212, 170, 0.5) !important;
+    background-color: rgba(0, 212, 170, 0.08) !important;
 }
 .suggestion-item.rejected {
-    border-color: #dc3545 !important;
-    background-color: #fff5f5 !important;
+    border-color: rgba(248, 113, 113, 0.5) !important;
+    background-color: rgba(248, 113, 113, 0.08) !important;
     opacity: 0.7;
 }
 .suggestion-item.accepted .badge {
-    background-color: #198754 !important;
+    background-color: rgba(0, 212, 170, 0.3) !important;
 }
 .suggestion-item.rejected .badge {
-    background-color: #dc3545 !important;
+    background-color: rgba(248, 113, 113, 0.3) !important;
 }
 </style>
 @endpush

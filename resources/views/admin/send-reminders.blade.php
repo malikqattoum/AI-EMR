@@ -28,7 +28,7 @@
         border: 1px solid #e9ecef;
         border-radius: 8px;
         padding: 1rem;
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
     }
 
     .user-item {
@@ -69,7 +69,7 @@
         border-radius: 10px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
     }
 
     .btn-send-reminders {

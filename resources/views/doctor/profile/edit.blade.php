@@ -9,41 +9,48 @@
 <style>
 /* Teal Dashboard Header Override */
 .dashboard-header {
-    background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%) !important;
-    border-color: rgba(14, 148, 136, 0.3) !important;
+    background: linear-gradient(135deg, rgba(0,212,170,0.15) 0%, rgba(0,212,170,0.05) 100%) !important;
+    border-color: rgba(0, 212, 170, 0.15) !important;
 }
 
 .dashboard-header::before {
-    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+    background: linear-gradient(135deg, var(--teal) 0%, rgba(0,212,170,0.5) 100%) !important;
 }
 
 .appointment-type-preference-card {
-    border: 2px solid #e9ecef;
+    border: 2px solid var(--card-border) !important;
     transition: all 0.3s ease;
     cursor: pointer;
+    background: var(--card-bg) !important;
 }
 
 .appointment-type-preference-card.enabled {
-    border-color: #28a745;
-    background-color: #f8fff9;
+    border-color: var(--teal) !important;
+    background-color: rgba(0,212,170,0.08) !important;
 }
 
 .appointment-type-preference-card.disabled {
-    border-color: #e9ecef;
-    background-color: #f8f9fa;
+    border-color: var(--card-border) !important;
+    background-color: rgba(255,255,255,0.03) !important;
 }
 
 .appointment-type-preference-card:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,212,170,0.15);
 }
 
 .appointment-type-toggle:checked {
-    background-color: #28a745;
-    border-color: #28a745;
+    background-color: var(--teal) !important;
+    border-color: var(--teal) !important;
 }
 
 .appointment-type-toggle:focus {
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(0, 212, 170, 0.25);
+}
+
+/* Dark theme override for bg-light */
+.bg-light {
+    background-color: rgba(255,255,255,0.04) !important;
+    color: var(--offwhite) !important;
 }
 </style>
 @endpush
@@ -676,7 +683,7 @@
                 </div>
 
                 @if($doctor->bio)
-                    <p class="text-dark mb-3">{{ $doctor->bio }}</p>
+                    <p class="text-white-50 mb-3">{{ $doctor->bio }}</p>
                 @endif
 
                 <div class="row g-3 small">

@@ -32,7 +32,7 @@
             border-left: 4px solid #17a2b8;
         }
         .original-appointment {
-            background: #f8f9fa;
+            background: rgba(10, 22, 40, 0.6);
             border-left: 4px solid #6c757d;
         }
         .doctor-info {

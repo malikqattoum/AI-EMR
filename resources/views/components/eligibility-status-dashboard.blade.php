@@ -355,12 +355,15 @@ function refreshEligibilityStatus() {
 
 function showInsuranceModal() {
     // This would open the insurance management modal
-    alert('Insurance modal would open here');
+    console.log('Insurance management modal would open here');
+    if (window.showNotification) {
+        window.showNotification('Insurance management feature - please use the Insurance Management form', 'info');
+    }
 }
 
 function showEligibilityHistory() {
-    // This would show eligibility history
-    showErrorMessage('Eligibility history feature coming soon');
+    // Redirect to eligibility history page
+    window.location.href = '/eligibility/history';
 }
 
 function showErrorMessage(message) {
@@ -424,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .coverage-summary {
     padding: 1rem;
-    background: #f8f9fa;
+    background: rgba(10, 22, 40, 0.6);
     border-radius: 8px;
 }
 

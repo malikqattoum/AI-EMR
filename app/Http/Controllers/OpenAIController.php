@@ -1156,6 +1156,190 @@ class OpenAIController extends Controller
     }
     
     /**
+     * Get AI response for patient consultation
+     */
+    public function getResponse(Request $request)
+    {
+        $request->validate([
+            'symptoms' => 'required|string',
+            'patient_id' => 'nullable|exists:users,id',
+            'case_id' => 'nullable|integer',
+        ]);
+
+        try {
+            $user = Auth::user();
+            $symptoms = $request->input('symptoms');
+            $patientId = $request->input('patient_id');
+
+            // Build prompt for AI
+            $prompt = "Based on the following symptoms and patient information, provide a comprehensive medical analysis including possible diagnoses, recommended tests, and treatment suggestions:\n\n{$symptoms}";
+
+            // Call OpenAI API
+            $result = OpenAI::chat()->create([
+                'model' => config('openai.chat_model', 'gpt-4'),
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are an AI medical assistant. Provide detailed medical analysis based on the provided symptoms and patient information. Always include disclaimers that this is AI assistance and not a replacement for professional medical advice.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ],
+                'temperature' => 0.7,
+                'max_tokens' => 2000,
+            ]);
+
+            $aiResponse = $result['choices'][0]['message']['content'] ?? 'Unable to generate analysis';
+
+            // Log the usage
+            OpenAIUsage::create([
+                'user_id' => $user->id,
+                'patient_id' => $patientId,
+                'prompt' => $prompt,
+                'response' => $aiResponse,
+                'model' => config('openai.chat_model', 'gpt-4'),
+                'tokens_used' => $result['usage']['total_tokens'] ?? 0,
+                'status' => 'success',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'response' => $aiResponse,
+                'timestamp' => now(),
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('OpenAI getResponse failed: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate AI response: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * AI follow-up analysis
+     */
+    public function followUp(Request $request)
+    {
+        $request->validate([
+            'previous_analysis' => 'required|string',
+            'new_information' => 'required|string',
+            'patient_id' => 'nullable|exists:users,id',
+        ]);
+
+        try {
+            $user = Auth::user();
+
+            $prompt = "Previous analysis:\n{$request->input('previous_analysis')}\n\nNew information:\n{$request->input('new_information')}\n\nPlease provide an updated medical analysis incorporating this new information.";
+
+            $result = OpenAI::chat()->create([
+                'model' => config('openai.chat_model', 'gpt-4'),
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are an AI medical assistant. Provide follow-up analysis based on previous findings and new information. Always maintain professional medical standards and include appropriate disclaimers.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ],
+                'temperature' => 0.7,
+                'max_tokens' => 2000,
+            ]);
+
+            $aiResponse = $result['choices'][0]['message']['content'] ?? 'Unable to generate follow-up analysis';
+
+            OpenAIUsage::create([
+                'user_id' => $user->id,
+                'patient_id' => $request->input('patient_id'),
+                'prompt' => $prompt,
+                'response' => $aiResponse,
+                'model' => config('openai.chat_model', 'gpt-4'),
+                'tokens_used' => $result['usage']['total_tokens'] ?? 0,
+                'status' => 'success',
+                'analysis_type' => 'follow_up',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'response' => $aiResponse,
+                'timestamp' => now(),
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('OpenAI followUp failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate follow-up analysis: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Create manual diagnosis entry
+     */
+    public function createManualDiagnosis(Request $request)
+    {
+        $request->validate([
+            'patient_id' => 'required|exists:users,id',
+            'symptoms' => 'required|string',
+            'diagnosis_text' => 'required|string|max:10000',
+            'case_id' => 'nullable|integer',
+        ]);
+
+        try {
+            $user = Auth::user();
+            $patient = User::findOrFail($request->patient_id);
+
+            // Verify doctor has access to this patient
+            if (!$user->canAccessPatient($patient)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Patient not assigned to this doctor.'
+                ], 403);
+            }
+
+            // Create diagnosis record
+            $diagnosis = Diagnosis::create([
+                'doctor_id' => $user->id,
+                'patient_id' => $patient->id,
+                'type' => 'manual',
+                'diagnosis_text' => $request->diagnosis_text,
+                'patient_data' => [
+                    'symptoms' => $request->symptoms,
+                    'case_id' => $request->case_id,
+                    'created_manually' => true,
+                ],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Manual diagnosis created successfully',
+                'diagnosis' => [
+                    'id' => $diagnosis->id,
+                    'created_at' => $diagnosis->created_at,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('OpenAI createManualDiagnosis failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create manual diagnosis: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Patient-specific dashboard
      */
     private function patientDashboard($user)

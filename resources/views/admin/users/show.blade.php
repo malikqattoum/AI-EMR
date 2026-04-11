@@ -58,8 +58,8 @@
     }
 
     .analysis-card {
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
+        background: rgba(10, 22, 40, 0.6);
+        border: 1px solid rgba(0, 212, 170, 0.2);
         border-radius: 10px;
         padding: 1rem;
         margin-bottom: 1rem;

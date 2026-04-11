@@ -1,58 +1,9 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @push('styles')
 <style>
-/* Professional Dashboard Header Styling */
-.dashboard-header {
-    background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0,212,170,0.15);
-    position: relative;
-    overflow: hidden;
-}
-
-.dashboard-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #00d4aa, transparent);
-}
-
-.dashboard-header h2 {
-    color: #e8edf5;
-    font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.dashboard-header h2::before {
-    content: '🌐';
-    font-size: 2rem;
-}
-
-.dashboard-header p {
-    color: rgba(232,237,231,0.55);
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-/* Responsive adjustments */
+/* Responsive adjustments for dashboard header */
 @media (max-width: 768px) {
-    .dashboard-header {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
     .dashboard-header h2 {
         font-size: 2rem;
     }

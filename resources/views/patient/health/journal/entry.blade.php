@@ -2,6 +2,12 @@
 
 @section('title', $existingEntry ? 'Update Journal Entry' : 'Daily Health Journal')
 
+@push('styles')
+<style>
+.bg-light { background: rgba(10, 22, 40, 0.6) !important; }
+</style>
+@endpush
+
 @section('content')
 <div class="dashboard-container">
     <div class="container-fluid px-3 px-md-4">
@@ -146,7 +152,7 @@
 }
 
 .symptom-row:hover {
-    background-color: #f8f9fa;
+    background-color: rgba(10, 22, 40, 0.4);
 }
 
 .symptom-row.border-primary {

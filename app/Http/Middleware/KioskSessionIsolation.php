@@ -57,7 +57,7 @@ class KioskSessionIsolation
 
         // Ensure kiosk session data is separate
         if (!session()->has('kiosk_isolated') || !session('kiosk_isolated')) {
-            // Clear any non-kiosk session data
+            // Preserve kiosk-specific data before flushing
             $kioskData = [
                 'kiosk_session_id' => session('kiosk_session_id'),
                 'kiosk_isolated' => true,
@@ -65,8 +65,14 @@ class KioskSessionIsolation
                 'high_contrast' => session('high_contrast', false),
             ];
 
+            // Flush existing session data
             session()->flush();
+
+            // Set kiosk session data
             session($kioskData);
+
+            // CRITICAL: Regenerate session token to prevent session fixation attacks
+            session()->regenerateToken();
         }
     }
 }

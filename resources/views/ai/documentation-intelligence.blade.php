@@ -192,16 +192,16 @@
 </div>
 
 <style>
-    .bg-primary-soft { background-color: rgba(0, 123, 255, 0.1); }
-    .bg-success-soft { background-color: rgba(40, 167, 69, 0.1); }
-    .bg-warning-soft { background-color: rgba(255, 193, 7, 0.1); }
-    .alert-custom-warning { background-color: #fff9e6; border-left: 4px solid #ffc107; }
-    .alert-custom-info { background-color: #eef7ff; border-left: 4px solid #17a2b8; }
+    .bg-primary-soft { background-color: rgba(59, 130, 246, 0.1); }
+    .bg-success-soft { background-color: rgba(0, 212, 170, 0.1); }
+    .bg-warning-soft { background-color: rgba(251, 191, 36, 0.1); }
+    .alert-custom-warning { background-color: rgba(251, 191, 36, 0.1); border-left: 4px solid #fbbf24; color: rgba(232, 237, 231, 0.9); }
+    .alert-custom-info { background-color: rgba(59, 130, 246, 0.1); border-left: 4px solid #60a5fa; color: rgba(232, 237, 231, 0.9); }
     .opacity-5 { opacity: 0.5; }
     .btn-xs { padding: 0.1rem 0.3rem; font-size: 0.75rem; }
-    #ai-documentation-card textarea[readonly] { background-color: #fff !important; cursor: default; }
-    #ai-documentation-card textarea:not([readonly]) { background-color: #fff9e6 !important; border: 1px solid #ffc107 !important; }
-    .code-item:hover { background-color: rgba(0,0,0,0.02); }
+    #ai-documentation-card textarea[readonly] { background-color: rgba(10, 22, 40, 0.6) !important; cursor: default; color: rgba(232, 237, 231, 0.8) !important; }
+    #ai-documentation-card textarea:not([readonly]) { background-color: rgba(10, 22, 40, 0.8) !important; border: 1px solid rgba(0, 212, 170, 0.3) !important; color: rgba(232, 237, 231, 0.9) !important; }
+    .code-item:hover { background-color: rgba(0, 212, 170, 0.02); }
 </style>
 
 <script>

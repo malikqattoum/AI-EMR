@@ -28,7 +28,7 @@
     }
 
     .pricing-preview {
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
         border-radius: 10px;
         padding: 1.5rem;
         margin-top: 1rem;

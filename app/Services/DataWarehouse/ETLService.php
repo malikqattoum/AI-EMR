@@ -110,10 +110,24 @@ class ETLService
         $doctors = Doctor::all();
 
         foreach ($doctors as $doctor) {
+            // Calculate actual availability score based on appointments and availability slots
+            $totalSlots = DB::table('availability_slots')
+                ->where('doctor_id', $doctor->id)
+                ->count();
+
+            $bookedSlots = DB::table('availability_slots')
+                ->where('doctor_id', $doctor->id)
+                ->where('is_booked', true)
+                ->count();
+
+            // Availability score: proportion of slots that are FREE (not booked)
+            // Higher = more available, lower = busier
+            $availabilityScore = $totalSlots > 0 ? round(1 - ($bookedSlots / $totalSlots), 2) : 0;
+
             DB::table('doctor_dim')->updateOrInsert(
                 ['doctor_id' => $doctor->id],
                 [
-                    'doctor_key' => $doctor->id, // Simplified, should be surrogate key
+                    'doctor_key' => $doctor->id,
                     'name' => $doctor->name,
                     'specialty' => $doctor->specialty,
                     'license_number' => $doctor->license_number,
@@ -123,7 +137,7 @@ class ETLService
                     'consultation_fee' => $doctor->consultation_fee,
                     'rating' => $doctor->rating,
                     'total_reviews' => $doctor->reviews()->count(),
-                    'availability_score' => 0.8, // Placeholder
+                    'availability_score' => $availabilityScore,
                     'is_active' => $doctor->is_active ?? true,
                     'effective_start_date' => $doctor->created_at->toDateString(),
                     'effective_end_date' => null,
@@ -170,8 +184,51 @@ class ETLService
 
     private function loadServiceDimension()
     {
-        // This would need a services table, for now placeholder
-        // Assuming services are derived from appointments or diagnoses
+        // Load services from distinct appointment types and diagnosis categories
+        $appointmentTypes = DB::table('appointments')
+            ->select('appointment_type')
+            ->whereNotNull('appointment_type')
+            ->distinct()
+            ->get();
+
+        foreach ($appointmentTypes as $type) {
+            DB::table('service_dim')->updateOrInsert(
+                ['service_type' => $type->appointment_type],
+                [
+                    'service_key' => md5('appointment_' . $type->appointment_type),
+                    'service_name' => ucwords(str_replace('_', ' ', $type->appointment_type)),
+                    'service_category' => 'appointment',
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
+
+        // Also add common medical services if they don't exist
+        $commonServices = [
+            ['General Consultation', 'consultation'],
+            ['Follow-up Visit', 'follow_up'],
+            ['Emergency Visit', 'emergency'],
+            ['Telehealth Consultation', 'telehealth'],
+            ['Specialist Referral', 'specialist_referral'],
+            ['Lab Review', 'lab_review'],
+            ['Prescription Renewal', 'prescription_renewal'],
+        ];
+
+        foreach ($commonServices as [$name, $type]) {
+            DB::table('service_dim')->updateOrInsert(
+                ['service_type' => $type],
+                [
+                    'service_key' => md5('service_' . $type),
+                    'service_name' => $name,
+                    'service_category' => 'medical_service',
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
     }
 
     private function loadFacts()

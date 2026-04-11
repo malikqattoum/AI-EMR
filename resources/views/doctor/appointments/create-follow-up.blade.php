@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Create Follow-up Appointment')
 
@@ -11,13 +11,13 @@
 <div class="dashboard-container">
     <div class="container">
         <!-- Header -->
-        <div class="dashboard-header py-3 border-bottom d-flex justify-content-between align-items-center mb-4" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; border-radius: 10px 10px 0 0;">
+        <div class="dashboard-header py-3 border-bottom d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center">
-                <a href="{{ route('doctor.appointments.show', $appointment) }}" class="btn btn-light me-3 shadow-sm">
+                <a href="{{ route('doctor.appointments.show', $appointment) }}" class="btn btn-secondary me-3 shadow-sm">
                     <i class="fas fa-arrow-left me-2"></i>Back to Appointment
                 </a>
                 <div>
-                    <h1 class="h2 mb-1 fw-bold" style="color: white;">Create Follow-up Appointment</h1>
+                    <h1 class="h2 mb-1 fw-bold text-white">Create Follow-up Appointment</h1>
                     <p class="mb-0 opacity-75">For Patient: {{ $appointment->patient_name }}</p>
                 </div>
             </div>
@@ -27,7 +27,7 @@
             <div class="col-lg-8">
                 <!-- Main Form -->
                 <div class="table-card mb-4 shadow-sm">
-                    <div class="bg-gradient-info text-white p-4 rounded-top" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">
+                    <div class="bg-gradient-info text-white p-4 rounded-top" style="background: linear-gradient(135deg, rgba(59,130,246,0.2) 0%, rgba(59,130,246,0.1) 100%);">
                         <h4 class="mb-0 fw-bold">
                             <i class="fas fa-calendar-plus me-2"></i>Follow-up Appointment Details
                         </h4>
@@ -57,20 +57,20 @@
                                     </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="p-3 bg-light rounded">
+                                    <div class="p-3 bg-secondary rounded">
                                         <p class="text-muted mb-1 small fw-semibold">PATIENT NAME</p>
                                         <p class="mb-0 fw-semibold h6">{{ $appointment->patient_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="p-3 bg-light rounded">
+                                    <div class="p-3 bg-secondary rounded">
                                         <p class="text-muted mb-1 small fw-semibold">EMAIL</p>
                                         <p class="mb-0 fw-semibold h6">{{ $appointment->patient_email }}</p>
                                     </div>
                                 </div>
                                 @if($appointment->patient_phone)
                                     <div class="col-md-6 mt-3">
-                                        <div class="p-3 bg-light rounded">
+                                        <div class="p-3 bg-secondary rounded">
                                             <p class="text-muted mb-1 small fw-semibold">PHONE</p>
                                             <p class="mb-0 fw-semibold h6">{{ $appointment->patient_phone }}</p>
                                         </div>
@@ -219,7 +219,7 @@
                             @if($appointment->doctor_notes)
                                 <div>
                                     <p class="text-muted mb-2 small fw-semibold">DOCTOR NOTES</p>
-                                    <div class="bg-light p-3 rounded">
+                                    <div class="bg-secondary p-3 rounded">
                                         <p class="mb-0 small">{{ Str::limit($appointment->doctor_notes, 200) }}</p>
                                     </div>
                                 </div>

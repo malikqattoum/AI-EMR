@@ -1,0 +1,73 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    # Path to the root of your Laravel project
+    paths:
+        - app
+        - routes
+        - config
+        - database
+        - tests
+
+    # The level of strictness (0-10, higher is stricter)
+    # Starting at 5 for existing code, will increase over time
+    level: 5
+
+    # Use Laravel-specific rules
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    checkUnionTypes: true
+    checkBenevolentUnionTypes: true
+
+    # Additional checks
+    checkAlwaysTrueCheckTypeFunctionCall: true
+    checkAlwaysTrueInstanceof: true
+    checkAlwaysTrueStrictComparison: true
+    checkAlwaysTrueLooseComparison: true
+    checkDynamicProperties: true
+    checkDocblockTagMissing: true
+    checkExtraArguments: true
+    checkFunctionNameCase: true
+    checkInternalClassImplementedAsGeneric: true
+    checkMissingCallableSignature: true
+    checkMissingVarTagType: true
+    checkNullables: true
+    checkExplicitMixed: true
+    checkImplicitMixed: true
+    checkMissingTypehints: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkUnresolvableParameterTypes: true
+    checkUselessOverwriteMethod: true
+
+    # Report possibly undefined variables
+    reportPossiblyNonExistingMethodCall: true
+    reportPossiblyNonExistingObjectAccess: true
+
+    # Exclusions for files that don't need analysis
+    excludePaths:
+        - ./app/Providers/*ServiceProvider.php
+        - ./app/Http/Kernel.php
+        - ./bootstrap/*
+        - ./storage/*
+        - ./vendor/*
+        - ./node_modules/*
+
+    # Custom stubs for Laravel
+    stubFiles:
+        - stubs/Application.stub
+        - stubs/Model.stub
+
+parametersSchema:
+    universalObjectCratesClasses:
+        - Illuminate\Http\Request
+        - Illuminate\Http\Response
+        - Illuminate\Support\Facades\Log
+        - Illuminate\Support\Facades\Auth
+        - Illuminate\Support\Facades\Cache
+        - Illuminate\Support\Facades\Mail
+        - Illuminate\Support\Facades\Storage
+        - Illuminate\Support\Facades\Validator
+        - Illuminate\Support\Facades\Route
+        - Illuminate\Support\Facades\Config
+        - Illuminate\Support\Facades\DB

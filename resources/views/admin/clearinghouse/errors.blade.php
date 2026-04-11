@@ -120,7 +120,7 @@
     .timeline-item.low::before { background: #198754; }
 
     .error-details {
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
         border-radius: 8px;
         padding: 1rem;
         margin-top: 0.5rem;
@@ -128,6 +128,7 @@
         font-size: 0.875rem;
         white-space: pre-wrap;
         word-break: break-all;
+        color: rgba(232, 237, 231, 0.8);
     }
 
     .metric-card {
@@ -151,7 +152,7 @@
     }
 
     .filter-section {
-        background: #f8f9fa;
+        background: rgba(10, 22, 40, 0.6);
         border-radius: 8px;
         padding: 1rem;
         margin-bottom: 1rem;

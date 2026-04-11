@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Page Builder - Landing Page')
 
@@ -319,12 +319,12 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #f8fafc;
+    background: var(--navy);
 }
 
 .page-builder-header {
-    background: white;
-    border-bottom: 1px solid #e2e8f0;
+    background: var(--navy-card);
+    border-bottom: 1px solid var(--card-border);
     padding: 1rem 0;
     z-index: 1000;
 }
@@ -335,8 +335,8 @@
 }
 
 .page-builder-sidebar {
-    background: white;
-    border-right: 1px solid #e2e8f0;
+    background: var(--navy-card);
+    border-right: 1px solid var(--card-border);
     height: calc(100vh - 80px);
     overflow-y: auto;
 }
@@ -346,39 +346,40 @@
 }
 
 .nav-tabs {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--card-border);
 }
 
 .nav-tabs .nav-link {
     border: none;
-    color: #64748b;
+    color: var(--muted);
     padding: 0.75rem 1rem;
 }
 
 .nav-tabs .nav-link.active {
-    background: #f1f5f9;
-    color: #3b82f6;
-    border-bottom: 2px solid #3b82f6;
+    background: rgba(0,212,170,0.1);
+    color: var(--teal);
+    border-bottom: 2px solid var(--teal);
 }
 
 .section-template-card {
     margin-bottom: 1rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--card-border);
     border-radius: 8px;
     overflow: hidden;
     transition: all 0.2s;
     cursor: pointer;
+    background: var(--card-bg);
 }
 
 .section-template-card:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    border-color: var(--teal);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.15);
 }
 
 .template-preview {
     position: relative;
     height: 120px;
-    background: #f8fafc;
+    background: rgba(255,255,255,0.04);
     overflow: hidden;
 }
 
@@ -414,16 +415,17 @@
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
+    color: var(--offwhite);
 }
 
 .template-description {
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--muted);
     margin: 0;
 }
 
 .page-builder-canvas {
-    background: #f1f5f9;
+    background: var(--navy);
     height: calc(100vh - 80px);
     overflow: auto;
     padding: 2rem;
@@ -483,12 +485,12 @@
 }
 
 .section-item:hover {
-    border-color: #3b82f6;
+    border-color: var(--teal);
 }
 
 .section-item.selected {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
 }
 
 .section-controls {
@@ -513,7 +515,7 @@
 .control-group {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--card-border);
 }
 
 .control-group:last-child {
@@ -523,7 +525,7 @@
 .control-group h6 {
     font-weight: 600;
     margin-bottom: 0.75rem;
-    color: #374151;
+    color: var(--offwhite);
 }
 
 .color-palette {
@@ -539,7 +541,7 @@
 .color-input-group label {
     display: block;
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--muted);
     margin-bottom: 0.25rem;
 }
 
@@ -559,12 +561,12 @@
 
 .drag-handle {
     cursor: move;
-    color: #64748b;
+    color: var(--muted);
     padding: 0.5rem;
 }
 
 .drag-handle:hover {
-    color: #3b82f6;
+    color: var(--teal);
 }
 
 @media (max-width: 768px) {
@@ -588,6 +590,10 @@
     .device-frame {
         width: 100%;
     }
+}
+
+.text-muted {
+    color: var(--muted) !important;
 }
 </style>
 @endpush
@@ -1142,11 +1148,25 @@ class PageBuilder {
     getNavbarConfig() {
         const stickyNavbar = document.getElementById('stickyNavbar');
         const navbarStyle = document.getElementById('navbarStyle');
+        
+        // Collect custom links from the UI
+        const customLinks = [];
+        const linkItems = document.querySelectorAll('.custom-nav-link');
+        linkItems.forEach(item => {
+            const urlInput = item.querySelector('.nav-link-url');
+            const labelInput = item.querySelector('.nav-link-label');
+            if (urlInput && labelInput && urlInput.value.trim()) {
+                customLinks.push({
+                    url: urlInput.value.trim(),
+                    label: labelInput.value.trim()
+                });
+            }
+        });
 
         return {
             sticky: stickyNavbar ? stickyNavbar.checked : true,
             style: navbarStyle ? navbarStyle.value : 'default',
-            custom_links: [] // TODO: Implement custom links
+            custom_links: customLinks
         };
     }
 

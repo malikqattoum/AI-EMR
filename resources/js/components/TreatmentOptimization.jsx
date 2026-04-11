@@ -50,13 +50,12 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
     try {
       const response = await axios.post('/api/treatment-optimization/generate', {
         patient_id: patientId,
-        appointment_id: appointmentId,
-        conditions: ['Hypertension', 'Type 2 Diabetes'], // This should ideally come from props or another API
-        demographics: { age: 45, gender: 'Male', weight: 85, height: 180 } // Mock demographics for now
+        appointment_id: appointmentId
+        // conditions and demographics will be extracted from patient data on the backend
       });
       setRecommendation(response.data);
     } catch (err) {
-      // console.error('Error generating recommendations:', err);
+      console.error('Error generating recommendations:', err);
       setError('Failed to generate AI recommendations.');
     } finally {
       setLoading(false);
@@ -68,11 +67,16 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
     setActionLoading(true);
     try {
       await axios.post(`/api/treatment-optimization/${recommendation.id}/validate`);
-      alert('Treatment plan validated and implemented successfully.');
+      // Trigger success notification
+      if (window.showNotification) {
+        window.showNotification('Treatment plan validated and implemented successfully.', 'success');
+      }
       fetchRecommendations(); // Refresh data
     } catch (err) {
-      // console.error('Error validating recommendation:', err);
-      alert('Failed to validate treatment plan.');
+      console.error('Error validating recommendation:', err);
+      if (window.showNotification) {
+        window.showNotification('Failed to validate treatment plan.', 'error');
+      }
     } finally {
       setActionLoading(false);
     }
@@ -80,16 +84,40 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
 
   const handleReject = async () => {
     if (!recommendation) return;
-    if (!confirm('Are you sure you want to reject this treatment plan?')) return;
+
+    // Use custom event for confirmation instead of confirm()
+    const confirmed = await new Promise((resolve) => {
+      let timeoutId;
+
+      const event = new CustomEvent('show-confirmation', {
+        detail: {
+          message: 'Are you sure you want to reject this treatment plan?',
+          onConfirm: () => { clearTimeout(timeoutId); resolve(true); },
+          onCancel: () => { clearTimeout(timeoutId); resolve(false); }
+        }
+      });
+      window.dispatchEvent(event);
+
+      // Fallback to native confirm if custom event isn't handled
+      timeoutId = setTimeout(() => {
+        resolve(window.confirm('Are you sure you want to reject this treatment plan?'));
+      }, 100);
+    });
     
+    if (!confirmed) return;
+
     setActionLoading(true);
     try {
       await axios.post(`/api/treatment-optimization/${recommendation.id}/reject`);
-      alert('Treatment plan rejected.');
+      if (window.showNotification) {
+        window.showNotification('Treatment plan rejected.', 'warning');
+      }
       fetchRecommendations(); // Refresh data
     } catch (err) {
-      // console.error('Error rejecting recommendation:', err);
-      alert('Failed to reject treatment plan.');
+      console.error('Error rejecting recommendation:', err);
+      if (window.showNotification) {
+        window.showNotification('Failed to reject treatment plan.', 'error');
+      }
     } finally {
       setActionLoading(false);
     }
@@ -158,9 +186,9 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
       <div className="p-6 space-y-8">
         {/* Scores */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <ScoreCard title="Effectiveness" score={recommendation.effectiveness_score} icon={TrendingUp} color="bg-green-600" />
-          <ScoreCard title="Safety Profile" score={recommendation.safety_score} icon={Shield} color="bg-blue-600" />
-          <ScoreCard title="Cost Efficiency" score={recommendation.cost_efficiency_score} icon={DollarSign} color="bg-purple-600" />
+          <ScoreCard title="Effectiveness" score={recommendation?.effectiveness_score ?? 0} icon={TrendingUp} color="bg-green-600" />
+          <ScoreCard title="Safety Profile" score={recommendation?.safety_score ?? 0} icon={Shield} color="bg-blue-600" />
+          <ScoreCard title="Cost Efficiency" score={recommendation?.cost_efficiency_score ?? 0} icon={DollarSign} color="bg-purple-600" />
         </div>
 
         {/* Recommendations */}
@@ -171,25 +199,29 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
               Recommended Medications
             </h3>
             <div className="space-y-3">
-              {recommendation.recommended_medications.map((med, idx) => (
-                <div key={idx} className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-blue-500/50 transition-all group">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-bold text-blue-400">{med.name}</h4>
-                      <p className="text-sm text-slate-300 mt-1">{med.dosage} • {med.frequency}</p>
+              {recommendation?.recommended_medications?.length > 0 ? (
+                recommendation.recommended_medications.map((med, idx) => (
+                  <div key={idx} className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-blue-500/50 transition-all group">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-bold text-blue-400">{med.name || 'Unknown Medication'}</h4>
+                        <p className="text-sm text-slate-300 mt-1">{med.dosage || 'N/A'} • {med.frequency || 'N/A'}</p>
+                      </div>
+                      <button className="p-2 text-slate-500 hover:text-white transition-colors">
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
                     </div>
-                    <button className="p-2 text-slate-500 hover:text-white transition-colors">
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
+                    <div className="mt-3 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                      <p className="text-xs text-blue-300 flex items-start">
+                        <Info className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" />
+                        {med.justification || 'No justification provided.'}
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-3 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                    <p className="text-xs text-blue-300 flex items-start">
-                      <Info className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" />
-                      {med.justification}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-slate-400 text-sm">No medication recommendations available.</p>
+              )}
             </div>
           </div>
 
@@ -200,17 +232,25 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
                 <TrendingUp className="mr-2 text-blue-400 w-5 h-5" />
                 Outcome Predictions
               </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-3 bg-slate-900 rounded-lg border border-slate-700">
-                  <p className="text-xs text-slate-400">Success Rate</p>
-                  <p className="text-lg font-bold text-green-400">{recommendation.outcome_predictions.success_rate}</p>
-                </div>
-                <div className="p-3 bg-slate-900 rounded-lg border border-slate-700">
-                  <p className="text-xs text-slate-400">Time to Effect</p>
-                  <p className="text-lg font-bold text-blue-400">{recommendation.outcome_predictions.time_to_effect}</p>
-                </div>
-              </div>
-              <p className="text-sm text-slate-300 italic">"{recommendation.outcome_predictions.primary_benefit}"</p>
+              {recommendation?.outcome_predictions ? (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-3 bg-slate-900 rounded-lg border border-slate-700">
+                      <p className="text-xs text-slate-400">Success Rate</p>
+                      <p className="text-lg font-bold text-green-400">{recommendation.outcome_predictions.success_rate || 'N/A'}</p>
+                    </div>
+                    <div className="p-3 bg-slate-900 rounded-lg border border-slate-700">
+                      <p className="text-xs text-slate-400">Time to Effect</p>
+                      <p className="text-lg font-bold text-blue-400">{recommendation.outcome_predictions.time_to_effect || 'N/A'}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-300 italic">
+                    "{recommendation.outcome_predictions.primary_benefit || 'No primary benefit specified.'}"
+                  </p>
+                </>
+              ) : (
+                <p className="text-slate-400 text-sm">No outcome predictions available.</p>
+              )}
             </div>
 
             {/* Risk Assessment */}
@@ -221,21 +261,27 @@ const TreatmentOptimization = ({ patientId, appointmentId }) => {
                   Risk Assessment
                 </h3>
                 <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs font-bold rounded uppercase tracking-wider">
-                  {recommendation.risk_assessment.level} Risk
+                  {recommendation?.risk_assessment?.level || 'Unknown'} Risk
                 </span>
               </div>
-              <ul className="space-y-2">
-                {recommendation.risk_assessment.factors.map((factor, idx) => (
-                  <li key={idx} className="text-sm text-slate-300 flex items-start">
-                    <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 mr-2 flex-shrink-0"></span>
-                    {factor}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-4 p-3 bg-slate-900/50 rounded-lg border border-slate-700">
-                <p className="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1">Mitigation Strategy</p>
-                <p className="text-sm text-slate-300">{recommendation.risk_assessment.mitigation}</p>
-              </div>
+              {recommendation?.risk_assessment?.factors?.length > 0 ? (
+                <ul className="space-y-2">
+                  {recommendation.risk_assessment.factors.map((factor, idx) => (
+                    <li key={idx} className="text-sm text-slate-300 flex items-start">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 mr-2 flex-shrink-0"></span>
+                      {factor}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-slate-400">No risk factors identified.</p>
+              )}
+              {recommendation?.risk_assessment?.mitigation && (
+                <div className="mt-4 p-3 bg-slate-900/50 rounded-lg border border-slate-700">
+                  <p className="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1">Mitigation Strategy</p>
+                  <p className="text-sm text-slate-300">{recommendation.risk_assessment.mitigation}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

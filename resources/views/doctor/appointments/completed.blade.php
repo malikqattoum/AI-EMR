@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', 'Appointment Completed')
 
@@ -28,21 +28,21 @@
         </nav>
 
         <!-- Header -->
-        <div class="dashboard-header py-3 border-bottom mb-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border-radius: 10px 10px 0 0;">
+        <div class="dashboard-header py-3 border-bottom mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                    <a href="{{ route('doctor.appointments.index') }}" class="btn btn-light me-3 shadow-sm">
+                    <a href="{{ route('doctor.appointments.index') }}" class="btn btn-secondary me-3 shadow-sm">
                         <i class="fas fa-arrow-left me-2"></i>Back to Appointments
                     </a>
                     <div>
-                        <h1 class="h2 mb-1 fw-bold" style="color: white;">
+                        <h1 class="h2 mb-1 fw-bold text-white">
                             <i class="fas fa-check-circle me-2"></i>Appointment Completed Successfully
                         </h1>
                         <p class="mb-0 opacity-75">ID: #{{ $appointment->id }} • {{ $appointment->appointment_date->format('M j, Y \a\t g:i A') }}</p>
                     </div>
                 </div>
                 <div class="text-end">
-                    <div class="bg-white bg-opacity-20 rounded p-3">
+                    <div class="bg-secondary rounded p-3">
                         <div class="h3 mb-0 fw-bold">{{ $appointment->appointment_duration ?? 30 }}</div>
                         <small class="opacity-90">minutes completed</small>
                     </div>
@@ -55,9 +55,9 @@
             <div class="col-lg-8">
                 <!-- Success Confirmation -->
                 <div class="table-card mb-4 shadow-lg border-0" style="border-radius: 15px; overflow: hidden;">
-                    <div class="bg-gradient-success text-white p-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                    <div class="bg-gradient-success text-white p-4" style="background: linear-gradient(135deg, rgba(0,212,170,0.3) 0%, rgba(0,212,170,0.15) 100%);">
                         <div class="d-flex align-items-center">
-                            <div class="bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
                                 <i class="fas fa-check-circle fa-2x text-white"></i>
                             </div>
                             <div>
@@ -69,7 +69,7 @@
                     <div class="p-4">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="d-flex align-items-center p-3 bg-light rounded">
+                                <div class="d-flex align-items-center p-3 bg-secondary rounded">
                                     <div class="bg-success bg-opacity-15 rounded p-3 me-3">
                                         <i class="fas fa-calendar-check text-success fa-lg"></i>
                                     </div>
@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="d-flex align-items-center p-3 bg-light rounded">
+                                <div class="d-flex align-items-center p-3 bg-secondary rounded">
                                     <div class="bg-info bg-opacity-15 rounded p-3 me-3">
                                         <i class="fas fa-microphone text-info fa-lg"></i>
                                     </div>
@@ -96,7 +96,7 @@
 
                 <!-- Next Steps -->
                 <div class="table-card mb-4 shadow-sm">
-                    <div class="bg-gradient-primary text-white p-4 rounded-top" style="background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);">
+                    <div class="bg-gradient-primary text-white p-4 rounded-top" style="background: linear-gradient(135deg, rgba(0,212,170,0.2) 0%, rgba(0,212,170,0.1) 100%);">
                         <h4 class="mb-0 fw-bold">
                             <i class="fas fa-forward me-2"></i>Recommended Next Steps
                         </h4>
@@ -164,7 +164,7 @@
                         <div class="row g-3">
                             <!-- Patient Information -->
                             <div class="col-md-6">
-                                <div class="bg-light p-3 rounded">
+                                <div class="bg-secondary p-3 rounded">
                                     <h6 class="text-primary fw-bold mb-3">
                                         <i class="fas fa-user-injured me-2"></i>Patient Details
                                     </h6>
@@ -187,7 +187,7 @@
 
                             <!-- AI Risk Assessment -->
                             <div class="col-md-6">
-                                <div class="bg-light p-3 rounded">
+                                <div class="bg-secondary p-3 rounded">
                                     <h6 class="text-primary fw-bold mb-3">
                                         <i class="fas fa-brain me-2"></i>AI Risk Assessment
                                     </h6>
@@ -205,7 +205,7 @@
                                             @if($maxRisk < 0.3)
                                                 <span class="badge bg-success">Low Risk</span>
                                             @elseif($maxRisk < 0.7)
-                                                <span class="badge bg-warning text-dark">Medium Risk</span>
+                                                <span class="badge bg-warning text-white">Medium Risk</span>
                                             @else
                                                 <span class="badge bg-danger">High Risk</span>
                                             @endif
@@ -224,7 +224,7 @@
 
                             <!-- Appointment Details -->
                             <div class="col-md-12">
-                                <div class="bg-light p-3 rounded">
+                                <div class="bg-secondary p-3 rounded">
                                     <h6 class="text-primary fw-bold mb-3">
                                         <i class="fas fa-clipboard-list me-2"></i>Consultation Summary
                                     </h6>
@@ -307,7 +307,7 @@
             <div class="col-lg-4">
                 <!-- Quick Actions -->
                 <div class="table-card mb-4 shadow-sm">
-                    <div class="bg-gradient-primary text-white p-4 rounded-top" style="background: linear-gradient(135deg, #0a1628 0%, #0f1c3a 100%); border-bottom: 3px solid #00d4aa;">
+                    <div class="bg-gradient-primary text-white p-4 rounded-top" style="background: linear-gradient(135deg, rgba(0,212,170,0.15) 0%, rgba(0,212,170,0.05) 100%); border-bottom: 3px solid var(--teal);">
                         <h5 class="mb-0 fw-bold">
                             <i class="fas fa-bolt me-2"></i>Quick Actions
                         </h5>
@@ -373,7 +373,7 @@
 <div class="modal fade" id="followUpModal" tabindex="-1" aria-labelledby="followUpModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
+            <div class="modal-header bg-warning text-white">
                 <h5 class="modal-title" id="followUpModalLabel">
                     <i class="fas fa-calendar-plus me-2"></i>Schedule Follow-up Appointment
                 </h5>

@@ -4,7 +4,7 @@
 
 @push('styles')
 <style>
-    .ai-suggestions { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 15px; margin-top: 10px; }
+    .ai-suggestions { background-color: rgba(10, 22, 40, 0.6); border: 1px solid rgba(0, 212, 170, 0.2); border-radius: 5px; padding: 15px; margin-top: 10px; }
     .suggestion-item { background-color: white; border: 1px solid #e9ecef; border-radius: 3px; padding: 8px; margin-bottom: 5px; }
     .confidence-high { border-left: 4px solid #28a745; }
     .confidence-medium { border-left: 4px solid #ffc107; }

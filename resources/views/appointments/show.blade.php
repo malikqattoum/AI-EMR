@@ -699,7 +699,8 @@ function showCancelModal() {
 }
 
 function rescheduleAppointment() {
-    showNotification('Reschedule feature coming soon!', 'info');
+    const appointmentId = {{ $appointment->id }};
+    window.location.href = `/appointments/${appointmentId}/edit`;
 }
 
 function joinVideoCall() {

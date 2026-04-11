@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', $post->title)
 
@@ -200,7 +200,7 @@
 .blog-content {
     font-size: 1.1rem;
     line-height: 1.7;
-    color: #333;
+    color: var(--offwhite);
 }
 
 .blog-content p {
@@ -225,11 +225,11 @@
 }
 
 .blog-content blockquote {
-    border-left: 4px solid #00d4aa;
+    border-left: 4px solid var(--teal);
     padding-left: 1rem;
     margin: 1.5rem 0;
     font-style: italic;
-    color: rgba(232,237,231,0.7);
+    color: var(--muted);
 }
 </style>
 @endpush

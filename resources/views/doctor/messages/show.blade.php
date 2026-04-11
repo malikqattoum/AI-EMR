@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.doctor')
 
 @section('title', $thread->subject)
 
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="mb-0">{{ $pendingSuggestion->suggested_reply }}</p>
+                    <p class="mb-0 text-white">{{ $pendingSuggestion->suggested_reply }}</p>
                 </div>
             </div>
         @elseif(!$thread->isArchived() && $thread->messages()->byPatient()->exists())
@@ -76,7 +76,8 @@
                     <div class="mb-3 {{ $message->sender_type === 'doctor' ? 'text-end' : 'text-start' }}">
                         <div class="d-flex {{ $message->sender_type === 'doctor' ? 'justify-content-end' : 'justify-content-start' }}">
                             <div style="max-width: 70%;">
-                                <div class="p-3 rounded {{ $message->sender_type === 'doctor' ? 'bg-primary text-white' : ($message->sender_type === 'ai' ? 'bg-success text-white' : 'bg-light text-dark') }}">
+                                <div class="p-3 rounded {{ $message->sender_type === 'doctor' ? 'bg-primary text-white' : ($message->sender_type === 'ai' ? 'bg-success text-white' : 'text-white') }}"
+                                     style="background: rgba(255,255,255,0.08) !important;">
                                     @if($message->sender_type === 'ai')
                                         <span class="badge bg-light text-success mb-1">AI Suggestion</span>
                                     @endif
@@ -128,6 +129,42 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+/* Page-specific styles for message thread */
+.card-footer {
+    background: rgba(0,212,170,0.03) !important;
+    border-top: 1px solid var(--card-border) !important;
+    padding: 1rem !important;
+}
+.badge.bg-light { background: rgba(255,255,255,0.12) !important; color: var(--offwhite) !important; }
+.btn-light {
+    background: rgba(255,255,255,0.1) !important;
+    border-color: rgba(255,255,255,0.15) !important;
+    color: var(--offwhite) !important;
+}
+.btn-light:hover {
+    background: rgba(255,255,255,0.15) !important;
+    color: white !important;
+}
+.btn-outline-light {
+    border-color: rgba(255,255,255,0.2) !important;
+    color: var(--offwhite) !important;
+}
+.btn-outline-light:hover {
+    background: rgba(255,255,255,0.08) !important;
+    color: white !important;
+}
+.alert-secondary {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    color: var(--muted) !important;
+}
+.bg-secondary { background: rgba(108,117,125,0.2) !important; }
+.bg-success { background: rgba(0,212,170,0.15) !important; }
+</style>
+@endpush
 
 @push('scripts')
 <script>

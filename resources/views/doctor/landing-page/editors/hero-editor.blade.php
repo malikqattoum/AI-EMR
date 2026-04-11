@@ -349,7 +349,7 @@
 
 .animation-preview {
     padding: 1rem;
-    background: #f8f9fa;
+    background: rgba(10, 22, 40, 0.6);
     border-radius: 8px;
     text-align: center;
 }
