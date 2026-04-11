@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\AuthorizesDoctorResources;
 use App\Models\DoctorNote;
 use App\Models\User;
 use App\Models\Appointment;
@@ -17,6 +18,7 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class DoctorNotesController extends Controller
 {
+    use AuthorizesDoctorResources;
     public function __construct()
     {
         $this->middleware(['auth', 'doctor']);
@@ -649,5 +651,102 @@ IMPORTANT RULES:
         }
 
         return implode("\n", $formatted);
+    }
+
+    /**
+     * Download audio file for voice note
+     */
+    public function downloadAudio(DoctorNote $note)
+    {
+        try {
+            // Authorize doctor ownership
+            $this->authorizeDoctorOwnership($note->doctor_id, 'voice note');
+
+            // Check if this is a voice note with audio
+            if (!$note->isVoiceNote() || !$note->audio_file_path) {
+                abort(404, 'Audio file not found');
+            }
+
+            // Get the audio file path - files are stored on 'local' disk (storage/app/)
+            $audioPath = storage_path('app/' . $note->audio_file_path);
+
+            if (!file_exists($audioPath)) {
+                abort(404, 'Audio file not found on disk');
+            }
+
+            // Determine the filename and MIME type based on actual file extension
+            $filename = pathinfo($note->audio_file_path, PATHINFO_FILENAME);
+            $extension = pathinfo($note->audio_file_path, PATHINFO_EXTENSION);
+            $downloadFilename = $filename . '.' . $extension;
+            
+            $mimeType = match ($extension) {
+                'mp3' => 'audio/mpeg',
+                'wav' => 'audio/wav',
+                'ogg' => 'audio/ogg',
+                'm4a' => 'audio/mp4',
+                'aac' => 'audio/aac',
+                default => 'audio/webm',
+            };
+
+            // Return the file using Laravel's file response for efficient streaming
+            return response()->file($audioPath, [
+                'Content-Type' => $mimeType,
+                'Content-Disposition' => 'attachment; filename="' . $downloadFilename . '"',
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error downloading doctor note audio', [
+                'error' => $e->getMessage(),
+                'note_id' => $note->id
+            ]);
+            abort(500, 'Error downloading audio file');
+        }
+    }
+
+    /**
+     * Stream audio file for playback
+     */
+    public function streamAudio(DoctorNote $note)
+    {
+        try {
+            // Authorize doctor ownership
+            $this->authorizeDoctorOwnership($note->doctor_id, 'voice note');
+
+            // Check if this is a voice note with audio
+            if (!$note->isVoiceNote() || !$note->audio_file_path) {
+                abort(404, 'Audio file not found');
+            }
+
+            // Get the audio file path - files are stored on 'local' disk (storage/app/)
+            $audioPath = storage_path('app/' . $note->audio_file_path);
+
+            if (!file_exists($audioPath)) {
+                abort(404, 'Audio file not found on disk');
+            }
+
+            // Determine MIME type based on file extension
+            $extension = pathinfo($note->audio_file_path, PATHINFO_EXTENSION);
+            $mimeType = match ($extension) {
+                'mp3' => 'audio/mpeg',
+                'wav' => 'audio/wav',
+                'ogg' => 'audio/ogg',
+                'm4a' => 'audio/mp4',
+                'aac' => 'audio/aac',
+                default => 'audio/webm',
+            };
+
+            // Return the file for streaming with proper headers
+            return response()->file($audioPath, [
+                'Content-Type' => $mimeType,
+                'Accept-Ranges' => 'bytes',
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error streaming doctor note audio', [
+                'error' => $e->getMessage(),
+                'note_id' => $note->id
+            ]);
+            abort(500, 'Error streaming audio file');
+        }
     }
 }

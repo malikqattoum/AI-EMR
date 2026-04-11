@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\AuthorizesDoctorResources;
 use App\Models\VoiceTranscription;
 use App\Models\User;
 use App\Models\Diagnosis;
@@ -33,6 +34,8 @@ use Google\Cloud\Speech\V1\RecognitionAudio;
 
 class VoiceAssistantController extends Controller
 {
+    use AuthorizesDoctorResources;
+    
     private $cachedMedicalPhraseSet = null;
 
     public function __construct()
@@ -4427,5 +4430,55 @@ INSTRUCTIONS:
             }
 
             return implode('. ', $messages) . '.';
+        }
+
+        /**
+         * Download audio file as MP3
+         */
+        public function downloadAudio(VoiceTranscription $transcription)
+        {
+            try {
+                // Authorize doctor ownership using trait
+                $this->authorizeDoctorOwnership($transcription->doctor_id, 'audio file');
+
+                // Check if audio file exists
+                if (!$transcription->audio_file) {
+                    abort(404, 'Audio file not found');
+                }
+
+                // Get the audio file path
+                $audioPath = storage_path('app/public/' . $transcription->audio_file);
+
+                if (!file_exists($audioPath)) {
+                    abort(404, 'Audio file not found on disk');
+                }
+
+                // Determine the filename and MIME type based on actual file extension
+                $filename = pathinfo($transcription->audio_file, PATHINFO_FILENAME);
+                $extension = pathinfo($transcription->audio_file, PATHINFO_EXTENSION);
+                $downloadFilename = $filename . '.' . $extension;
+
+                $mimeType = match ($extension) {
+                    'mp3' => 'audio/mpeg',
+                    'wav' => 'audio/wav',
+                    'ogg' => 'audio/ogg',
+                    'm4a' => 'audio/mp4',
+                    'aac' => 'audio/aac',
+                    default => 'audio/webm',
+                };
+
+                // Return the file using Laravel's file response for efficient streaming
+                return response()->file($audioPath, [
+                    'Content-Type' => $mimeType,
+                    'Content-Disposition' => 'attachment; filename="' . $downloadFilename . '"',
+                ]);
+
+            } catch (\Exception $e) {
+                \Log::error('Error downloading audio file', [
+                    'error' => $e->getMessage(),
+                    'transcription_id' => $transcription->id
+                ]);
+                abort(500, 'Error downloading audio file');
+            }
         }
     }

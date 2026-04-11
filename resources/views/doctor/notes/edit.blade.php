@@ -69,9 +69,15 @@ audio {
                         <div class="col-12">
                             <label class="form-label fw-bold">Original Recording</label>
                             <audio controls class="w-100">
-                                <source src="{{ Storage::url($note->audio_file_path) }}" type="audio/webm">
+                                <source src="{{ route('doctor.notes.audio', $note) }}">
                                 Your browser does not support the audio element.
                             </audio>
+                            <div class="mt-2 text-end">
+                                <a href="{{ route('doctor.notes.download', $note) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download me-1"></i>
+                                    Download Audio
+                                </a>
+                            </div>
                         </div>
                     </div>
                 @endif

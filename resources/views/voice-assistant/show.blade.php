@@ -212,9 +212,9 @@
                                     @endif
                                     <div class="col-6">
                                         <small class="text-muted">Download:</small><br>
-                                        <a href="{{ asset('storage/' . $transcription->audio_file) }}" download class="btn btn-sm btn-outline-primary">
+                                        <a href="{{ route('ai.ambient-listening.download-audio', $transcription) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-download me-1"></i>
-                                            Download
+                                            Download Audio
                                         </a>
                                     </div>
                                 </div>

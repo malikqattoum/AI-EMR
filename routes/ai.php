@@ -33,6 +33,7 @@ Route::middleware(['auth', 'sub.user.permissions'])->prefix('ai')->name('ai.')->
         Route::post('/save-diagnosis-and-complete', [VoiceAssistantController::class, 'saveDiagnosisAndComplete'])->name('save-diagnosis-and-complete');
         Route::post('/complete-consultation', [VoiceAssistantController::class, 'completeConsultation'])->name('complete-consultation');
         Route::post('/process-audio-server', [VoiceAssistantController::class, 'processAudioServer'])->name('process-audio-server');
+        Route::get('/{transcription}/download-audio', [VoiceAssistantController::class, 'downloadAudio'])->name('download-audio');
     });
 
     // AI suggestion route for appointments (prescription suggestions)

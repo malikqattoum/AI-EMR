@@ -828,6 +828,8 @@ Route::middleware(['auth', 'admin.impersonation', 'doctor', 'sub.user.permission
         Route::get('/{note}/edit', [App\Http\Controllers\Doctor\DoctorNotesController::class, 'edit'])->name('edit');
         Route::put('/{note}', [App\Http\Controllers\Doctor\DoctorNotesController::class, 'update'])->name('update');
         Route::post('/transcribe-audio', [App\Http\Controllers\Doctor\DoctorNotesController::class, 'transcribeAudio'])->name('transcribe-audio');
+        Route::get('/{note}/download', [App\Http\Controllers\Doctor\DoctorNotesController::class, 'downloadAudio'])->name('download');
+        Route::get('/{note}/audio', [App\Http\Controllers\Doctor\DoctorNotesController::class, 'streamAudio'])->name('audio');
     });
 
     // Blog Management

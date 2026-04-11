@@ -218,6 +218,13 @@
                                                             <i class="fas fa-file-medical"></i>
                                                         </a>
                                                     @endif
+                                                    @if($transcription->audio_file)
+                                                        <a href="{{ route('ai.ambient-listening.download-audio', $transcription) }}"
+                                                           class="btn btn-sm btn-outline-info"
+                                                           title="Download Audio">
+                                                            <i class="fas fa-download"></i>
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

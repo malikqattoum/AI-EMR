@@ -81,9 +81,15 @@ audio {
                         <div class="mb-4">
                             <h6><i class="fas fa-volume-up me-2"></i>Audio Recording</h6>
                             <audio controls class="w-100">
-                                <source src="{{ Storage::url($note->audio_file_path) }}" type="audio/webm">
+                                <source src="{{ route('doctor.notes.audio', $note) }}">
                                 Your browser does not support the audio element.
                             </audio>
+                            <div class="mt-2 text-end">
+                                <a href="{{ route('doctor.notes.download', $note) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download me-1"></i>
+                                    Download Audio
+                                </a>
+                            </div>
                         </div>
                     @endif
 
