@@ -1,554 +1,144 @@
-@extends('layouts.landing-page')
-
-@section('title', $landingPage->page_title ?: $doctor->user->name . ' - Medical Professional')
-@section('description', $landingPage->page_description ?: 'Book an appointment with ' . $doctor->user->name)
-
-@push('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root {
-    --primary-color: {{ $landingPage->colors['primary'] ?? '#3b82f6' }};
-    --secondary-color: {{ $landingPage->colors['secondary'] ?? '#64748b' }};
-    --accent-color: {{ $landingPage->colors['accent'] ?? '#10b981' }};
-    --button-color: {{ $landingPage->colors['button'] ?? '#3b82f6' }};
-    --header-bg: {{ $landingPage->colors['header_bg'] ?? '#ffffff' }};
-    --footer-bg: {{ $landingPage->colors['footer_bg'] ?? '#f8fafc' }};
-    --primary-font: {{ $landingPage->fonts_config['primary'] ?? 'Inter' }}, sans-serif;
-    --heading-font: {{ $landingPage->fonts_config['heading'] ?? 'Poppins' }}, sans-serif;
-    --animations-enabled: {{ $landingPage->enable_animations ? '1' : '0' }};
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: var(--primary-font);
-    line-height: 1.6;
-    color: #374151;
-    overflow-x: hidden;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--heading-font);
-    font-weight: 600;
-    line-height: 1.2;
-}
-
-.btn {
-    font-weight: 500;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    border: none;
-    padding: 0.75rem 1.5rem;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-    color: white;
-}
-
-.btn-outline-primary {
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-    background: transparent;
-}
-
-.btn-outline-primary:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Custom Navbar */
-.custom-navbar {
-    background: var(--header-bg);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    padding: 1rem 0;
-}
-
-.custom-navbar.scrolled {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem 0;
-}
-
-.navbar-brand {
-    font-family: var(--heading-font);
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--primary-color) !important;
-}
-
-.navbar-nav .nav-link {
-    font-weight: 500;
-    color: #374151 !important;
-    margin: 0 0.5rem;
-    padding: 0.5rem 1rem !important;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover {
-    color: var(--primary-color) !important;
-    background: rgba(59, 130, 246, 0.1);
-}
-
-.navbar-nav .nav-link.active {
-    color: var(--primary-color) !important;
-    background: rgba(59, 130, 246, 0.1);
-}
-
-/* Page Layout Styles */
-.layout-fullwidth {
-    width: 100%;
-    max-width: none;
-}
-
-.layout-boxed {
-    max-width: 1200px;
-    margin: 0 auto;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
-}
-
-.layout-sidebar {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 2rem;
-}
-
-/* Animation Classes */
-@media (prefers-reduced-motion: no-preference) {
-    .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.6s ease;
-    }
-
-    .animate-on-scroll.animated {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Floating Action Button */
-.floating-cta {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 1000;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: white;
-    border-radius: 50px;
-    padding: 1rem 2rem;
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    animation: pulse 2s infinite;
-}
-
-.floating-cta:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
-    color: white;
-    text-decoration: none;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-    }
-    50% {
-        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5);
-    }
-    100% {
-        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-    }
-}
-
-/* Scroll Progress Bar */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-    z-index: 9999;
-    transition: width 0.1s ease;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-color);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .layout-sidebar {
-        grid-template-columns: 1fr;
-    }
-
-    .floating-cta {
-        bottom: 1rem;
-        right: 1rem;
-        padding: 0.75rem 1.5rem;
-        font-size: 0.9rem;
-    }
-
-    .custom-navbar {
-        padding: 0.5rem 0;
-    }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --header-bg: #1f2937;
-        --footer-bg: #111827;
-    }
-
-    body {
-        background: #111827;
-        color: #f9fafb;
-    }
-
-    .custom-navbar {
-        background: rgba(31, 41, 55, 0.95);
-        border-bottom-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .navbar-nav .nav-link {
-        color: #f9fafb !important;
-    }
-}
-</style>
-@endpush
-
-@section('content')
-<!-- Scroll Progress Bar -->
-<div class="scroll-progress" id="scrollProgress"></div>
-
-<!-- Custom Navigation -->
-<nav class="navbar navbar-expand-lg custom-navbar fixed-top" id="mainNavbar">
-    <div class="container{{ ($landingPage->page_layout ?? 'default') === 'fullwidth' ? '-fluid' : '' }}">
-        <a class="navbar-brand" href="#home">
-            @if($doctor->user->profile_photo_path)
-                <img src="{{ Storage::url($doctor->user->profile_photo_path) }}"
-                     alt="{{ $doctor->user->name }}"
-                     class="rounded-circle me-2"
-                     style="width: 40px; height: 40px; object-fit: cover;">
-            @endif
-            {{ $doctor->user->name }}
-        </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <!-- Default Navigation Links -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#home">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#services">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#testimonials">Reviews</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact</a>
-                </li>
-
-                <!-- Custom Navigation Links -->
-                @if(isset($landingPage->navbar_config['custom_links']) && is_array($landingPage->navbar_config['custom_links']))
-                    @foreach($landingPage->navbar_config['custom_links'] as $link)
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ $link['url'] ?? '#' }}"
-                           {{ ($link['external'] ?? false) ? 'target="_blank"' : '' }}>
-                            @if(isset($link['icon']) && $link['icon'])
-                                <i class="{{ $link['icon'] }} me-1"></i>
-                            @endif
-                            {{ $link['text'] ?? 'Link' }}
-                        </a>
-                    </li>
-                    @endforeach
-                @endif
-
-                <li class="nav-item">
-                    <a class="nav-link btn btn-primary text-white px-3 ms-2" href="#appointments">
-                        Book Appointment
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!-- Main Content -->
-<main class="main-content layout-{{ $landingPage->page_layout ?? 'default' }}">
-    @if($landingPage->page_sections && count($landingPage->page_sections) > 0)
-        @foreach($landingPage->page_sections as $section)
-            @if(view()->exists('doctor.landing-page.sections.' . $section['type']))
-                @include('doctor.landing-page.sections.' . $section['type'], ['section' => $section, 'isBuilder' => false])
-            @endif
-        @endforeach
-    @else
-        <!-- Default sections if no custom sections are defined -->
-        @include('doctor.landing-page.sections.hero', [
-            'section' => [
-                'id' => 'hero',
-                'type' => 'hero',
-                'config' => [
-                    'title' => 'Welcome to ' . $doctor->user->name . "'s Practice",
-                    'subtitle' => $landingPage->tagline ?: 'Providing quality healthcare with compassion',
-                    'background_color' => $landingPage->colors['primary'] ?? '#3b82f6',
-                    'text_color' => '#ffffff',
-                    'button_text' => 'Book Appointment',
-                    'button_link' => '#appointments',
-                    'animation' => 'fadeInUp'
-                ]
-            ],
-            'isBuilder' => false
-        ])
-
-        @include('doctor.landing-page.sections.about', [
-            'section' => [
-                'id' => 'about',
-                'type' => 'about',
-                'config' => [
-                    'title' => 'About ' . $doctor->user->name,
-                    'content' => $landingPage->about_text ?: $doctor->bio,
-                    'layout' => 'image-left',
-                    'animation' => 'fadeInLeft'
-                ]
-            ],
-            'isBuilder' => false
-        ])
-
-        @include('doctor.landing-page.sections.services', [
-            'section' => [
-                'id' => 'services',
-                'type' => 'services',
-                'config' => [
-                    'title' => 'Our Services',
-                    'subtitle' => 'Comprehensive healthcare solutions',
-                    'layout' => 'grid-3',
-                    'animation' => 'fadeInUp'
-                ]
-            ],
-            'isBuilder' => false
-        ])
-    @endif
-</main>
-
-<!-- Floating CTA Button -->
-<a href="#appointments" class="floating-cta">
-    <i class="fas fa-calendar-plus me-2"></i>
-    Book Now
-</a>
-
-@endsection
-
-@push('scripts')
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS (Animate On Scroll)
-    if ({{ $landingPage->enable_animations ? 'true' : 'false' }}) {
-        AOS.init({
-            duration: 1000,
-            easing: 'ease-in-out',
-            once: true,
-            offset: 100
-        });
-    }
-
-    // Navbar scroll effect
-    const navbar = document.getElementById('mainNavbar');
-    const scrollProgress = document.getElementById('scrollProgress');
-
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const rate = scrolled / (document.body.scrollHeight - window.innerHeight);
-
-        // Update scroll progress bar
-        scrollProgress.style.width = (rate * 100) + '%';
-
-        // Update navbar appearance
-        if (scrolled > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const offsetTop = target.offsetTop - 80; // Account for fixed navbar
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // Active navigation highlighting
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.navbar-nav .nav-link[href^="#"]');
-
-    window.addEventListener('scroll', function() {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionHeight = section.clientHeight;
-            if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + current) {
-                link.classList.add('active');
-            }
-        });
-    });
-
-    // Intersection Observer for animations
-    if ({{ $landingPage->enable_animations ? 'true' : 'false' }}) {
-        const landingObserverOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const landingObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
-            });
-        }, landingObserverOptions);
-
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            landingObserver.observe(el);
-        });
-    }
-
-    // Parallax effect for hero section
-    const heroSection = document.querySelector('.hero-section');
-    if (heroSection) {
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * -0.5;
-            heroSection.style.transform = `translateY(${rate}px)`;
-        });
-    }
-
-    // Custom cursor effect
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    cursor.style.cssText = `
-        position: fixed;
-        width: 20px;
-        height: 20px;
-        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transition: all 0.1s ease;
-        opacity: 0;
-    `;
-    document.body.appendChild(cursor);
-
-    document.addEventListener('mousemove', function(e) {
-        cursor.style.left = e.clientX - 10 + 'px';
-        cursor.style.top = e.clientY - 10 + 'px';
-        cursor.style.opacity = '0.7';
-    });
-
-    document.addEventListener('mouseleave', function() {
-        cursor.style.opacity = '0';
-    });
-
-    // Interactive elements hover effects
-    document.querySelectorAll('.btn, .card, .service-card').forEach(el => {
-        el.addEventListener('mouseenter', function() {
-            cursor.style.transform = 'scale(2)';
-            cursor.style.opacity = '0.3';
-        });
-
-        el.addEventListener('mouseleave', function() {
-            cursor.style.transform = 'scale(1)';
-            cursor.style.opacity = '0.7';
-        });
-    });
-
-    // Loading animation
-    window.addEventListener('load', function() {
-        document.body.classList.add('loaded');
-
-        // Animate elements in sequence
-        const animateElements = document.querySelectorAll('[data-animate-delay]');
-        animateElements.forEach(el => {
-            const delay = el.getAttribute('data-animate-delay');
-            setTimeout(() => {
-                el.classList.add('animate__animated', el.getAttribute('data-animate'));
-            }, delay);
-        });
-    });
-
-    // Performance optimization: Lazy load images
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-
-    images.forEach(img => imageObserver.observe(img));
-});
-</script>
-@endpush
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ session('rtl', false) ? 'rtl' : 'ltr' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="@if(!empty($doctor->bio)){{ Str::limit(strip_tags($doctor->bio), 160) }}@else{{ __('Premium Healthcare Services by Dr. :name', ['name' => $doctor->name ?? 'Unknown']) }}@endif">
+    <title>@if(!empty($doctor->name)){{ $doctor->name }} | @endif{{ __('Dr. Profile') }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root{--copper-accent:#cd7f32;--copper-light:#e6a756;--copper-dark:#a66628;--cream:#faf7f2;--warm-white:#fefcf9;--warm-gray:#8a8279;--charcoal:#2d2926;--deep-brown:#3d3229}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'DM Sans',sans-serif;background-color:var(--warm-white);color:var(--charcoal);line-height:1.7;overflow-x:hidden}
+        h1,h2,h3,h4,h5,h6,.heading-font{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--deep-brown)}
+        .text-copper{color:var(--copper-accent)!important}.bg-copper{background-color:var(--copper-accent)!important}
+        .btn-copper{background-color:var(--copper-accent);border-color:var(--copper-accent);color:#fff;padding:.875rem 2rem;font-weight:500;letter-spacing:.5px;transition:all .4s ease;border-radius:4px}
+        .btn-copper:hover{background-color:var(--copper-dark);border-color:var(--copper-dark);color:#fff;transform:translateY(-2px);box-shadow:0 8px 25px rgba(205,127,50,.3)}
+        .btn-outline-copper{background:0 0;border:2px solid var(--copper-accent);color:var(--copper-accent);padding:.75rem 1.75rem;font-weight:500;letter-spacing:.5px;transition:all .4s ease;border-radius:4px}
+        .btn-outline-copper:hover{background-color:var(--copper-accent);color:#fff}
+        .navbar-elegant{background:rgba(254,252,249,.95);backdrop-filter:blur(10px);padding:1.25rem 0;transition:all .4s ease}
+        .navbar-elegant.scrolled{padding:.75rem 0;box-shadow:0 2px 30px rgba(45,41,38,.08)}
+        .navbar-brand-elegant{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:600;color:var(--deep-brown)!important;text-decoration:none}
+        .navbar-brand-elegant span{color:var(--copper-accent)}
+        .nav-link-elegant{font-size:.95rem;font-weight:500;color:var(--charcoal)!important;padding:.5rem 1.25rem!important;transition:color .3s ease;position:relative}
+        .nav-link-elegant::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--copper-accent);transition:all .3s ease;transform:translateX(-50%)}
+        .nav-link-elegant:hover::after,.nav-link-elegant.active::after{width:60%}
+        .nav-link-elegant:hover{color:var(--copper-accent)!important}
+        .hero-magazine{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--warm-white) 0%,var(--cream) 100%)}
+        .hero-image-wrapper{position:relative;padding:0}
+        .hero-image-container{position:relative;height:100%;min-height:600px}
+        .hero-image-container::before{content:'';position:absolute;top:-40px;right:-40px;width:120%;height:120%;background:linear-gradient(135deg,var(--copper-accent) 0%,var(--copper-light) 100%);opacity:.15;border-radius:0 0 0 50%;z-index:0}
+        .hero-main-image{position:relative;z-index:1;width:100%;height:100%;min-height:600px;object-fit:cover;border-radius:0 0 0 100px}
+        .hero-badge{position:absolute;bottom:40px;right:-30px;z-index:2;background:#fff;padding:1.5rem 2rem;border-radius:8px;box-shadow:0 15px 50px rgba(45,41,38,.15);text-align:center}
+        .hero-badge-number{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--copper-accent);line-height:1}
+        .hero-badge-text{font-size:.85rem;color:var(--warm-gray);font-weight:500}
+        .hero-content{padding:4rem 3rem 4rem 4rem}
+        .hero-subtitle{font-size:.9rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--copper-accent);margin-bottom:1.5rem}
+        .hero-title{font-size:clamp(2.5rem,5vw,4rem);font-weight:600;line-height:1.15;margin-bottom:1.5rem;color:var(--deep-brown)}
+        .hero-title em{font-style:italic;color:var(--copper-accent)}
+        .hero-description{font-size:1.1rem;color:var(--warm-gray);margin-bottom:2.5rem;max-width:480px}
+        .hero-cta-group{display:flex;gap:1rem;flex-wrap:wrap}
+        .hero-stats{display:flex;gap:3rem;margin-top:4rem;padding-top:2rem;border-top:1px solid rgba(205,127,50,.2)}
+        .hero-stat-item{text-align:center}
+        .hero-stat-number{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--copper-accent);line-height:1}
+        .hero-stat-label{font-size:.85rem;color:var(--warm-gray);margin-top:.5rem}
+        .trust-section{background:#fff;padding:3rem 0;border-bottom:1px solid rgba(205,127,50,.1)}
+        .trust-item{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;background:var(--warm-white);border-radius:8px;transition:all .3s ease}
+        .trust-item:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(205,127,50,.1)}
+        .trust-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--copper-accent) 0%,var(--copper-light) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.25rem;flex-shrink:0}
+        .trust-content h5{font-size:1.1rem;margin-bottom:.25rem;font-weight:600}.trust-content p{font-size:.85rem;color:var(--warm-gray);margin:0}
+        .about-editorial{padding:6rem 0;background:var(--warm-white);position:relative}
+        .about-editorial::before{content:'';position:absolute;top:0;right:0;width:40%;height:100%;background:linear-gradient(180deg,rgba(205,127,50,.05) 0%,transparent 100%);pointer-events:none}
+        .editorial-label{font-size:.85rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--copper-accent);margin-bottom:1rem}
+        .editorial-title{font-size:clamp(2rem,4vw,3rem);font-weight:600;line-height:1.2;margin-bottom:1.5rem}
+        .editorial-text{font-size:1.05rem;color:var(--warm-gray);margin-bottom:1.5rem}
+        .signature-wrapper{display:flex;align-items:center;gap:1.5rem;margin-top:2rem}
+        .signature-image{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--copper-accent)}
+        .signature-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--deep-brown);margin-bottom:.25rem}
+        .signature-title{font-size:.9rem;color:var(--copper-accent)}
+        .about-image-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;position:relative}
+        .about-image-grid::before{content:'';position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:2px solid var(--copper-accent);opacity:.2;border-radius:8px;z-index:0}
+        .about-grid-image{width:100%;height:250px;object-fit:cover;border-radius:8px;position:relative;z-index:1;transition:transform .4s ease}
+        .about-grid-image:hover{transform:scale(1.03)}.about-grid-image:first-child{margin-bottom:1rem}
+        .services-editorial{padding:6rem 0;background:linear-gradient(180deg,var(--cream) 0%,var(--warm-white) 100%)}
+        .section-header{text-align:center;max-width:600px;margin:0 auto 4rem}
+        .service-card-editorial{background:#fff;border-radius:12px;overflow:hidden;transition:all .4s ease;height:100%;border:1px solid rgba(205,127,50,.1)}
+        .service-card-editorial:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(45,41,38,.1)}
+        .service-icon-wrapper{width:80px;height:80px;background:linear-gradient(135deg,var(--copper-accent) 0%,var(--copper-light) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:2rem auto 1.5rem;color:#fff;font-size:1.75rem;transition:transform .4s ease}
+        .service-card-editorial:hover .service-icon-wrapper{transform:scale(1.1)}
+        .service-title{font-size:1.4rem;font-weight:600;margin-bottom:1rem;text-align:center}
+        .service-description{font-size:.95rem;color:var(--warm-gray);text-align:center;padding:0 1.5rem 2rem}
+        .testimonials-editorial{padding:6rem 0;background:var(--deep-brown);position:relative;overflow:hidden}
+        .testimonials-editorial::before{content:'"';position:absolute;top:-50px;left:5%;font-family:'Cormorant Garamond',serif;font-size:400px;color:rgba(205,127,50,.08);line-height:1}
+        .testimonial-card-magazine{background:#fff;border-radius:12px;padding:2.5rem;position:relative;height:100%}
+        .testimonial-quote{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;color:var(--charcoal);line-height:1.8;margin-bottom:2rem;position:relative}
+        .testimonial-quote::before{content:'"';position:absolute;top:-10px;left:-10px;font-size:4rem;color:var(--copper-accent);opacity:.3;font-family:'Cormorant Garamond',serif}
+        .testimonial-author{display:flex;align-items:center;gap:1rem;padding-top:1.5rem;border-top:1px solid rgba(205,127,50,.2)}
+        .testimonial-avatar{width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid var(--copper-accent)}
+        .testimonial-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--deep-brown);margin-bottom:.25rem}
+        .testimonial-title{font-size:.85rem;color:var(--warm-gray)}.testimonial-rating{color:var(--copper-accent);margin-top:.5rem}
+        .appointment-editorial{padding:6rem 0;background:var(--warm-white);position:relative}
+        .appointment-form-wrapper{background:#fff;border-radius:16px;padding:3rem;box-shadow:0 25px 60px rgba(45,41,38,.1);position:relative;overflow:hidden}
+        .appointment-form-wrapper::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--copper-accent) 0%,var(--copper-light) 100%)}
+        .form-label-editorial{font-weight:500;color:var(--deep-brown);margin-bottom:.5rem;font-size:.95rem}
+        .form-control-editorial{border:2px solid rgba(205,127,50,.2);border-radius:8px;padding:.875rem 1rem;font-size:.95rem;transition:all .3s ease}
+        .form-control-editorial:focus{border-color:var(--copper-accent);box-shadow:0 0 0 4px rgba(205,127,50,.1)}
+        .form-select-editorial{border:2px solid rgba(205,127,50,.2);border-radius:8px;padding:.875rem 1rem;font-size:.95rem;transition:all .3s ease;cursor:pointer}
+        .form-select-editorial:focus{border-color:var(--copper-accent);box-shadow:0 0 0 4px rgba(205,127,50,.1)}
+        .contact-editorial{padding:6rem 0;background:linear-gradient(135deg,var(--cream) 0%,var(--warm-white) 100%)}
+        .contact-info-card{background:#fff;border-radius:12px;padding:2rem;text-align:center;height:100%;transition:all .4s ease;border:1px solid rgba(205,127,50,.1)}
+        .contact-info-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(205,127,50,.15)}
+        .contact-icon-large{width:80px;height:80px;background:linear-gradient(135deg,var(--copper-accent) 0%,var(--copper-light) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;color:#fff;font-size:1.75rem}
+        .contact-title{font-size:1.3rem;font-weight:600;margin-bottom:.75rem}.contact-text{color:var(--warm-gray);font-size:.95rem;margin:0}
+        .contact-text a{color:var(--copper-accent);text-decoration:none;transition:color .3s ease}.contact-text a:hover{color:var(--copper-dark)}
+        .map-container{border-radius:12px;overflow:hidden;height:300px;background:var(--cream)}.map-container iframe{width:100%;height:100%;border:none}
+        .footer-editorial{background:var(--charcoal);color:#fff;padding:4rem 0 2rem}
+        .footer-brand{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:#fff;margin-bottom:1rem}.footer-brand span{color:var(--copper-accent)}
+        .footer-description{color:rgba(255,255,255,.6);font-size:.95rem;margin-bottom:1.5rem}.footer-social{display:flex;gap:1rem}
+        .footer-social a{width:44px;height:44px;border-radius:50%;background:rgba(205,127,50,.2);color:var(--copper-accent);display:flex;align-items:center;justify-content:center;transition:all .3s ease;text-decoration:none}
+        .footer-social a:hover{background:var(--copper-accent);color:#fff;transform:translateY(-3px)}
+        .footer-heading{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:#fff;margin-bottom:1.5rem}
+        .footer-links{list-style:none;padding:0;margin:0}.footer-links li{margin-bottom:.75rem}
+        .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;transition:all .3s ease;font-size:.95rem}.footer-links a:hover{color:var(--copper-accent);padding-left:5px}
+        .footer-hours li{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.9rem}.footer-hours li:last-child{border-bottom:none}.footer-hours .day{color:rgba(255,255,255,.6)}.footer-hours .time{color:var(--copper-accent);font-weight:500}
+        .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:2rem;margin-top:3rem;text-align:center}.footer-copyright{color:rgba(255,255,255,.5);font-size:.9rem}
+        .back-to-top{position:fixed;bottom:30px;right:30px;width:50px;height:50px;background:var(--copper-accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:0;visibility:hidden;transition:all .4s ease;z-index:1000;box-shadow:0 10px 30px rgba(205,127,50,.3)}
+        .back-to-top.visible{opacity:1;visibility:visible}.back-to-top:hover{background:var(--copper-dark);color:#fff;transform:translateY(-5px)}
+        [dir="rtl"] .hero-content{padding:4rem 4rem 4rem 3rem}[dir="rtl"] .hero-badge{right:auto;left:-30px}[dir="rtl"] .hero-image-container::before{right:auto;left:-40px;border-radius:0 0 50% 0}[dir="rtl"] .hero-main-image{border-radius:0 0 100px 0}[dir="rtl"] .about-image-grid::before{left:auto;right:-20px}[dir="rtl"] .testimonial-quote::before{left:auto;right:-10px}[dir="rtl"] .footer-links a:hover{padding-left:0;padding-right:5px}[dir="rtl"] .back-to-top{right:auto;left:30px}
+        @media(max-width:991px){.hero-content{padding:3rem 1.5rem}.hero-image-wrapper{margin-top:3rem}.hero-badge{right:20px;bottom:20px}.about-image-grid{margin-top:3rem}.hero-stats{justify-content:center}}
+        @media(max-width:767px){.hero-stats{flex-direction:column;gap:1.5rem}.hero-badge{display:none}.appointment-form-wrapper{padding:2rem 1.5rem}}
+        .organic-shape-1{position:absolute;width:300px;height:300px;background:linear-gradient(135deg,rgba(205,127,50,.1) 0%,transparent 70%);border-radius:60% 40% 30% 70%/60% 30% 70% 40%;z-index:0}
+        .organic-shape-2{position:absolute;width:200px;height:200px;background:linear-gradient(135deg,rgba(205,127,50,.08) 0%,transparent 70%);border-radius:30% 70% 70% 30%/30% 30% 70% 70%;z-index:0}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}.animate-fade-in{animation:fadeInUp .8s ease forwards}html{scroll-behavior:smooth}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-elegant fixed-top" id="mainNav">
+        <div class="container"><a class="navbar-brand-elegant" href="#">@if(!empty($doctor->name))Dr. {{ Str::words($doctor->name,1,'') }}<span>.</span>@else Medical<span>.</span>@endif</a><button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse justify-content-end" id="navbarNav"><ul class="navbar-nav align-items-lg-center"><li class="nav-item"><a class="nav-link nav-link-elegant active" href="#home">{{ __('Home') }}</a></li><li class="nav-item"><a class="nav-link nav-link-elegant" href="#about">{{ __('About') }}</a></li><li class="nav-item"><a class="nav-link nav-link-elegant" href="#services">{{ __('Services') }}</a></li>@if(!empty($testimonials))<li class="nav-item"><a class="nav-link nav-link-elegant" href="#testimonials">{{ __('Testimonials') }}</a></li>@endif<li class="nav-item"><a class="nav-link nav-link-elegant" href="#contact">{{ __('Contact') }}</a></li><li class="nav-item ms-lg-3"><a class="btn btn-copper" href="#appointment">{{ __('Book Appointment') }}</a></li></ul></div></div>
+    </nav>
+    <section class="hero-magazine" id="home"><div class="container-fluid"><div class="row align-items-center g-0"><div class="col-lg-6 order-lg-2"><div class="hero-image-wrapper"><div class="hero-image-container">@if(!empty($doctor->profile_image))<img src="{{ $doctor->profile_image }}" alt="{{ $doctor->name ?? 'Doctor' }}" class="hero-main-image">@else<img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80" alt="Doctor" class="hero-main-image">@endif<div class="hero-badge"><div class="hero-badge-number">25+</div><div class="hero-badge-text">{{ __('Years Experience') }}</div></div></div></div></div><div class="col-lg-6 order-lg-1"><div class="hero-content"><p class="hero-subtitle">{{ __('Welcome to Our Practice') }}</p><h1 class="hero-title">{{ __('Experience') }} <em>{{ __('Premium') }}</em> {{ __('Healthcare with Compassion') }}</h1>@if(!empty($doctor->bio))<p class="hero-description">{{ Str::limit(strip_tags($doctor->bio),200) }}</p>@else<p class="hero-description">{{ __('Dedicated to providing personalized medical care with a focus on patient well-being and comfort. Your health is our priority.') }}</p>@endif<div class="hero-cta-group"><a href="#appointment" class="btn btn-copper"><i class="fas fa-calendar-check me-2"></i>{{ __('Book Appointment') }}</a><a href="#about" class="btn btn-outline-copper"><i class="fas fa-play-circle me-2"></i>{{ __('Learn More') }}</a></div><div class="hero-stats"><div class="hero-stat-item"><div class="hero-stat-number">{{ $doctor->experience_years ?? '25+' }}</div><div class="hero-stat-label">{{ __('Years Experience') }}</div></div><div class="hero-stat-item"><div class="hero-stat-number">{{ $doctor->patients_count ?? '10K+' }}</div><div class="hero-stat-label">{{ __('Happy Patients') }}</div></div><div class="hero-stat-item"><div class="hero-stat-number">{{ $doctor->rating ?? '4.9' }}</div><div class="hero-stat-label">{{ __('Rating') }}</div></div></div></div></div></div></section>
+    <section class="trust-section"><div class="container"><div class="row g-4"><div class="col-md-6 col-lg-3"><div class="trust-item"><div class="trust-icon"><i class="fas fa-shield-halved"></i></div><div class="trust-content"><h5>{{ __('Board Certified') }}</h5><p>{{ __('Licensed & Accredited') }}</p></div></div></div><div class="col-md-6 col-lg-3"><div class="trust-item"><div class="trust-icon"><i class="fas fa-clock"></i></div><div class="trust-content"><h5>{{ __('Same Day Visits') }}</h5><p>{{ __('Quick Appointment Access') }}</p></div></div></div><div class="col-md-6 col-lg-3"><div class="trust-item"><div class="trust-icon"><i class="fas fa-handshake"></i></div><div class="trust-content"><h5>{{ __('Personalized Care') }}</h5><p>{{ __('Individual Treatment Plans') }}</p></div></div></div><div class="col-md-6 col-lg-3"><div class="trust-item"><div class="trust-icon"><i class="fas fa-heart-pulse"></i></div><div class="trust-content"><h5>{{ __('Modern Equipment') }}</h5><p>{{ __('Latest Technology') }}</p></div></div></div></div></div></section>
+    <section class="about-editorial" id="about"><div class="container position-relative"><div class="organic-shape-1" style="top:50px;right:-100px"></div><div class="organic-shape-2" style="bottom:50px;left:-50px"></div><div class="row align-items-center position-relative" style="z-index:1"><div class="col-lg-6"><div class="about-image-grid">@if(!empty($doctor->about_image_1))<img src="{{ $doctor->about_image_1 }}" alt="{{ __('Practice Image 1') }}" class="about-grid-image">@else<img src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=600&q=80" alt="{{ __('Practice Image 1') }}" class="about-grid-image">@endif @if(!empty($doctor->about_image_2))<img src="{{ $doctor->about_image_2 }}" alt="{{ __('Practice Image 2') }}" class="about-grid-image">@else<img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=600&q=80" alt="{{ __('Practice Image 2') }}" class="about-grid-image">@endif</div></div><div class="col-lg-6"><div class="ps-lg-5"><p class="editorial-label">{{ __('About the Doctor') }}</p><h2 class="editorial-title">{{ __('Dedicated to Your Health & Well-Being') }}</h2>@if(!empty($doctor->about))<p class="editorial-text">{{ Str::limit(strip_tags($doctor->about),400) }}</p>@else<p class="editorial-text">{{ __('With over 25 years of experience in medical practice, we have built our reputation on providing exceptional healthcare services to patients of all ages. Our approach combines advanced medical knowledge with a compassionate, patient-centered philosophy.') }}</p><p class="editorial-text">{{ __('We believe in treating the whole person, not just symptoms. Our practice utilizes state-of-the-art diagnostic tools and treatment methods while maintaining the personal touch that makes healthcare truly effective.') }}</p>@endif<div class="signature-wrapper">@if(!empty($doctor->signature_image))<img src="{{ $doctor->signature_image }}" alt="{{ __('Signature') }}" class="signature-image">@else<img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&q=80" alt="{{ __('Doctor') }}" class="signature-image">@endif<div><h4 class="signature-name">@if(!empty($doctor->name))Dr. {{ $doctor->name }}@else Dr. Sarah Mitchell@endif</h4><p class="signature-title">@if(!empty($doctor->specialty)){{ $doctor->specialty }}@else{{ __('Internal Medicine Specialist') }}@endif</p></div></div></div></div></div></section>
+    <section class="services-editorial" id="services"><div class="container"><div class="section-header"><p class="editorial-label">{{ __('Our Services') }}</p><h2 class="editorial-title">{{ __('Comprehensive Medical Care') }}</h2><p class="editorial-text mx-auto" style="max-width:500px">{{ __('From routine check-ups to specialized treatments, we offer a full range of medical services tailored to your needs.') }}</p></div><div class="row g-4">@if(!empty($services) && $services->count() > 0)@foreach($services as $service)<div class="col-md-6 col-lg-4"><div class="service-card-editorial"><div class="service-icon-wrapper"><i class="{{ $service->icon ?? 'fas fa-stethoscope' }}"></i></div><h3 class="service-title">{{ $service->name }}</h3><p class="service-description">{{ Str::limit(strip_tags($service->description),120) }}</p></div></div>@endforeach @else<div class="col-md-6 col-lg-4"><div class="service-card-editorial"><div class="service-icon-wrapper"><i class="fas fa-stethoscope"></i></div><h3 class="service-title">{{ __('General Checkups') }}</h3><p class="service-description">{{ __('Comprehensive health assessments and preventive care visits tailored to your individual needs and medical history.') }}</p></div></div><div class="col-md-6 col-lg-4"><div class="service-card-editorial"><div class="service-icon-wrapper"><i class="fas fa-heart-pulse"></i></div><h3 class="service-title">{{ __('Cardiac Care') }}</h3><p class="service-description">{{ __('Advanced heart health monitoring, ECG testing, and personalized cardiovascular treatment plans.') }}</p></div></div><div class="col-md-6 col-lg-4"><div class="service-card-editorial"><div class="service-icon-wrapper"><i class="fas fa-flask"></i></div><h3 class="service-title">{{ __('Laboratory Tests') }}</h3><p class="service-description">{{ __('On-site diagnostic testing with rapid, accurate results for comprehensive health evaluation.') }}</p></div></div><div class="col-md-6 col-lg-4"><div class="service-card-editorial"><div class="service-icon-wrapper"><i class="fas fa-brain"></i></div><h3 class="service-title">{{ __('Mental Health') }}</h3><p class="service-description">{{ __('Compassionate mental health support including consultations, therapy referrals, and wellness planning.') }}</p></div></div><div class="col-md-6 col-lg-4"><div class="service-card-editorial"><div class="service-icon-wrapper"><i class="fas fa-notes-medical"></i></div><h3 class="service-title">{{ __('Chronic Disease Management') }}</h3><p class="service-description">{{ __('Ongoing care and monitoring for chronic conditions with personalized treatment strategies.') }}</p></div></div><div class="col-md-6 col-lg-4"><div class="service-card-editorial"><div class="service-icon-wrapper"><i class="fas fa-user-md"></i></div><h3 class="service-title">{{ __('Specialist Referrals') }}</h3><p class="service-description">{{ __('Seamless coordination with specialists when additional expertise is needed for your care.') }}</p></div></div>@endif</div></div></section>
+    @if(!empty($testimonials) && $testimonials->count() > 0)<section class="testimonials-editorial" id="testimonials"><div class="container"><div class="section-header"><p class="editorial-label text-copper">{{ __('Testimonials') }}</p><h2 class="editorial-title" style="color:#fff">{{ __('What Our Patients Say') }}</h2></div><div class="row g-4">@foreach($testimonials as $testimonial)<div class="col-md-6 col-lg-4"><div class="testimonial-card-magazine"><p class="testimonial-quote">{{ $testimonial->content }}</p><div class="testimonial-author">@if(!empty($testimonial->patient_image))<img src="{{ $testimonial->patient_image }}" alt="{{ $testimonial->patient_name }}" class="testimonial-avatar">@else<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Patient" class="testimonial-avatar">@endif<div><h5 class="testimonial-name">{{ $testimonial->patient_name }}</h5><p class="testimonial-title">{{ $testimonial->patient_condition ?? __('Patient') }}</p>@if(!empty($testimonial->rating))<div class="testimonial-rating">@for($i=1;$i<=5;$i++)@if($i<=$testimonial->rating)<i class="fas fa-star"></i>@else<i class="far fa-star"></i>@endif @endfor</div>@endif</div></div></div></div>@endforeach</div></div></section>@endif
+    <section class="appointment-editorial" id="appointment"><div class="container"><div class="row align-items-center"><div class="col-lg-5 mb-5 mb-lg-0"><p class="editorial-label">{{ __('Book Appointment') }}</p><h2 class="editorial-title">{{ __('Schedule Your Visit Today') }}</h2><p class="editorial-text">{{ __('Take the first step towards better health. Book an appointment online and experience healthcare designed around you.') }}</p>@if(!empty($doctor->phone))<div class="d-flex align-items-center gap-3 mt-4"><div class="trust-icon"><i class="fas fa-phone"></i></div><div><p class="mb-1 fw-bold">{{ __('Call Us Directly') }}</p><a href="tel:{{ $doctor->phone }}" class="text-copper text-decoration-none fs-5">{{ $doctor->phone }}</a></div></div>@endif</div><div class="col-lg-7"><div class="appointment-form-wrapper"><form id="appointmentForm" action="{{ route('doctor.appointment.store',$doctor->id ?? 0) }}" method="POST">@csrf<div class="row g-3"><div class="col-md-6"><label class="form-label-editorial">{{ __('Full Name') }} *</label><input type="text" name="name" class="form-control form-control-editorial" required placeholder="{{ __('Enter your full name') }}"></div><div class="col-md-6"><label class="form-label-editorial">{{ __('Email Address') }} *</label><input type="email" name="email" class="form-control form-control-editorial" required placeholder="{{ __('Enter your email') }}"></div><div class="col-md-6"><label class="form-label-editorial">{{ __('Phone Number') }} *</label><input type="tel" name="phone" class="form-control form-control-editorial" required placeholder="{{ __('Enter your phone number') }}"></div><div class="col-md-6"><label class="form-label-editorial">{{ __('Preferred Date') }} *</label><input type="date" name="appointment_date" class="form-control form-control-editorial" required></div><div class="col-md-6"><label class="form-label-editorial">{{ __('Preferred Time') }}</label><select name="appointment_time" class="form-select form-select-editorial"><option value="">{{ __('Select Time') }}</option><option value="09:00">09:00 AM</option><option value="10:00">10:00 AM</option><option value="11:00">11:00 AM</option><option value="14:00">02:00 PM</option><option value="15:00">03:00 PM</option><option value="16:00">04:00 PM</option></select></div><div class="col-md-6"><label class="form-label-editorial">{{ __('Department') }}</label><select name="department" class="form-select form-select-editorial"><option value="">{{ __('Select Department') }}</option>@if(!empty($departments))@foreach($departments as $dept)<option value="{{ $dept->id }}">{{ $dept->name }}</option>@endforeach @else<option value="general">{{ __('General Medicine') }}</option><option value="cardiology">{{ __('Cardiology') }}</option><option value="neurology">{{ __('Neurology') }}</option><option value="orthopedics">{{ __('Orthopedics') }}</option>@endif</select></div><div class="col-12"><label class="form-label-editorial">{{ __('Reason for Visit') }}</label><textarea name="reason" class="form-control form-control-editorial" rows="3" placeholder="{{ __('Briefly describe your symptoms or reason for the appointment') }}"></textarea></div><div class="col-12"><button type="submit" class="btn btn-copper w-100"><i class="fas fa-calendar-plus me-2"></i>{{ __('Request Appointment') }}</button></div></div></form></div></div></div></div></section>
+    <section class="contact-editorial" id="contact"><div class="container"><div class="section-header"><p class="editorial-label">{{ __('Get in Touch') }}</p><h2 class="editorial-title">{{ __('Contact Information') }}</h2></div><div class="row g-4 mb-5"><div class="col-md-4"><div class="contact-info-card"><div class="contact-icon-large"><i class="fas fa-location-dot"></i></div><h4 class="contact-title">{{ __('Office Address') }}</h4><p class="contact-text">@if(!empty($doctor->address)){{ $doctor->address }}@else{{ __('123 Medical Center Drive, Suite 456') }}<br>{{ __('New York, NY 10001') }}@endif</p></div></div><div class="col-md-4"><div class="contact-info-card"><div class="contact-icon-large"><i class="fas fa-phone-flip"></i></div><h4 class="contact-title">{{ __('Phone & Email') }}</h4><p class="contact-text">@if(!empty($doctor->phone))<a href="tel:{{ $doctor->phone }}">{{ $doctor->phone }}</a><br>@else+1 (555) 123-4567<br>@endif @if(!empty($doctor->email))<a href="mailto:{{ $doctor->email }}">{{ $doctor->email }}</a>@else<a href="mailto:contact@medical.com">contact@medical.com</a>@endif</p></div></div><div class="col-md-4"><div class="contact-info-card"><div class="contact-icon-large"><i class="fas fa-clock"></i></div><h4 class="contact-title">{{ __('Working Hours') }}</h4><p class="contact-text">{{ __('Monday - Friday') }}: 9:00 AM - 6:00 PM<br>{{ __('Saturday') }}: 9:00 AM - 2:00 PM<br>{{ __('Sunday') }}: {{ __('Closed') }}</p></div></div></div>@if(!empty($doctor->latitude) && !empty($doctor->longitude))<div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.11976397304603!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1647043081248!5m2!1sen!2s" allowfullscreen="" loading="lazy" title="{{ __('Doctor\'s Office Location') }}"></iframe></div>@endif</div></section>
+    <footer class="footer-editorial"><div class="container"><div class="row g-4"><div class="col-lg-4"><a class="footer-brand" href="#">@if(!empty($doctor->name))Dr. {{ Str::words($doctor->name,1,'') }}<span>.</span>@elseMedical<span>.</span>@endif</a><p class="footer-description">{{ __('Providing premium healthcare services with compassion and expertise. Your health is our priority.') }}</p><div class="footer-social"><a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></div></div><div class="col-lg-2 col-md-4"><h5 class="footer-heading">{{ __('Quick Links') }}</h5><ul class="footer-links"><li><a href="#home">{{ __('Home') }}</a></li><li><a href="#about">{{ __('About Us') }}</a></li><li><a href="#services">{{ __('Services') }}</a></li><li><a href="#appointment">{{ __('Book Now') }}</a></li><li><a href="#contact">{{ __('Contact') }}</a></li></ul></div><div class="col-lg-2 col-md-4"><h5 class="footer-heading">{{ __('Services') }}</h5><ul class="footer-links"><li><a href="#">{{ __('General Checkup') }}</a></li><li><a href="#">{{ __('Cardiac Care') }}</a></li><li><a href="#">{{ __('Laboratory Tests') }}</a></li><li><a href="#">{{ __('Mental Health') }}</a></li><li><a href="#">{{ __('Specialist Referrals') }}</a></li></ul></div><div class="col-lg-4 col-md-4"><h5 class="footer-heading">{{ __('Working Hours') }}</h5><ul class="footer-hours"><li><span class="day">{{ __('Monday - Friday') }}</span><span class="time">9:00 - 18:00</span></li><li><span class="day">{{ __('Saturday') }}</span><span class="time">9:00 - 14:00</span></li><li><span class="day">{{ __('Sunday') }}</span><span class="time">{{ __('Closed') }}</span></li></ul></div></div><div class="footer-bottom"><p class="footer-copyright">&copy; {{ date('Y') }} @if(!empty($doctor->name))Dr. {{ $doctor->name }}.@endif {{ __('All Rights Reserved.') }}</p></div></div></footer>
+    <a href="#home" class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const navbar=document.getElementById('mainNav'),backToTop=document.getElementById('backToTop');
+        let ticking=false;
+        function onScroll(){if(!ticking){requestAnimationFrame(function(){navbar.classList[window.scrollY>50?'add':'remove']('scrolled');backToTop.classList[window.scrollY>500?'add':'remove']('visible');ticking=false});ticking=true}}
+        window.addEventListener('scroll',onScroll);
+        document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();const y=t.getBoundingClientRect().top+window.scrollY-navbar.offsetHeight;window.scrollTo({top:y,behavior:'smooth'})}})});
+        const f=document.getElementById('appointmentForm');if(f){f.addEventListener('submit',e=>{e.preventDefault();const b=f.querySelector('button[type="submit"]'),o=b.innerHTML;b.innerHTML='<i class="fas fa-spinner fa-spin me-2"></i>{{ __('Processing...') }}';b.disabled=true;setTimeout(()=>{b.innerHTML='<i class="fas fa-check me-2"></i>{{ __('Request Submitted!') }}';b.classList.remove('btn-copper');b.classList.add('btn-success');setTimeout(()=>{f.reset();b.innerHTML=o;b.classList.remove('btn-success');b.classList.add('btn-copper');b.disabled=false;alert('{{ __('Thank you! Your appointment request has been submitted. We will contact you shortly.') }}')},2000)},1500)})}
+        document.querySelectorAll('input[type="date"]').forEach(i=>i.setAttribute('min',new Date().toISOString().split('T')[0]));
+        document.querySelectorAll('.section-header,.service-card-editorial,.testimonial-card-magazine,.contact-info-card').forEach(el=>new IntersectionObserver(e=>{if(e[0].isIntersecting){el.classList.add('animate-fade-in');el.style.opacity='1'}},{threshold:.1,rootMargin:'0px 0px -50px 0px'}).observe(el));
+    </script>
+</body>
+</html>
