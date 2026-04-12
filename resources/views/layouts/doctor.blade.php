@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US" style="background: #060d1f !important;">
+<html dir="ltr" lang="en-US" style="background: #060d1f;">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -314,7 +314,7 @@
     <link rel="apple-touch-icon" href="{{ asset('icons/doctor-icon-192.png') }}">
     <title>@yield('title', 'Doctor Dashboard | MedCura AI')</title>
 </head>
-<body style="background: #060d1f !important;">
+<body style="background: #060d1f;">
     <!-- Sidebar overlay for mobile -->
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="document.querySelector('.doctor-sidebar').classList.remove('show')"></div>
 
@@ -645,7 +645,7 @@
                     </div>
                 </div>
             </header>
-            <main class="doctor-content" style="background: #060d1f !important;">
+            <main class="doctor-content" style="background: #060d1f;">
                 @yield('content')
             </main>
         </div>

@@ -10,6 +10,15 @@ const AmbientAudioRecorder = ({ visitId, authToken, language = 'en' }) => {
 
     const recorderRef = useRef(null);
     const isFallbackRef = useRef(false);
+    const isMountedRef = useRef(true);
+
+    // Track mounted state to prevent state updates on unmounted component
+    useEffect(() => {
+        isMountedRef.current = true;
+        return () => {
+            isMountedRef.current = false;
+        };
+    }, []);
 
     // Initialize the recorder ONCE
     useEffect(() => {
@@ -21,6 +30,7 @@ const AmbientAudioRecorder = ({ visitId, authToken, language = 'en' }) => {
 
         const recorder = new MedicalAmbientRecorder({
             onStatusChange: (newStatus) => {
+                if (!isMountedRef.current) return;
                 setStatus(newStatus);
                 if (newStatus === 'recording') {
                     setIsRecording(true);
@@ -36,6 +46,7 @@ const AmbientAudioRecorder = ({ visitId, authToken, language = 'en' }) => {
                 }));
             },
             onError: (msg, err) => {
+                if (!isMountedRef.current) return;
                 setError(`${msg}: ${err.message || err}`);
                 setIsConnecting(false);
                 setIsRecording(false);

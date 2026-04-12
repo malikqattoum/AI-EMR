@@ -590,7 +590,7 @@ class AppointmentController extends Controller
             return back()->withErrors(['error' => 'This appointment cannot be cancelled.']);
         }
 
-        $appointment->cancel('patient', $request->cancellation_reason);
+        $appointment->cancel($request->cancellation_reason, 'patient');
 
         return redirect()->route('appointments.guest.show', [
             'appointment' => $appointmentNumber,

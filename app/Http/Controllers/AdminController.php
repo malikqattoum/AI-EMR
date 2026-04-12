@@ -1214,7 +1214,7 @@ public function destroy(User $user)
                 $results['grace_reminders_sent']++;
 
             } catch (\Exception $e) {
-                $results['errors'][] = "User {$user?->id} ({$user->name}): " . $e->getMessage();
+                $results['errors'][] = "User {$user?->id} ({$user?->name}): " . $e->getMessage();
             }
         }
 
@@ -1269,7 +1269,7 @@ public function destroy(User $user)
                 $results['warning_reminders_sent']++;
 
             } catch (\Exception $e) {
-                $results['errors'][] = "User {$user?->id} ({$user->name}): " . $e->getMessage();
+                $results['errors'][] = "User {$user?->id} ({$user?->name}): " . $e->getMessage();
             }
         }
 

@@ -1,22 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ClinicalMonitoringService from './ClinicalMonitoringService';
 
 const ConfigurationPanel = () => {
     const [rules, setRules] = useState([]);
     const [loading, setLoading] = useState(true);
+    const isMountedRef = useRef(true);
 
     useEffect(() => {
+        isMountedRef.current = true;
         const fetchRules = async () => {
             try {
                 const data = await ClinicalMonitoringService.getRules();
-                setRules(data);
+                if (isMountedRef.current) {
+                    setRules(data);
+                }
             } catch (error) {
                 console.error('Error fetching rules:', error);
             } finally {
-                setLoading(false);
+                if (isMountedRef.current) {
+                    setLoading(false);
+                }
             }
         };
         fetchRules();
+        return () => {
+            isMountedRef.current = false;
+        };
     }, []);
 
     const handleToggle = async (rule) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ClinicalMonitoringService from './ClinicalMonitoringService';
 import TreatmentOptimization from './TreatmentOptimization';
+import ErrorBoundary from './ErrorBoundary';
 import { Activity, Zap, Brain, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
 import {
@@ -41,6 +42,7 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
 
         let isMounted = true;
         const fetchData = async () => {
+            if (!isMounted) return;
             setLoading(true);
             try {
                 // Fetch latest scores
@@ -87,7 +89,9 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
             if (!isMounted) return;
             setAlerts(prev => [newAlert, ...prev]);
             // Refresh insights and trends when new alert arrives
-            fetchData();
+            if (isMounted) {
+                fetchData();
+            }
         });
 
         return () => {
@@ -99,6 +103,7 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
     }, [patientId]);
 
     return (
+        <ErrorBoundary>
         <div className="space-y-6">
             {loading ? (
                 <div className="flex flex-col items-center justify-center p-12 space-y-4 bg-white rounded-xl border border-gray-100">
@@ -274,6 +279,7 @@ const ClinicalDashboard = ({ patientId, appointmentId }) => {
                 </>
             )}
         </div>
+        </ErrorBoundary>
     );
 };
 

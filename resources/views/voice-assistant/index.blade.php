@@ -898,7 +898,7 @@ kbd { background: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,2
 
                         <!-- Confidence Score Indicator -->
                         <div class="col-12">
-                            <div class="card border"
+                            <div class="card border">
                                 <div class="card-body p-3">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="fw-bold">Transcription Accuracy:</span>

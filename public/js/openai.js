@@ -540,7 +540,6 @@ function setupFollowUpChat() {
                     // Show regular error
                     addErrorMessage('Failed to connect to the server. Please try again later.');
                 }
-                ;
             });
         });
     }

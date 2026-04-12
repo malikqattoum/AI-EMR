@@ -204,7 +204,7 @@ class NotificationManager {
                 }
             }
         } catch (error) {
-            ;
+            console.error('Error marking notification as read:', error);
         }
     }
 
@@ -402,7 +402,9 @@ class NotificationManager {
         const soundEnabled = document.querySelector('meta[name="notification-sound-enabled"]')?.content === 'true';
         if (soundEnabled) {
             const sound = new Audio('/sounds/notification.mp3');
-            sound.play().catch(e => );
+            sound.play().catch(e => {
+                console.warn('Notification sound failed to play:', e);
+            });
         }
 
         toast.innerHTML = `

@@ -525,12 +525,6 @@ export class MedicalAmbientRecorder {
                     type: this.localMediaRecorder.mimeType || 'audio/webm'
                 });
                 // console.log('💾 Local audio recording captured:', this.audioBlob.size, 'bytes');
-
-                if (window && !window.audioBlob) {
-                    window.audioBlob = this.audioBlob;
-                } else if (window) {
-                    window.audioBlob = this.audioBlob;
-                }
             };
 
             this.localMediaRecorder.start(1000);
@@ -559,32 +553,25 @@ export class MedicalAmbientRecorder {
                     this.audioBlob = new Blob(this.recordedChunks, {
                         type: this.localMediaRecorder.mimeType || 'audio/webm'
                     });
-                    
-                    // console.log('💾 Audio blob created:', this.audioBlob.size, 'bytes');
 
-                    if (window) {
-                        window.audioBlob = this.audioBlob;
-                    }
+                    // console.log('💾 Audio blob created:', this.audioBlob.size, 'bytes');
 
                     this.isRecording = false;
                     this.handleStatusChange('stopped');
                     resolve(this.audioBlob);
                 };
-                
+
                 // console.log('⏹️ Calling MediaRecorder.stop()');
                 this.localMediaRecorder.stop();
             } else {
                 // console.log('⚠️ MediaRecorder already inactive or not initialized');
                 // console.log('   Trying to use window.audioBlob or create from chunks...');
-                
+
                 // Try to create blob from existing chunks
                 if (this.recordedChunks && this.recordedChunks.length > 0) {
                     // console.log('💾 Creating blob from', this.recordedChunks.length, 'existing chunks');
                     this.audioBlob = new Blob(this.recordedChunks, { type: 'audio/webm' });
                     // console.log('💾 Blob created:', this.audioBlob.size, 'bytes');
-                    if (window) {
-                        window.audioBlob = this.audioBlob;
-                    }
                     this.isRecording = false;
                     this.handleStatusChange('stopped');
                     resolve(this.audioBlob);
