@@ -25,6 +25,7 @@ class PatientData extends Model
         'preliminary_diagnosis',
         'ai_response',
         'user_id',
+        'source_record_id',
         'assigned_patient_id',
         'previous_record_id',
         'visit_number',

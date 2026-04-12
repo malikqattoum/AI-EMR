@@ -1139,6 +1139,15 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::resource('subscription-plans', SubscriptionPlanController::class);
     Route::post('/subscription-plans/{subscriptionPlan}/toggle-active', [SubscriptionPlanController::class, 'toggleActive'])->name('subscription-plans.toggle-active');
 
+    // Data Migration
+    Route::get('/data-migration', [App\Http\Controllers\Admin\DataMigrationController::class, 'upload'])->name('data-migration.upload');
+    Route::post('/data-migration/parse', [App\Http\Controllers\Admin\DataMigrationController::class, 'parse'])->name('data-migration.parse');
+    Route::post('/data-migration/review', [App\Http\Controllers\Admin\DataMigrationController::class, 'review'])->name('data-migration.review');
+    Route::post('/data-migration/import', [App\Http\Controllers\Admin\DataMigrationController::class, 'import'])->name('data-migration.import');
+    Route::get('/data-migration/summary/{log}', [App\Http\Controllers\Admin\DataMigrationController::class, 'summary'])->name('data-migration.summary');
+    Route::get('/data-migration/templates', [App\Http\Controllers\Admin\DataMigrationController::class, 'templates'])->name('data-migration.templates');
+    Route::post('/data-migration/templates', [App\Http\Controllers\Admin\DataMigrationController::class, 'saveTemplate'])->name('data-migration.templates.save');
+
     // User pricing management
     Route::get('/user-pricing', [App\Http\Controllers\Admin\UserPricingController::class, 'index'])->name('user-pricing.index');
     Route::get('/user-pricing/{user}/edit', [App\Http\Controllers\Admin\UserPricingController::class, 'edit'])->name('user-pricing.edit');

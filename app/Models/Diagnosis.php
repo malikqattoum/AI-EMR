@@ -12,6 +12,7 @@ class Diagnosis extends Model
     protected $fillable = [
         'doctor_id',
         'patient_id',
+        'source_record_id',
         'diagnosis_text',
         'voice_transcripts',
         'voice_files',

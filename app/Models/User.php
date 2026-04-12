@@ -128,6 +128,7 @@ class User extends Authenticatable
         'hospital_id',
         'analytics_role_id',
         'requires_password_reset',
+        'source_identifiers',
     ];
 
     /**
